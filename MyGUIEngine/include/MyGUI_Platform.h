@@ -93,6 +93,10 @@
 // Linux/Apple Settings
 #if MYGUI_PLATFORM == MYGUI_PLATFORM_LINUX || MYGUI_PLATFORM == MYGUI_PLATFORM_APPLE
 #
+# if defined( MYGUI_STATIC )
+#		define MYGUI_EXPORT
+#		define MYGUI_EXPORT_DLL
+# else
 // Add -fvisibility=hidden to compiler options. With -fvisibility=hidden, you are telling
 // GCC that every declaration not explicitly marked with a visibility attribute (MYGUI_EXPORT)
 // has a hidden visibility (like in windows).
@@ -119,7 +123,7 @@
 #	else // if MYGUI_PLATFORM_LINUX
 #		define MYGUI_PLATFORM_LIB "libMYGUIPlatform.so"
 #	endif
-
+# endif
 #endif
 
 
