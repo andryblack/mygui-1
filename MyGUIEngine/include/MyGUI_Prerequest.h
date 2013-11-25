@@ -7,6 +7,10 @@
 #ifndef MYGUI_PREREQUEST_H_
 #define MYGUI_PREREQUEST_H_
 
+#ifdef MYGUI_CONFIG_INCLUDE
+#include MYGUI_CONFIG_INCLUDE
+#endif
+
 #include "MyGUI_Platform.h"
 
 #if MYGUI_COMPILER == MYGUI_COMPILER_MSVC
