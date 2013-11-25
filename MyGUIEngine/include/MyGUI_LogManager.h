@@ -16,8 +16,10 @@
 namespace MyGUI
 {
 
-#define MYGUI_LOGGING(section, level, text) \
+#ifndef MYGUI_LOGGING
+#  define MYGUI_LOGGING(section, level, text) \
 		MyGUI::LogManager::getInstance().log(section, MyGUI::LogLevel::level, MyGUI::LogStream() << text << MyGUI::LogStream::End(), __FILE__, __LINE__)
+#endif
 
 	class ConsoleLogListener;
 	class FileLogListener;
