@@ -9,6 +9,9 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Diagnostic.h"
+
+#ifndef MYGUI_RTTI_TYPE
+
 #include <string>
 
 #include <typeinfo>
@@ -73,5 +76,5 @@ namespace MyGUI
 			template<typename Type> bool isType() const { return isType(MYGUI_RTTI_GET_TYPE(Type)); }
 
 } // namespace MyGUI
-
+#endif // MYGUI_RTTI_TYPE
 #endif // MYGUI_RTTI_H_
