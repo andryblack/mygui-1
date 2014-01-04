@@ -35,7 +35,9 @@ namespace MyGUI
 
 		std::string resourceCategory = ResourceManager::getInstance().getCategoryName();
 		FactoryManager::getInstance().registerFactory<ResourceManualFont>(resourceCategory);
+#ifdef MYGUI_USE_FREETYPE
 		FactoryManager::getInstance().registerFactory<ResourceTrueTypeFont>(resourceCategory);
+#endif
 
 		mDefaultName = "Default";
 
@@ -52,8 +54,9 @@ namespace MyGUI
 
 		std::string resourceCategory = ResourceManager::getInstance().getCategoryName();
 		FactoryManager::getInstance().unregisterFactory<ResourceManualFont>(resourceCategory);
+#ifdef MYGUI_USE_FREETYPE
 		FactoryManager::getInstance().unregisterFactory<ResourceTrueTypeFont>(resourceCategory);
-
+#endif
 		MYGUI_LOG(Info, getClassTypeName() << " successfully shutdown");
 		mIsInitialise = false;
 	}

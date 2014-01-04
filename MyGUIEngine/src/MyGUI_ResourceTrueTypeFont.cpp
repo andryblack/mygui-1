@@ -37,7 +37,6 @@
 #		define MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX 1
 #	endif
 
-#endif // MYGUI_USE_FREETYPE
 
 namespace MyGUI
 {
@@ -1128,6 +1127,7 @@ namespace MyGUI
 		mGlyphSpacing = _value;
 	}
 
-#endif // MYGUI_USE_FREETYPE
 
 } // namespace MyGUI
+
+#endif // MYGUI_USE_FREETYPE

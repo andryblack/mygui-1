@@ -14,7 +14,6 @@
 #ifdef MYGUI_USE_FREETYPE
 #	include <ft2build.h>
 #	include FT_FREETYPE_H
-#endif // MYGUI_USE_FREETYPE
 
 namespace MyGUI
 {
@@ -67,7 +66,6 @@ namespace MyGUI
 		void addCodePointRange(Char _first, Char _second);
 		void removeCodePointRange(Char _first, Char _second);
 
-#ifdef MYGUI_USE_FREETYPE
 	private:
 		enum Hinting
 		{
@@ -153,10 +151,10 @@ namespace MyGUI
 		CharMap mCharMap; // A map of code points to glyph indices.
 		GlyphMap mGlyphMap; // A map of glyph indices to glyph info objects.
 
-#endif // MYGUI_USE_FREETYPE
 
 	};
 
 } // namespace MyGUI
 
+#endif // MYGUI_USE_FREETYPE
 #endif // MYGUI_RESOURCE_TRUE_TYPE_FONT_H_
