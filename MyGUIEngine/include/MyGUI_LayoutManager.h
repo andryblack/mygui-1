@@ -13,6 +13,7 @@
 #include "MyGUI_WidgetDefines.h"
 #include "MyGUI_ResourceLayout.h"
 #include "MyGUI_BackwardCompatibility.h"
+#include "MyGUI_Gui.h"
 
 namespace MyGUI
 {

@@ -221,10 +221,10 @@ namespace MyGUI
 		bool getInheritedEnabled() const;
 
 		/** Get rectangle where child widgets placed */
-		IntCoord getClientCoord();
+		IntCoord getClientCoord() const;
 
 		/** Get client area widget or nullptr if widget don't have client */
-		Widget* getClientWidget();
+		Widget* getClientWidget() const;
 
 		/** Detach widget from widgets hierarchy
 			@param _layer Attach to specified layer (if any)

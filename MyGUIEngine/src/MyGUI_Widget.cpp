@@ -424,7 +424,7 @@ namespace MyGUI
 		}
 	}
 
-	IntCoord Widget::getClientCoord()
+	IntCoord Widget::getClientCoord() const
 	{
 		MYGUI_ASSERT(mWidgetClient != this, "mWidgetClient can not be this widget");
 		if (mWidgetClient != nullptr)
@@ -1287,7 +1287,7 @@ namespace MyGUI
 		return mEnabled;
 	}
 
-	Widget* Widget::getClientWidget()
+	Widget* Widget::getClientWidget() const
 	{
 		return mWidgetClient;
 	}
