@@ -116,7 +116,7 @@ namespace MyGUI
 		return mOwner->getItemId(this);
 	}
 
-	size_t MenuItem::getItemIndex()
+	size_t MenuItem::getItemIndex() const
 	{
 		return mOwner->getItemIndex(this);
 	}

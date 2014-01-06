@@ -341,7 +341,7 @@ namespace MyGUI
 			Base::setCaption(_caption);
 	}
 
-	const UString& Window::getCaption()
+	const UString& Window::getCaption() const
 	{
 		if (mWidgetCaption != nullptr)
 			return mWidgetCaption->getCaption();

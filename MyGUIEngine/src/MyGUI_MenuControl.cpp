@@ -613,7 +613,7 @@ namespace MyGUI
 		return mItemsInfo[_index].item;
 	}
 
-	size_t MenuControl::getItemIndex(MenuItem* _item)
+	size_t MenuControl::getItemIndex(const MenuItem* _item) const
 	{
 		for (size_t pos = 0; pos < mItemsInfo.size(); pos++)
 		{

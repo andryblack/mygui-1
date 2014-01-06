@@ -114,10 +114,10 @@ namespace MyGUI
 		void setColumnWidth(MultiListItem* _item, int _width);
 
 		/** Get _column name */
-		const UString& getColumnNameAt(size_t _column);
+		const UString& getColumnNameAt(size_t _column) const;
 
 		/** Get _column name */
-		const UString& getColumnName(MultiListItem* _item);
+		const UString& getColumnName(const MultiListItem* _item) const;
 
 		/** Get _column width */
 		int getColumnWidthAt(size_t _column);
@@ -126,7 +126,7 @@ namespace MyGUI
 		void sortByColumn(size_t _column, bool _backward = false);
 
 		//! Get column index
-		size_t getColumnIndex(MultiListItem* _item);
+		size_t getColumnIndex(const MultiListItem* _item) const;
 
 		/** Set resizing policy of column. \sa ResizingPolicy
 			@param _item Pointer to column

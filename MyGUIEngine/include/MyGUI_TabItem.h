@@ -28,7 +28,7 @@ namespace MyGUI
 		/** Set item caption */
 		virtual void setCaption(const UString& _value);
 		/** Get item caption */
-		virtual const UString& getCaption();
+		virtual const UString& getCaption() const;
 
 		//! Set button width
 		void setButtonWidth(int _value = DEFAULT);

@@ -33,7 +33,7 @@ namespace MyGUI
 		/** Set widget caption */
 		virtual void setCaption(const UString& _value);
 		/** Get widget caption */
-		virtual const UString& getCaption();
+		virtual const UString& getCaption() const;
 
 		/** Set widget text font */
 		virtual void setFontName(const std::string& _value);

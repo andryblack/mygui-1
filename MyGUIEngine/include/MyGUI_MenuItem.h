@@ -61,7 +61,7 @@ namespace MyGUI
 		const std::string& getItemId();
 
 		//! Get item index
-		size_t getItemIndex();
+		size_t getItemIndex() const;
 
 		/** Create child item (submenu), MenuItem can have only one child */
 		MenuControl* createItemChild();

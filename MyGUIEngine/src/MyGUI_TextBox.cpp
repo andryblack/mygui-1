@@ -80,7 +80,7 @@ namespace MyGUI
 			getSubWidgetText()->setCaption(_caption);
 	}
 
-	const UString& TextBox::getCaption()
+	const UString& TextBox::getCaption() const
 	{
 		if (nullptr == getSubWidgetText())
 			return Constants::getEmptyUString();

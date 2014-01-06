@@ -75,7 +75,7 @@ namespace MyGUI
 		/** Set edit text applying tags */
 		virtual void setCaption(const UString& _value);
 		/** Get edit text with tags */
-		virtual const UString& getCaption();
+		virtual const UString& getCaption() const;
 
 		/** Set edit text without tags */
 		void setOnlyText(const UString& _value);
@@ -320,7 +320,7 @@ namespace MyGUI
 		void commandCopy();
 		void commandPast();
 
-		const UString& getRealString();
+		const UString& getRealString() const;
 
 		void setRealString(const UString& _caption);
 

@@ -96,7 +96,7 @@ namespace MyGUI
 		TabItem* getItemAt(size_t _index);
 
 		//! Get item index
-		size_t getItemIndex(TabItem* _item);
+		size_t getItemIndex(const TabItem* _item) const;
 
 		//! Search item, returns the position of the first occurrence in array or ITEM_NONE if item not found
 		size_t findItemIndex(TabItem* _item);
@@ -163,10 +163,10 @@ namespace MyGUI
 		void setItemName(TabItem* _item, const UString& _name);
 
 		//! Get item name from specified position
-		const UString& getItemNameAt(size_t _index);
+		const UString& getItemNameAt(size_t _index) const;
 
 		//! Get item name
-		const UString& getItemName(TabItem* _item);
+		const UString& getItemName(const TabItem* _item) const;
 
 
 		//------------------------------------------------------------------------------//

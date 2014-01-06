@@ -156,6 +156,11 @@ namespace MyGUI
 	{
 		return mText;
 	}
+    
+    const ISubWidgetText* SkinItem::getSubWidgetText() const
+	{
+		return mText;
+	}
 
 	ISubWidgetRect* SkinItem::getSubWidgetMain()
 	{

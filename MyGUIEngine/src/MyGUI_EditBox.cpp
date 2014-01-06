@@ -1459,7 +1459,7 @@ namespace MyGUI
 		}
 	}
 
-	const UString& EditBox::getRealString()
+	const UString& EditBox::getRealString() const
 	{
 		if (mModePassword)
 			return mPasswordText;
@@ -1553,7 +1553,7 @@ namespace MyGUI
 		setText(_value, false);
 	}
 
-	const UString& EditBox::getCaption()
+	const UString& EditBox::getCaption() const
 	{
 		return getRealString();
 	}

@@ -102,7 +102,7 @@ namespace MyGUI
 		MenuItem* getItemAt(size_t _index);
 
 		//! Get item index
-		size_t getItemIndex(MenuItem* _item);
+		size_t getItemIndex(const MenuItem* _item) const;
 
 		//! Search item, returns the position of the first occurrence in array or ITEM_NONE if item not found
 		size_t findItemIndex(MenuItem* _item);

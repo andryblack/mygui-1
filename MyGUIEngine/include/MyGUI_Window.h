@@ -49,7 +49,7 @@ namespace MyGUI
 		/** Set window caption */
 		virtual void setCaption(const UString& _value);
 		/** Get window caption */
-		virtual const UString& getCaption();
+		virtual const UString& getCaption() const;
 
 		/** Get window caption widget */
 		TextBox* getCaptionWidget();

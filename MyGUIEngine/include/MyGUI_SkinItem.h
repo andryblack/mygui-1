@@ -23,7 +23,8 @@ namespace MyGUI
 		SkinItem();
 
 		/** Get text sub widget or nullptr if no text sub widget */
-		ISubWidgetText* getSubWidgetText();
+		const ISubWidgetText* getSubWidgetText() const;
+        ISubWidgetText* getSubWidgetText();
 		/** Get sub widget of first texture or nullptr if no sub widget with texture */
 		ISubWidgetRect* getSubWidgetMain();
 

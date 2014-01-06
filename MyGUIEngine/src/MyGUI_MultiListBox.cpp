@@ -106,7 +106,7 @@ namespace MyGUI
 		updateColumns();
 	}
 
-	const UString& MultiListBox::getColumnNameAt(size_t _column)
+	const UString& MultiListBox::getColumnNameAt(size_t _column) const
 	{
 		MYGUI_ASSERT_RANGE(_column, mVectorColumnInfo.size(), "MultiListBox::getColumnNameAt");
 		return mVectorColumnInfo[_column].name;
@@ -771,12 +771,12 @@ namespace MyGUI
 		setColumnNameAt(getColumnIndex(_item), _name);
 	}
 
-	const UString& MultiListBox::getColumnName(MultiListItem* _item)
+	const UString& MultiListBox::getColumnName(const MultiListItem* _item) const
 	{
 		return getColumnNameAt(getColumnIndex(_item));
 	}
 
-	size_t MultiListBox::getColumnIndex(MultiListItem* _item)
+	size_t MultiListBox::getColumnIndex(const MultiListItem* _item) const
 	{
 		for (size_t index = 0; index < mVectorColumnInfo.size(); ++ index)
 		{
