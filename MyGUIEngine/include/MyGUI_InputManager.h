@@ -24,6 +24,9 @@
 namespace MyGUI
 {
 
+  	typedef delegates::CMultiDelegate3<int, int, MouseButton> EventHandle_IntIntMouseButton;
+	typedef delegates::CMultiDelegate2<int, int> EventHandle_IntInt;
+	
 	class MYGUI_EXPORT InputManager :
 		public Singleton<InputManager>,
 		public IUnlinkWidget,
@@ -124,6 +127,21 @@ namespace MyGUI
 		*/
 		delegates::CMultiDelegate1<Widget*> eventChangeKeyFocus;
 
+        /** Event: MultiDelegate. Mouse button pressed.\n
+            signature: void method(int _absx, int _absy, MouseButton _button)
+        */
+        EventHandle_IntIntMouseButton   eventMousePressed;
+        
+        /** Event: MultiDelegate. Mouse button released.\n
+         signature: void method(int _absx, int _absy, MouseButton _button)
+         */
+        EventHandle_IntIntMouseButton   eventMouseReleased;
+        
+        /** Event: MultiDelegate. Mouse moved.\n
+         signature: void method(int _absx, int _absy)
+         */
+        EventHandle_IntInt   eventMouseMoved;
+        
 		/*internal:*/
 		void _resetMouseFocusWidget();
 

@@ -81,6 +81,8 @@ namespace MyGUI
 
 	bool InputManager::injectMouseMove(int _absx, int _absy, int _absz)
 	{
+        eventMouseMoved(_absx,_absy);
+        
 		// запоминаем позицию
 		mMousePosition.set(_absx, _absy);
 
@@ -221,6 +223,9 @@ namespace MyGUI
 	{
 		injectMouseMove(_absx, _absy, mOldAbsZ);
 
+        
+        eventMousePressed(_absx,_absy,_id);
+
 		// если мы щелкнули не на гуй
 		if (!isFocusMouse())
 		{
@@ -285,6 +290,8 @@ namespace MyGUI
 
 	bool InputManager::injectMouseRelease(int _absx, int _absy, MouseButton _id)
 	{
+        eventMouseReleased(_absx,_absy,_id);
+        
 		if (isFocusMouse())
 		{
 			// если активный элемент заблокирован
