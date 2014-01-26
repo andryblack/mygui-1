@@ -23,10 +23,10 @@ namespace MyGUI
 		void updateScrollPosition();
 
 		// размер данных
-		virtual IntSize getContentSize();
+		virtual IntSize getContentSize() const;
 
 		// смещение данных
-		virtual IntPoint getContentPosition();
+		virtual IntPoint getContentPosition() const;
 		virtual void setContentPosition(const IntPoint& _value);
 
 		// размер окна, через которые видно данные

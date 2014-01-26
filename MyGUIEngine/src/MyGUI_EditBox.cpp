@@ -1822,7 +1822,7 @@ namespace MyGUI
 		return ScrollViewBase::getViewSize();
 	}
 
-	IntSize EditBox::getContentSize()
+	IntSize EditBox::getContentSize() const
 	{
 		if (mClientText != nullptr)
 			return mClientText->getTextSize();
@@ -1843,7 +1843,7 @@ namespace MyGUI
 		return ScrollViewBase::getHScrollPage();
 	}
 
-	IntPoint EditBox::getContentPosition()
+	IntPoint EditBox::getContentPosition() const
 	{
 		if (mClientText != nullptr)
 			return mClientText->getViewOffset();

@@ -29,7 +29,7 @@ namespace MyGUI
 			return mRect;
 		}
 
-	private:
+	protected:
 		virtual void deserialization(xml::ElementPtr _node, Version _version)
 		{
 			std::string texture = _node->getParent()->getParent()->findAttribute("texture");

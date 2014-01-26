@@ -156,12 +156,12 @@ namespace MyGUI
 		}
 	}
 
-	IntSize ScrollView::getContentSize()
+	IntSize ScrollView::getContentSize() const
 	{
 		return mRealClient == nullptr ? IntSize() : mRealClient->getSize();
 	}
 
-	IntPoint ScrollView::getContentPosition()
+	IntPoint ScrollView::getContentPosition() const
 	{
 		return mRealClient == nullptr ? IntPoint() : (IntPoint() - mRealClient->getPosition());
 	}

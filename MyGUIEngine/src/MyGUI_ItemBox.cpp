@@ -819,12 +819,12 @@ namespace MyGUI
 		return *_widget->_getInternalData<size_t>() + (mFirstVisibleIndex * mCountItemInLine);
 	}
 
-	IntSize ItemBox::getContentSize()
+	IntSize ItemBox::getContentSize() const
 	{
 		return mContentSize;
 	}
 
-	IntPoint ItemBox::getContentPosition()
+	IntPoint ItemBox::getContentPosition() const
 	{
 		return mContentPosition;
 	}
@@ -990,7 +990,7 @@ namespace MyGUI
 			mHScroll->setScrollPosition(mContentPosition.left);
 	}
 
-	IntPoint ItemBox::getViewOffset()
+	IntPoint ItemBox::getViewOffset() const
 	{
 		return getContentPosition();
 	}

@@ -310,12 +310,12 @@ namespace MyGUI
 		}
 	}
 
-	IntSize ScrollViewBase::getContentSize()
+	IntSize ScrollViewBase::getContentSize() const
 	{
 		return IntSize();
 	}
 
-	IntPoint ScrollViewBase::getContentPosition()
+	IntPoint ScrollViewBase::getContentPosition() const
 	{
 		return IntPoint();
 	}

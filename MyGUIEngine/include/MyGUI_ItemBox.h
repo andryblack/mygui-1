@@ -130,10 +130,13 @@ namespace MyGUI
 		/** Set view area offset. */
 		void setViewOffset(const IntPoint& _value);
 		/** Get view area offset. */
-		IntPoint getViewOffset();
+		IntPoint getViewOffset() const;
 
 		virtual IntSize getViewSize();
 
+        virtual IntSize getContentSize() const;
+		virtual IntPoint getContentPosition() const;
+		
 		/*events:*/
 		/** Event : Request for creating new item.\n
 			signature : void method(MyGUI::ItemBox* _sender, MyGUI::Widget* _item)
@@ -256,8 +259,6 @@ namespace MyGUI
 
 		void requestItemSize();
 
-		virtual IntSize getContentSize();
-		virtual IntPoint getContentPosition();
 		virtual void eraseContent();
 		virtual size_t getHScrollPage();
 		virtual size_t getVScrollPage();

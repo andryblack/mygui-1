@@ -89,9 +89,9 @@ namespace MyGUI
 
 	private:
 		// размер данных
-		virtual IntSize getContentSize();
+		virtual IntSize getContentSize() const;
 		// смещение данных
-		virtual IntPoint getContentPosition();
+		virtual IntPoint getContentPosition() const;
 		// размер окна, через которые видно данные
 		virtual IntSize getViewSize();
 		virtual void setContentPosition(const IntPoint& _point);
