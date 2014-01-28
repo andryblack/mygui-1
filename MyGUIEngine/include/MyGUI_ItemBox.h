@@ -254,6 +254,8 @@ namespace MyGUI
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
+        virtual void setContentPosition(const IntPoint& _point);
+
 	private:
 		size_t calcIndexByWidget(Widget* _widget);
 
@@ -263,8 +265,7 @@ namespace MyGUI
 		virtual size_t getHScrollPage();
 		virtual size_t getVScrollPage();
 		virtual Align getContentAlign();
-		virtual void setContentPosition(const IntPoint& _point);
-
+		
 		IntRect _getClientAbsoluteRect();
 		Widget* _getClientWidget();
 

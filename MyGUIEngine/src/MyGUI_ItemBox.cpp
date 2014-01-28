@@ -800,6 +800,9 @@ namespace MyGUI
 			mFirstOffsetIndex = mContentPosition.left % mSizeItem.width;
 		}
 
+        if (mFirstVisibleIndex<0)
+            mFirstVisibleIndex=0;
+        
 		_updateAllVisible(old != mFirstVisibleIndex);
 		_resetContainer(true);
 	}
