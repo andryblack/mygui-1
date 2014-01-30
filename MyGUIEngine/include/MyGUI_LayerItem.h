@@ -33,8 +33,8 @@ namespace MyGUI
 
 		void setRenderItemTexture(ITexture* _texture);
 
-		void addChildItem(LayerItem* _item);
-		void removeChildItem(LayerItem* _item);
+		virtual void addChildItem(LayerItem* _item);
+		virtual void removeChildItem(LayerItem* _item);
 
 		void addChildNode(LayerItem* _item);
 		void removeChildNode(LayerItem* _item);
