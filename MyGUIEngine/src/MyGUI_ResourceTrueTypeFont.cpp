@@ -175,6 +175,7 @@ namespace MyGUI
 
 	ResourceTrueTypeFont::ResourceTrueTypeFont() :
 		mSize(0),
+        mScale(1.0f),
 		mResolution(96),
 		mHinting(HintingUseNative),
 		mAntialias(false),
@@ -213,6 +214,8 @@ namespace MyGUI
 					setSource(value);
 				else if (key == "Size")
 					setSize(utility::parseFloat(value));
+                else if (key == "Scale")
+                    setScale(utility::parseFloat(value));
 				else if (key == "Resolution")
 					setResolution(utility::parseUInt(value));
 				else if (key == "Antialias")
@@ -390,6 +393,8 @@ namespace MyGUI
 	{
 		if (mGlyphSpacing == -1)
 			mGlyphSpacing = mDefaultGlyphSpacing;
+        
+        mScale = MyGUI::RenderManager::getInstance().getDisplayScale();
 
 		// If L8A8 (2 bytes per pixel) is supported, use it; otherwise, use R8G8B8A8 (4 bytes per pixel) as L8L8L8A8.
 		bool laMode = MyGUI::RenderManager::getInstance().isFormatSupported(Pixel<true>::getFormat(), TextureUsage::Static | TextureUsage::Write);
@@ -700,6 +705,22 @@ namespace MyGUI
 
 		FT_Done_Face(ftFace);
 		FT_Done_FreeType(ftLibrary);
+        
+        if (mScale != 1.0f) {
+            float iscale = 1.0f / mScale;
+            for (GlyphMap::iterator iter = mGlyphMap.begin(); iter != mGlyphMap.end(); ++iter)
+            {
+                iter->second.width *= iscale;
+                iter->second.height *= iscale;
+                iter->second.advance *= iscale;
+                iter->second.bearingX *= iscale;
+                iter->second.bearingY *= iscale;
+            }
+            mSpaceWidth *= iscale;
+            mOffsetHeight *= iscale;
+            mGlyphSpacing *= iscale;
+            mDefaultHeight *= iscale;
+        }
 
 		delete [] fontBuffer;
 	}
@@ -736,7 +757,7 @@ namespace MyGUI
 		{
 			// The font is scalable, so set the font size by first converting the requested size to FreeType's 26.6 fixed-point
 			// format.
-			FT_F26Dot6 ftSize = (FT_F26Dot6)(mSize * (1 << 6));
+			FT_F26Dot6 ftSize = (FT_F26Dot6)((mSize*mScale) * (1 << 6));
 
 			if (FT_Set_Char_Size(result, ftSize, 0, mResolution, mResolution) != 0)
 				MYGUI_EXCEPT("ResourceTrueTypeFont: Could not set the font size for '" << getResourceName() << "'!");
@@ -976,8 +997,8 @@ namespace MyGUI
 		_info.uvRect.top = (float)_texY / _texHeight; // v1
 		_info.uvRect.right = (float)(_texX + _info.width) / _texWidth; // u2
 		_info.uvRect.bottom = (float)(_texY + _info.height) / _texHeight; // v2
-
-		if (width > 0)
+       
+        if (width > 0)
 			_texX += mGlyphSpacing + width;
 	}
 
@@ -990,6 +1011,10 @@ namespace MyGUI
 	{
 		mSize = _value;
 	}
+    
+    void ResourceTrueTypeFont::setScale(float _value) {
+        mScale = _value;
+    }
 
 	void ResourceTrueTypeFont::setResolution(uint _value)
 	{

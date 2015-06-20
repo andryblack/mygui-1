@@ -46,6 +46,8 @@ namespace MyGUI
 		/** Check if texture format supported by hardware */
 		virtual bool isFormatSupported(PixelFormat _format, TextureUsage _usage);
 
+        /** display scale for hdpi support */
+        virtual float getDisplayScale() const { return 1.0f; }
 #if MYGUI_DEBUG_MODE == 1
 		/** Check if texture is valid */
 		virtual bool checkTexture(ITexture* _texture);
