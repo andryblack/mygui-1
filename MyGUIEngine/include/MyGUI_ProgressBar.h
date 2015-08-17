@@ -59,6 +59,7 @@ namespace MyGUI
 		/** @copydoc Widget::setCoord(int _left, int _top, int _width, int _height) */
 		void setCoord(int _left, int _top, int _width, int _height);
 
+        void setTrackColour(const Colour& _colour);
 	protected:
 		virtual void initialiseOverride();
 		virtual void shutdownOverride();
@@ -90,6 +91,7 @@ namespace MyGUI
 		FlowDirection mFlowDirection;
 
 		Widget* mClient;
+        Colour  mTrackColour;
 	};
 
 } // namespace MyGUI

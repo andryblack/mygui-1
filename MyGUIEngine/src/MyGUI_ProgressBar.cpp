@@ -172,6 +172,7 @@ namespace MyGUI
 			if (mVectorTrack.empty())
 			{
 				Widget* widget = mClient->createWidget<Widget>(mTrackSkin, IntCoord(), Align::Left | Align::VStretch);
+                widget->setColour(mTrackColour);
 				mVectorTrack.push_back(widget);
 			}
 			else
@@ -220,6 +221,7 @@ namespace MyGUI
 		{
 			Widget* widget = mClient->createWidget<Widget>(mTrackSkin, IntCoord(/*(int)mVectorTrack.size() * mTrackStep, 0, mTrackWidth, getClientHeight()*/), Align::Left | Align::VStretch);
 			widget->setVisible(false);
+            widget->setColour(mTrackColour);
 			mVectorTrack.push_back(widget);
 		}
 
@@ -344,8 +346,8 @@ namespace MyGUI
 	{
 		return mEndPosition;
 	}
-
-	bool ProgressBar::getProgressAutoTrack() const
+    
+    bool ProgressBar::getProgressAutoTrack() const
 	{
 		return mAutoTrack;
 	}
@@ -369,5 +371,13 @@ namespace MyGUI
 	{
 		setCoord(IntCoord(_left, _top, _width, _height));
 	}
+
+    void ProgressBar::setTrackColour(const Colour& _colour) {
+        mTrackColour = _colour;
+        for (VectorWidgetPtr::iterator iter = mVectorTrack.begin(); iter != mVectorTrack.end(); ++iter)
+        {
+            (*iter)->setColour(_colour);
+        }
+    }
 
 } // namespace MyGUI
