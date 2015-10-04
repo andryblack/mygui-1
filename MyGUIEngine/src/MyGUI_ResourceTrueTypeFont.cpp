@@ -96,10 +96,18 @@ namespace MyGUI
 		protected:
 			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha)
 			{
+#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
+                _luminance = (uint16(_luminance) * _alpha) >> 8;
+                *_dest++ = _luminance;
+                *_dest++ = _luminance;
+                *_dest++ = _luminance;
+                *_dest++ = _alpha;
+#else
 				*_dest++ = _luminance;
 				*_dest++ = _luminance;
 				*_dest++ = _luminance;
 				*_dest++ = _alpha;
+#endif
 			}
 		};
 

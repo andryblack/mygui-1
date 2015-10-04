@@ -22,7 +22,15 @@ namespace MyGUI
 			z = _z;
 			u = _u;
 			v = _v;
+#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
+            uint8 alpha = (_colour & 0xFF000000) >> 24;
+            colour = ( ((_colour & 0xFF0000)*alpha >> 8) & 0xFF0000) |
+                     ( ((_colour & 0x00FF00)*alpha >> 8) & 0x00FF00) |
+                     ( ((_colour & 0x0000FF)*alpha >> 8) & 0x0000FF) |
+                     (alpha << 24);
+#else
 			colour = _colour;
+#endif
 		}
 
 		float x, y, z;
