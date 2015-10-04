@@ -793,15 +793,23 @@ namespace MyGUI
 		{
 			mFirstVisibleIndex = mContentPosition.top / mSizeItem.height;
 			mFirstOffsetIndex = mContentPosition.top % mSizeItem.height;
+            
+            if (mFirstVisibleIndex<0) {
+                mFirstOffsetIndex += (mFirstVisibleIndex*mSizeItem.height);
+                mFirstVisibleIndex=0;
+            }
+
 		}
 		else
 		{
 			mFirstVisibleIndex = mContentPosition.left / mSizeItem.width;
 			mFirstOffsetIndex = mContentPosition.left % mSizeItem.width;
+            if (mFirstVisibleIndex<0) {
+                mFirstOffsetIndex += (mFirstVisibleIndex*mSizeItem.width);
+                mFirstVisibleIndex=0;
+            }
 		}
 
-        if (mFirstVisibleIndex<0)
-            mFirstVisibleIndex=0;
         
 		_updateAllVisible(old != mFirstVisibleIndex);
 		_resetContainer(true);

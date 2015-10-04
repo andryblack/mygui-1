@@ -134,7 +134,8 @@ namespace MyGUI
 		MyGUI::ILayerNode* node = mLayerNode;
 		while (node)
 		{
-			node->getLayer()->upChildItemNode(node);
+			if (node->getLayer())
+                node->getLayer()->upChildItemNode(node);
 			node = node->getParent();
 		}
 	}
