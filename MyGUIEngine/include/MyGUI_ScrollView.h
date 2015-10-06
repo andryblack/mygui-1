@@ -87,13 +87,13 @@ namespace MyGUI
 
 		ScrollBar* getVScroll();
 
-	private:
+	protected:
 		// размер данных
 		virtual IntSize getContentSize() const;
 		// смещение данных
 		virtual IntPoint getContentPosition() const;
 		// размер окна, через которые видно данные
-		virtual IntSize getViewSize();
+		virtual IntSize getViewSize() const;
 		virtual void setContentPosition(const IntPoint& _point);
 		// размер на который прокручиваются данные при щелчке по скролу
 		virtual size_t getVScrollPage();

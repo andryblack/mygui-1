@@ -840,7 +840,7 @@ namespace MyGUI
 		return mContentPosition;
 	}
 
-	IntSize ItemBox::getViewSize()
+	IntSize ItemBox::getViewSize() const
 	{
 		return _getClientWidget()->getSize();
 	}
@@ -870,10 +870,15 @@ namespace MyGUI
 		return _getClientWidget()->getAbsoluteRect();
 	}
 
-	Widget* ItemBox::_getClientWidget()
+	const Widget* ItemBox::_getClientWidget() const
 	{
 		return mClient == nullptr ? this : mClient;
 	}
+    
+    Widget* ItemBox::_getClientWidget()
+    {
+        return mClient == nullptr ? this : mClient;
+    }
 
 	size_t ItemBox::getItemCount() const
 	{

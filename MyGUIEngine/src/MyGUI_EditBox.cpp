@@ -1815,7 +1815,7 @@ namespace MyGUI
 			mClientText->setViewOffset(_point);
 	}
 
-	IntSize EditBox::getViewSize()
+	IntSize EditBox::getViewSize() const
 	{
 		if (mClientText != nullptr)
 			return mClientText->getSize();

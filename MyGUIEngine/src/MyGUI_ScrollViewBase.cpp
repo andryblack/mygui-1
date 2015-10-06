@@ -324,7 +324,7 @@ namespace MyGUI
 	{
 	}
 
-	IntSize ScrollViewBase::getViewSize()
+	IntSize ScrollViewBase::getViewSize() const
 	{
 		return IntSize();
 	}

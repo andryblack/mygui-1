@@ -132,7 +132,7 @@ namespace MyGUI
 		/** Get view area offset. */
 		IntPoint getViewOffset() const;
 
-		virtual IntSize getViewSize();
+		virtual IntSize getViewSize() const;
 
         virtual IntSize getContentSize() const;
 		virtual IntPoint getContentPosition() const;
@@ -267,7 +267,8 @@ namespace MyGUI
 		virtual Align getContentAlign();
 		
 		IntRect _getClientAbsoluteRect();
-		Widget* _getClientWidget();
+		const Widget* _getClientWidget() const;
+        Widget* _getClientWidget();
 
 	private:
 		// наши дети в строках

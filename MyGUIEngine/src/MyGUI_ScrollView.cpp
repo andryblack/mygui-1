@@ -172,7 +172,7 @@ namespace MyGUI
 			mRealClient->setPosition(IntPoint() - _point);
 	}
 
-	IntSize ScrollView::getViewSize()
+	IntSize ScrollView::getViewSize() const
 	{
 		return mClient == nullptr ? getSize() : mClient->getSize();
 	}
