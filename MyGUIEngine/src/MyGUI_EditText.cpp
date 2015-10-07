@@ -687,6 +687,13 @@ namespace MyGUI
 		const FloatRect& _textureRect,
 		uint32 _colour) const
 	{
+#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
+        uint8 alpha = (_colour & 0xFF000000) >> 24;
+        _colour = ( ((_colour & 0xFF0000)*alpha >> 8) & 0xFF0000) |
+        ( ((_colour & 0x00FF00)*alpha >> 8) & 0x00FF00) |
+        ( ((_colour & 0x0000FF)*alpha >> 8) & 0x0000FF) |
+        (alpha << 24);
+#endif
 		_vertex[0].x = _vertexRect.left;
 		_vertex[0].y = _vertexRect.top;
 		_vertex[0].z = _vertexZ;
