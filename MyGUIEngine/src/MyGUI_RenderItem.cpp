@@ -40,7 +40,7 @@ namespace MyGUI
 
 	void RenderItem::renderToTarget(IRenderTarget* _target, bool _update)
 	{
-		if (mTexture == nullptr)
+		if (mTexture == nullptr && !mManualRender)
 			return;
 
 		mRenderTarget = _target;
