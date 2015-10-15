@@ -32,7 +32,7 @@ namespace MyGUI
 			getSubWidgetText()->setTextAlign(_value);
 	}
 
-	Align TextBox::getTextAlign()
+	Align TextBox::getTextAlign() const
 	{
 		if (getSubWidgetText() != nullptr)
 			return getSubWidgetText()->getTextAlign();
@@ -45,7 +45,7 @@ namespace MyGUI
 			getSubWidgetText()->setTextColour(_value);
 	}
 
-	const Colour& TextBox::getTextColour()
+	const Colour& TextBox::getTextColour() const
 	{
 		return (nullptr == getSubWidgetText()) ? Colour::Zero : getSubWidgetText()->getTextColour();
 	}

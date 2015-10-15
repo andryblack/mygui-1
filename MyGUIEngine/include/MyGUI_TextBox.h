@@ -48,12 +48,12 @@ namespace MyGUI
 		/** Set widget text align */
 		virtual void setTextAlign(Align _value);
 		/** Get widget text align */
-		Align getTextAlign();
+		Align getTextAlign() const;
 
 		/** Set widget text colour */
 		virtual void setTextColour(const Colour& _value);
 		/** Get widget text colour */
-		const Colour& getTextColour();
+		const Colour& getTextColour() const;
 
 		/** Set TextBox caption and replace special sequences.\n
 			"\\n" will be replaced with new line character;\n
