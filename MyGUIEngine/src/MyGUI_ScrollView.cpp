@@ -218,7 +218,7 @@ namespace MyGUI
 		updateView();
 	}
 
-	IntSize ScrollView::getCanvasSize()
+	IntSize ScrollView::getCanvasSize() const
 	{
 		return mRealClient == nullptr ? IntSize() : mRealClient->getSize();
 	}

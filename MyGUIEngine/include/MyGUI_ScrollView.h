@@ -61,7 +61,7 @@ namespace MyGUI
 		/** Set canvas size */
 		void setCanvasSize(int _width, int _height);
 		/** Get canvas size */
-		IntSize getCanvasSize();
+		IntSize getCanvasSize() const;
 
 		/** Get view area coordinates. */
 		IntCoord getViewCoord() const;
