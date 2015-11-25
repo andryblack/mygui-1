@@ -1615,7 +1615,7 @@ namespace MyGUI
 		return Base::getTextRegion();
 	}
 
-	IntSize EditBox::getTextSize()
+	IntSize EditBox::getTextSize() const
 	{
 		if (mClientText != nullptr)
 			return mClientText->getTextSize();

@@ -230,7 +230,7 @@ namespace MyGUI
 		virtual IntCoord getTextRegion();
 
 		//! @copydoc TextBox::getTextSize
-		virtual IntSize getTextSize();
+		virtual IntSize getTextSize() const;
 
 		//! @copydoc TextBox::setTextShadowColour
 		virtual void setTextShadowColour(const Colour& _value);

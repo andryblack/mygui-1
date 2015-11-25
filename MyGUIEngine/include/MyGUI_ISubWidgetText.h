@@ -78,6 +78,7 @@ namespace MyGUI
 
 		virtual void setCursorPosition(size_t _index) { }
 
+        virtual bool getWordWrap() const { return false; }
 		virtual void setWordWrap(bool _value) { }
 
 		// возвращает положение курсора по произвольному положению
@@ -108,7 +109,7 @@ namespace MyGUI
 		}
 
 		// возвращает размер текста в пикселях
-		virtual IntSize getTextSize() /*const*/
+		virtual IntSize getTextSize() const
 		{
 			return IntSize();
 		}

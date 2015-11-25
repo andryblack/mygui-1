@@ -80,7 +80,7 @@ namespace MyGUI
 		virtual size_t getCursorPosition() const;
 		virtual void setCursorPosition(size_t _index);
 
-		virtual IntSize getTextSize();
+		virtual IntSize getTextSize() const;
 
 		// устанавливает смещение текста в пикселях
 		virtual void setViewOffset(const IntPoint& _point);
@@ -97,6 +97,7 @@ namespace MyGUI
 
 		virtual void setShiftText(bool _shift);
 
+        virtual bool getWordWrap() const;
 		virtual void setWordWrap(bool _value);
 
 		virtual void setStateData(IStateInfo* _data);

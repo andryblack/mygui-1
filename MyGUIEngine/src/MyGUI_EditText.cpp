@@ -415,11 +415,11 @@ namespace MyGUI
 		return mTextAlign;
 	}
 
-	IntSize EditText::getTextSize()
+	IntSize EditText::getTextSize() const
 	{
 		// если нуно обновить, или изменились пропорции экрана
 		if (mTextOutDate)
-			updateRawData();
+			const_cast<EditText*>(this)->updateRawData();
 
 		IntSize size = mTextView.getViewSize();
 		// плюс размер курсора
@@ -495,6 +495,11 @@ namespace MyGUI
 		if (nullptr != mNode)
 			mNode->outOfDate(mRenderItem);
 	}
+    
+    bool EditText::getWordWrap() const
+    {
+        return mWordWrap;
+    }
 
 	void EditText::setWordWrap(bool _value)
 	{

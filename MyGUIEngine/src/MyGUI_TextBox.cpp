@@ -21,7 +21,7 @@ namespace MyGUI
 		return (nullptr == getSubWidgetText()) ? IntCoord() : getSubWidgetText()->getCoord();
 	}
 
-	IntSize TextBox::getTextSize()
+	IntSize TextBox::getTextSize() const
 	{
 		return (nullptr == getSubWidgetText()) ? IntSize() : getSubWidgetText()->getTextSize();
 	}
