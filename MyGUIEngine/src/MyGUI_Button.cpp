@@ -101,8 +101,7 @@ namespace MyGUI
 				_setState("disabled");
 			else if (mIsMousePressed)
 				_setState("pushed");
-			else if (mIsMouseFocus)
-				_setState("highlighted");
+            else if (mIsMouseFocus && _setState("highlighted")) {}
 			else
 				_setState("normal");
 		}
