@@ -272,5 +272,11 @@ namespace MyGUI
 	{
 		_setUVSet(_data->castType<SubSkinStateInfo>()->getRect());
 	}
+    
+    ITexture* SubSkin::getTexture() {
+        if (nullptr != mRenderItem)
+            return mRenderItem->getTexture();
+        return nullptr;
+    }
 
 } // namespace MyGUI

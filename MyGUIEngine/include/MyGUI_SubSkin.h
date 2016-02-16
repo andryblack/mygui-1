@@ -50,6 +50,8 @@ namespace MyGUI
 		virtual void _setUVSet(const FloatRect& _rect);
 		virtual void _setColour(const Colour& _value);
 
+        const FloatRect& getUVSet() const { return mRectTexture; }
+        ITexture* getTexture();
 	protected:
 		FloatRect mRectTexture;
 		bool mEmptyView;
