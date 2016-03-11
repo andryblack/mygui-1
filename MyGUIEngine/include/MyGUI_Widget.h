@@ -178,6 +178,9 @@ namespace MyGUI
 		void setInheritsAlpha(bool _value);
 		/** Get inherits alpha mode flag */
 		bool getInheritsAlpha() const;
+        
+        void setInheristsState(bool _value);
+        bool getInheritsState() const;
 
 		void setColour(const Colour& _value);
 
@@ -402,6 +405,7 @@ namespace MyGUI
 		float mAlpha;
 		float mRealAlpha;
 		bool mInheritsAlpha;
+        bool mInheritsState;
 		// имя виджета
 		std::string mName;
 

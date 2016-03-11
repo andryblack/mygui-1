@@ -36,6 +36,7 @@ namespace MyGUI
 		mAlpha(ALPHA_MAX),
 		mRealAlpha(ALPHA_MAX),
 		mInheritsAlpha(true),
+        mInheritsState(false),
 		mParent(nullptr),
 		mWidgetStyle(WidgetStyle::Child),
 		mContainer(nullptr),
@@ -373,6 +374,12 @@ namespace MyGUI
 
 	bool Widget::_setWidgetState(const std::string& _state)
 	{
+        for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
+            if ((*widget)->getInheritsState())
+                (*widget)->_setWidgetState(_state);
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
+            if ((*widget)->getInheritsState())
+                (*widget)->_setWidgetState(_state);
 		return _setSkinItemState(_state);
 	}
 
@@ -461,6 +468,14 @@ namespace MyGUI
 		mInheritsAlpha = _inherits;
 		_updateAlpha();
 	}
+    
+    void Widget::setInheristsState(bool _value) {
+        mInheritsState = _value;
+    }
+    
+    bool Widget::getInheritsState() const {
+        return mInheritsState;
+    }
 
 	ILayerItem* Widget::getLayerItemByPoint(int _left, int _top) const
 	{
@@ -1174,6 +1189,9 @@ namespace MyGUI
 		/// @wproperty{Widget, InheritsAlpha, bool} Режим наследования прозрачности.
 		else if (_key == "InheritsAlpha")
 			setInheritsAlpha(utility::parseValue<bool>(_value));
+        
+        else if (_key == "InheritsState")
+            setInheristsState(utility::parseValue<bool>(_value));
 
 		/// @wproperty{Widget, InheritsPick, bool} Режим наследования доступности мышью.
 		else if (_key == "InheritsPick")
