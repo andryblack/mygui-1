@@ -161,13 +161,15 @@ namespace MyGUI
 		bool itemFound = false;
 		while (iter != mFirstRenderItems.rend())
 		{
+            if ((*iter)->getManualRender())
+                break;
 			if ((*iter)->getNeedVertexCount() == 0)
 			{
 				iter++;
 				itemFound = true;
 				continue;
 			}
-			else if (!(*iter)->getManualRender() && (*iter)->getTexture() == _texture)
+			else if ((*iter)->getTexture() == _texture)
 			{
 				iter++;
 				itemFound = true;
