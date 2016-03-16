@@ -161,7 +161,9 @@ namespace MyGUI
 		Button* mWidgetTrack;
 		// куски между кнопками
 		Widget* mWidgetFirstPart;
+        int mWidgetFirstPartAdd;
 		Widget* mWidgetSecondPart;
+        int mWidgetSecondPartAdd;
 
 		// смещение внутри окна
 		IntPoint mPreActionOffset;
@@ -184,7 +186,7 @@ namespace MyGUI
 		bool mMoveToClick;
 
 		bool mVerticalAlignment;
-	};
+  	};
 
 } // namespace MyGUI
 

@@ -20,7 +20,9 @@ namespace MyGUI
 		mWidgetEnd(nullptr),
 		mWidgetTrack(nullptr),
 		mWidgetFirstPart(nullptr),
+        mWidgetFirstPartAdd(0),
 		mWidgetSecondPart(nullptr),
+        mWidgetSecondPartAdd(0),
 		mSkinRangeStart(0),
 		mSkinRangeEnd(0),
 		mScrollRange(0),
@@ -88,6 +90,9 @@ namespace MyGUI
 			mWidgetFirstPart->eventMouseButtonPressed += newDelegate(this, &ScrollBar::notifyMousePressed);
 			mWidgetFirstPart->eventMouseButtonReleased += newDelegate(this, &ScrollBar::notifyMouseReleased);
 			mWidgetFirstPart->eventMouseWheel += newDelegate(this, &ScrollBar::notifyMouseWheel);
+            if (mWidgetFirstPart->isUserString("PartAdd")) {
+                mWidgetFirstPartAdd = utility::parseValue<int>(mWidgetFirstPart->getUserString("PartAdd"));
+            }
 		}
 
 		///@wskin_child{ScrollBar, Widget, SecondPart} Виджет второй половины прокрутки от трекера до конца, при нажатии восприницмается как прокрутка страницы.
@@ -97,6 +102,9 @@ namespace MyGUI
 			mWidgetSecondPart->eventMouseButtonPressed += newDelegate(this, &ScrollBar::notifyMousePressed);
 			mWidgetSecondPart->eventMouseButtonReleased += newDelegate(this, &ScrollBar::notifyMouseReleased);
 			mWidgetSecondPart->eventMouseWheel += newDelegate(this, &ScrollBar::notifyMouseWheel);
+            if (mWidgetSecondPart->isUserString("PartAdd")) {
+                mWidgetSecondPartAdd = utility::parseValue<int>(mWidgetSecondPart->getUserString("PartAdd"));
+            }
 		}
 
 		if (isUserString("MinTrackSize"))
@@ -186,12 +194,12 @@ namespace MyGUI
 			mWidgetTrack->setPosition(pos, mWidgetTrack->getTop());
 			if (nullptr != mWidgetFirstPart)
 			{
-				int height = pos - mWidgetFirstPart->getLeft();
-				mWidgetFirstPart->setSize(height, mWidgetFirstPart->getHeight());
+				int height = pos - mWidgetFirstPart->getLeft() + mWidgetFirstPartAdd;
+                mWidgetFirstPart->setSize(height, mWidgetFirstPart->getHeight());
 			}
 			if (nullptr != mWidgetSecondPart)
 			{
-				int top = pos + mWidgetTrack->getWidth();
+				int top = pos + mWidgetTrack->getWidth() - mWidgetSecondPartAdd;
 				int height = mWidgetSecondPart->getWidth() + mWidgetSecondPart->getLeft() - top;
 				mWidgetSecondPart->setCoord(top, mWidgetSecondPart->getTop(), height, mWidgetSecondPart->getHeight());
 			}
