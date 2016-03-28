@@ -355,6 +355,23 @@ namespace MyGUI
 
 		_updateAllVisible(true);
 	}
+    
+    void ItemBox::beginBatchAddItems() {
+        _resetContainer(false);
+        
+        resetCurrentActiveItem();
+    }
+    void ItemBox::batchAddItem(Any _data) {
+        mItemsInfo.push_back(ItemDataInfo(_data));
+    }
+    void ItemBox::endBatchAddItems() {
+        updateScrollSize();
+        updateScrollPosition();
+        
+        findCurrentActiveItem();
+        
+        _updateAllVisible(true);
+    }
 
 	void ItemBox::removeItemAt(size_t _index)
 	{

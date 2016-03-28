@@ -255,6 +255,10 @@ namespace MyGUI
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
         virtual void setContentPosition(const IntPoint& _point);
+        
+        void beginBatchAddItems();
+        void batchAddItem(Any _data);
+        void endBatchAddItems();
 
 	private:
 		size_t calcIndexByWidget(Widget* _widget);
