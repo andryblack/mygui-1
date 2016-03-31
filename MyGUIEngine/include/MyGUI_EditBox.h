@@ -278,7 +278,9 @@ namespace MyGUI
 		void eraseView();
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
-
+        virtual void updateEditState();
+        
+        
 	private:
 		// устанавливает текст
 		void setText(const UString& _text, bool _history);
@@ -294,8 +296,6 @@ namespace MyGUI
 		void _setTextColour(size_t _start, size_t _count, const Colour& _colour, bool _history);
 
 		void frameEntered(float _frame);
-
-		void updateEditState();
 
 		// обновляет курсор по координате
 		void updateSelectText();
