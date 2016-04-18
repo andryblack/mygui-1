@@ -69,6 +69,8 @@ namespace MyGUI
 
 		/** Set key focus for _widget */
 		void setKeyFocusWidget(Widget* _widget);
+        /** Set mouse focus for _widget */
+        void setMouseFocusWidget(Widget* _widget);
 		/** Drop key focus for _widget */
 		void resetKeyFocusWidget(Widget* _widget);
 		/** Drop any key focus */

@@ -121,9 +121,7 @@ namespace MyGUI
 			return true;
 		}
 
-		Widget* old_mouse_focus = mWidgetMouseFocus;
-
-		// ищем активное окно
+        // ищем активное окно
 		Widget* item = LayerManager::getInstance().getWidgetFromPoint(_absx, _absy);
 
 		// ничего не изменилось
@@ -140,82 +138,11 @@ namespace MyGUI
 			}
 			return isFocus;
 		}
+        
+        if (item)
+            setMouseFocusWidget(item);
 
-		if (item)
-		{
-			// поднимаемся до рута
-			Widget* root = item;
-			while (root->getParent()) root = root->getParent();
-
-			// проверяем на модальность
-			if (!mVectorModalRootWidget.empty())
-			{
-				if (root != mVectorModalRootWidget.back())
-				{
-					item = nullptr;
-				}
-			}
-
-			if (item != nullptr)
-			{
-				mLayerMouseFocus = root->getLayer();
-			}
-		}
-
-		//-------------------------------------------------------------------------------------//
-		// новый вид рутового фокуса мыши
-		Widget* save_widget = nullptr;
-
-		// спускаемся по новому виджету и устанавливаем рутовый фокус
-		Widget* root_focus = item;
-		while (root_focus != nullptr)
-		{
-			if (root_focus->getRootMouseFocus())
-			{
-				save_widget = root_focus;
-				break;
-			}
-
-			root_focus->_setRootMouseFocus(true);
-			root_focus->_riseMouseChangeRootFocus(true);
-			root_focus = root_focus->getParent();
-		}
-
-		// спускаемся по старому виджету и сбрасываем фокус
-		root_focus = mWidgetMouseFocus;
-		while (root_focus != nullptr)
-		{
-			if (root_focus == save_widget)
-				break;
-
-			root_focus->_setRootMouseFocus(false);
-			root_focus->_riseMouseChangeRootFocus(false);
-			root_focus = root_focus->getParent();
-		}
-		//-------------------------------------------------------------------------------------//
-
-		// смена фокуса, проверяем на доступность виджета
-		if (isFocusMouse() && mWidgetMouseFocus->getInheritedEnabled())
-		{
-			mWidgetMouseFocus->_riseMouseLostFocus(item);
-		}
-
-		if ((item != nullptr) && (item->getInheritedEnabled()))
-		{
-			item->_riseMouseMove(_absx, _absy);
-			item->_riseMouseSetFocus(mWidgetMouseFocus);
-		}
-
-		// запоминаем текущее окно
-		mWidgetMouseFocus = item;
-
-		if (old_mouse_focus != mWidgetMouseFocus)
-		{
-			// Reset double click timer, double clicks should only work when clicking on the *same* item twice
-			mTimerDoubleClick = INPUT_TIME_DOUBLE_CLICK;
-			eventChangeMouseFocus(mWidgetMouseFocus);
-		}
-
+		
 		return isFocusMouse();
 	}
 
@@ -439,6 +366,87 @@ namespace MyGUI
 
 		eventChangeKeyFocus(mWidgetKeyFocus);
 	}
+    
+    void InputManager::setMouseFocusWidget(Widget* _widget) {
+        Widget* old_mouse_focus = mWidgetMouseFocus;
+        
+        if (_widget)
+        {
+            // поднимаемся до рута
+            Widget* root = _widget;
+            while (root->getParent()) root = root->getParent();
+            
+            // проверяем на модальность
+            if (!mVectorModalRootWidget.empty())
+            {
+                if (root != mVectorModalRootWidget.back())
+                {
+                    _widget = nullptr;
+                }
+            }
+            
+            if (_widget != nullptr)
+            {
+                mLayerMouseFocus = root->getLayer();
+            }
+        }
+        
+        //-------------------------------------------------------------------------------------//
+        // новый вид рутового фокуса мыши
+        Widget* save_widget = nullptr;
+        
+        // спускаемся по новому виджету и устанавливаем рутовый фокус
+        Widget* root_focus = _widget;
+        while (root_focus != nullptr)
+        {
+            if (root_focus->getRootMouseFocus())
+            {
+                save_widget = root_focus;
+                break;
+            }
+            
+            root_focus->_setRootMouseFocus(true);
+            root_focus->_riseMouseChangeRootFocus(true);
+            root_focus = root_focus->getParent();
+        }
+        
+        // спускаемся по старому виджету и сбрасываем фокус
+        root_focus = mWidgetMouseFocus;
+        while (root_focus != nullptr)
+        {
+            if (root_focus == save_widget)
+                break;
+            
+            root_focus->_setRootMouseFocus(false);
+            root_focus->_riseMouseChangeRootFocus(false);
+            root_focus = root_focus->getParent();
+        }
+        //-------------------------------------------------------------------------------------//
+        
+        // смена фокуса, проверяем на доступность виджета
+        if (isFocusMouse() && mWidgetMouseFocus->getInheritedEnabled())
+        {
+            mWidgetMouseFocus->_riseMouseLostFocus(_widget);
+        }
+        
+        if ((_widget != nullptr) && (_widget->getInheritedEnabled()))
+        {
+            IntPoint last_pos = getMousePosition();
+            _widget->_riseMouseMove(last_pos.left, last_pos.top);
+            _widget->_riseMouseSetFocus(mWidgetMouseFocus);
+        }
+        
+        // запоминаем текущее окно
+        mWidgetMouseFocus = _widget;
+        
+        if (old_mouse_focus != mWidgetMouseFocus)
+        {
+            // Reset double click timer, double clicks should only work when clicking on the *same* item twice
+            mTimerDoubleClick = INPUT_TIME_DOUBLE_CLICK;
+            eventChangeMouseFocus(mWidgetMouseFocus);
+        }
+
+    }
 
 	void InputManager::_resetMouseFocusWidget()
 	{
