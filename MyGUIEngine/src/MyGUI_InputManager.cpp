@@ -139,9 +139,8 @@ namespace MyGUI
 			return isFocus;
 		}
         
-        if (item)
-            setMouseFocusWidget(item);
-
+        setMouseFocusWidget(item);
+        
 		
 		return isFocusMouse();
 	}
