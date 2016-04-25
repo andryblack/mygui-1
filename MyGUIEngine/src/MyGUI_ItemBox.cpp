@@ -150,13 +150,13 @@ namespace MyGUI
 			Widget* item = getItemWidget(index);
 			if (mAlignVert)
 			{
-				item->setPosition(((int)index % mCountItemInLine) * mSizeItem.width - mContentPosition.left,
-					(((int)index / mCountItemInLine) * mSizeItem.height)  - mFirstOffsetIndex);
+				item->setPosition(mContentMargins.left + ((int)index % mCountItemInLine) * mSizeItem.width - mContentPosition.left,
+					mContentMargins.top + (((int)index / mCountItemInLine) * mSizeItem.height)  - mFirstOffsetIndex);
 			}
 			else
 			{
-				item->setPosition((((int)index / mCountItemInLine) * mSizeItem.width)  - mFirstOffsetIndex,
-					((int)index % mCountItemInLine) * mSizeItem.height - mContentPosition.top);
+				item->setPosition(mContentMargins.left + (((int)index / mCountItemInLine) * mSizeItem.width)  - mFirstOffsetIndex,
+					mContentMargins.top + ((int)index % mCountItemInLine) * mSizeItem.height - mContentPosition.top);
 			}
 
 			item->setSize(mSizeItem);
@@ -707,13 +707,13 @@ namespace MyGUI
 
 		if (mAlignVert)
 		{
-			mContentSize.width = (mSizeItem.width * mCountItemInLine);
-			mContentSize.height = (mSizeItem.height * mCountLines);
+			mContentSize.width = mContentMargins.left + (mSizeItem.width * mCountItemInLine) + mContentMargins.right;
+			mContentSize.height = mContentMargins.top + (mSizeItem.height * mCountLines) + mContentMargins.bottom;
 		}
 		else
 		{
-			mContentSize.width = (mSizeItem.width * mCountLines);
-			mContentSize.height = (mSizeItem.height * mCountItemInLine);
+			mContentSize.width = mContentMargins.left + (mSizeItem.width * mCountLines) + mContentMargins.right;
+			mContentSize.height = mContentMargins.top + (mSizeItem.height * mCountItemInLine) + mContentMargins.bottom;
 		}
 	}
 
@@ -808,8 +808,8 @@ namespace MyGUI
 
 		if (mAlignVert)
 		{
-			mFirstVisibleIndex = mContentPosition.top / mSizeItem.height;
-			mFirstOffsetIndex = mContentPosition.top % mSizeItem.height;
+			mFirstVisibleIndex = (mContentPosition.top - mContentMargins.top) / mSizeItem.height;
+			mFirstOffsetIndex = (mContentPosition.top - mContentMargins.top) % mSizeItem.height;
             
             if (mFirstVisibleIndex<0) {
                 mFirstOffsetIndex += (mFirstVisibleIndex*mSizeItem.height);
@@ -819,8 +819,8 @@ namespace MyGUI
 		}
 		else
 		{
-			mFirstVisibleIndex = mContentPosition.left / mSizeItem.width;
-			mFirstOffsetIndex = mContentPosition.left % mSizeItem.width;
+			mFirstVisibleIndex = (mContentPosition.left - mContentMargins.left) / mSizeItem.width;
+			mFirstOffsetIndex = (mContentPosition.left - mContentMargins.left) % mSizeItem.width;
             if (mFirstVisibleIndex<0) {
                 mFirstOffsetIndex += (mFirstVisibleIndex*mSizeItem.width);
                 mFirstVisibleIndex=0;
@@ -926,6 +926,14 @@ namespace MyGUI
 	{
 		return mAlignVert;
 	}
+    
+    void ItemBox::setContentMargins(const IntRect& _value) {
+        mContentMargins = _value;
+        updateFromResize();
+    }
+    const IntRect& ItemBox::getContentMargins() const {
+        return mContentMargins;
+    }
 
 	Widget* ItemBox::getWidgetDrag()
 	{
@@ -952,8 +960,9 @@ namespace MyGUI
 		/// @wproperty{ItemBox, VerticalAlignment, bool} Вертикальное выравнивание.
 		if (_key == "VerticalAlignment")
 			setVerticalAlignment(utility::parseValue<bool>(_value));
-
-		else
+        else if (_key == "ContentMargins")
+            setContentMargins(utility::parseValue<IntRect>(_value));
+        else
 		{
 			Base::setPropertyOverride(_key, _value);
 			return;

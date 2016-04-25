@@ -96,6 +96,11 @@ namespace MyGUI
 		void setVerticalAlignment(bool _value);
 		/** Get vertical alignment grid mode flag */
 		bool getVerticalAlignment() const;
+        
+        /** Set content margin offsets */
+        void setContentMargins(const IntRect& _value);
+        /** Get content margin offsets */
+        const IntRect& getContentMargins() const;
 
 		/** Get item index by item Widget pointer */
 		size_t getIndexByWidget(Widget* _widget);
@@ -285,7 +290,9 @@ namespace MyGUI
 		IntSize mContentSize;
 		// позиция скролла п пикселях
 		IntPoint mContentPosition;
-
+        // рамка вокруг контента
+        IntRect mContentMargins;
+        
 		// колличество айтемов в одной строке
 		int mCountItemInLine;
 		// колличество линий
