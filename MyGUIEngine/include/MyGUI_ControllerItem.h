@@ -39,19 +39,19 @@ namespace MyGUI
 			signature : void method(MyGUI::Widget* _sender, MyGUI::ControllerItem* _controller)\n
 			@param _sender widget under control
 		*/
-		EventPairAddParameter<EventHandle_WidgetPtr, EventHandle_WidgetPtrControllerItemPtr> eventPreAction;
+        EventHandle_WidgetPtrControllerItemPtr eventPreAction;
 
 		/** Event : Controller updated (called every frame).\n
 			signature : void method(MyGUI::Widget* _sender, MyGUI::ControllerItem* _controller)\n
 			@param _sender widget under control
 		*/
-		EventPairAddParameter<EventHandle_WidgetPtr, EventHandle_WidgetPtrControllerItemPtr> eventUpdateAction;
+		EventHandle_WidgetPtrControllerItemPtr eventUpdateAction;
 
 		/** Event : After controller finished working.\n
 			signature : void method(MyGUI::Widget* _sender, MyGUI::ControllerItem* _controller)\n
 			@param _sender widget under control
 		*/
-		EventPairAddParameter<EventHandle_WidgetPtr, EventHandle_WidgetPtrControllerItemPtr> eventPostAction;
+		EventHandle_WidgetPtrControllerItemPtr eventPostAction;
 
 	};
 
