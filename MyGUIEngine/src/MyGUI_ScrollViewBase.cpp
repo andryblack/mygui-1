@@ -43,19 +43,22 @@ namespace MyGUI
 			{
 				if (!mVScroll->getVisible() && mVisibleVScroll)
 				{
+                    bool overlapped = mVScroll->getUserString("Overlapped") == "true";
 					mVScroll->setVisible(true);
-					mClient->setSize(mClient->getWidth() - mVScroll->getWidth(), mClient->getHeight());
+                    if (!overlapped)
+                        mClient->setSize(mClient->getWidth() - mVScroll->getWidth(), mClient->getHeight());
 
 					// размер может измениться
-					if (mChangeContentByResize)
+					if (mChangeContentByResize && !overlapped)
 					{
 						eraseContent();
 						contentSize = getContentSize();
 						viewSize = getViewSize();
 					}
 
-					if (mHScroll != nullptr)
+					if (mHScroll != nullptr && !overlapped)
 					{
+                        
 						mHScroll->setSize(mHScroll->getWidth() - mVScroll->getWidth(), mHScroll->getHeight());
 
 						// если показали вертикальный скрол бар, уменьшилось вью по горизонтали,
@@ -63,11 +66,14 @@ namespace MyGUI
 						if ((contentSize.width > viewSize.width) && ( ! mHScroll->getVisible()) && (mVisibleHScroll))
 						{
 							mHScroll->setVisible(true);
-							mClient->setSize(mClient->getWidth(), mClient->getHeight() - mHScroll->getHeight());
-							mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() - mHScroll->getHeight());
+                            bool hoverlapped = mHScroll->getUserString("Overlapped") == "true";
+                            if (!hoverlapped) {
+                                mClient->setSize(mClient->getWidth(), mClient->getHeight() - mHScroll->getHeight());
+                                mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() - mHScroll->getHeight());
+                            }
 
 							// размер может измениться
-							if (mChangeContentByResize)
+							if (mChangeContentByResize && !hoverlapped)
 							{
 								eraseContent();
 								contentSize = getContentSize();
@@ -87,17 +93,19 @@ namespace MyGUI
 				if (mVScroll->getVisible())
 				{
 					mVScroll->setVisible(false);
-					mClient->setSize(mClient->getWidth() + mVScroll->getWidth(), mClient->getHeight());
+                    bool overlapped = mVScroll->getUserString("Overlapped") == "true";
+                    if (!overlapped)
+                        mClient->setSize(mClient->getWidth() + mVScroll->getWidth(), mClient->getHeight());
 
 					// размер может измениться
-					if (mChangeContentByResize)
+					if (mChangeContentByResize && !overlapped)
 					{
 						eraseContent();
 						contentSize = getContentSize();
 						viewSize = getViewSize();
 					}
 
-					if (mHScroll != nullptr)
+					if (mHScroll != nullptr && !overlapped)
 					{
 						mHScroll->setSize(mHScroll->getWidth() + mVScroll->getWidth(), mHScroll->getHeight());
 
@@ -106,11 +114,14 @@ namespace MyGUI
 						if ((contentSize.width <= viewSize.width) && (mHScroll->getVisible()))
 						{
 							mHScroll->setVisible(false);
-							mClient->setSize(mClient->getWidth(), mClient->getHeight() + mHScroll->getHeight());
-							mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() + mHScroll->getHeight());
+                            bool hoverlapped = mHScroll->getUserString("Overlapped") == "true";
+                            if (!hoverlapped) {
+                                mClient->setSize(mClient->getWidth(), mClient->getHeight() + mHScroll->getHeight());
+                                mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() + mHScroll->getHeight());
+                            }
 
 							// размер может измениться
-							if (mChangeContentByResize)
+							if (mChangeContentByResize && !hoverlapped)
 							{
 								eraseContent();
 								contentSize = getContentSize();
@@ -132,17 +143,19 @@ namespace MyGUI
 				if (!mHScroll->getVisible() && mVisibleHScroll)
 				{
 					mHScroll->setVisible(true);
-					mClient->setSize(mClient->getWidth(), mClient->getHeight() - mHScroll->getHeight());
+                    bool overlapped = mHScroll->getUserString("Overlapped") == "true";
+                    if (!overlapped)
+                        mClient->setSize(mClient->getWidth(), mClient->getHeight() - mHScroll->getHeight());
 
 					// размер может измениться
-					if (mChangeContentByResize)
+					if (mChangeContentByResize && !overlapped)
 					{
 						eraseContent();
 						contentSize = getContentSize();
 						viewSize = getViewSize();
 					}
 
-					if (mVScroll != nullptr)
+					if (mVScroll != nullptr && !overlapped)
 					{
 						mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() - mHScroll->getHeight());
 
@@ -151,11 +164,14 @@ namespace MyGUI
 						if ((contentSize.height > viewSize.height) && ( ! mVScroll->getVisible()) && (mVisibleVScroll))
 						{
 							mVScroll->setVisible(true);
-							mClient->setSize(mClient->getWidth() - mVScroll->getWidth(), mClient->getHeight());
-							mHScroll->setSize(mHScroll->getWidth() - mVScroll->getWidth(), mHScroll->getHeight());
+                            bool voverlapped = mVScroll->getUserString("Overlapped") == "true";
+                            if (!voverlapped) {
+                                mClient->setSize(mClient->getWidth() - mVScroll->getWidth(), mClient->getHeight());
+                                mHScroll->setSize(mHScroll->getWidth() - mVScroll->getWidth(), mHScroll->getHeight());
+                            }
 
 							// размер может измениться
-							if (mChangeContentByResize)
+							if (mChangeContentByResize && !voverlapped)
 							{
 								eraseContent();
 								contentSize = getContentSize();
@@ -175,17 +191,19 @@ namespace MyGUI
 				if (mHScroll->getVisible())
 				{
 					mHScroll->setVisible(false);
-					mClient->setSize(mClient->getWidth(), mClient->getHeight() + mHScroll->getHeight());
+                    bool overlapped = mHScroll->getUserString("Overlapped") == "true";
+                    if (!overlapped)
+                        mClient->setSize(mClient->getWidth(), mClient->getHeight() + mHScroll->getHeight());
 
 					// размер может измениться
-					if (mChangeContentByResize)
+					if (mChangeContentByResize && !overlapped)
 					{
 						eraseContent();
 						contentSize = getContentSize();
 						viewSize = getViewSize();
 					}
 
-					if (mVScroll != nullptr)
+					if (mVScroll != nullptr && !overlapped)
 					{
 						mVScroll->setSize(mVScroll->getWidth(), mVScroll->getHeight() + mHScroll->getHeight());
 
@@ -194,11 +212,14 @@ namespace MyGUI
 						if ((contentSize.height <= viewSize.height) && (mVScroll->getVisible()))
 						{
 							mVScroll->setVisible(false);
-							mClient->setSize(mClient->getWidth() + mVScroll->getWidth(), mClient->getHeight());
-							mHScroll->setSize(mHScroll->getWidth() + mVScroll->getWidth(), mHScroll->getHeight());
+                            bool voverlapped = mVScroll->getUserString("Overlapped") == "true";
+                            if (!voverlapped) {
+                                mClient->setSize(mClient->getWidth() + mVScroll->getWidth(), mClient->getHeight());
+                                mHScroll->setSize(mHScroll->getWidth() + mVScroll->getWidth(), mHScroll->getHeight());
+                            }
 
 							// размер может измениться
-							if (mChangeContentByResize)
+							if (mChangeContentByResize && !voverlapped)
 							{
 								eraseContent();
 								contentSize = getContentSize();
