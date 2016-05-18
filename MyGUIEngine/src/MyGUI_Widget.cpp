@@ -878,6 +878,7 @@ namespace MyGUI
 
 			mParent->addChildItem(this);
 
+            _updateChilds();
 			_updateView();
 		}
 		else if (_style == WidgetStyle::Overlapped)
@@ -1366,13 +1367,6 @@ namespace MyGUI
 			return;
 
 		mDepth = _value;
-
-		if (mParent != nullptr)
-		{
-			mParent->_unlinkChildWidget(this);
-			mParent->_linkChildWidget(this);
-			mParent->_updateChilds();
-		}
 	}
 
 	int Widget::getDepth() const
@@ -1392,7 +1386,6 @@ namespace MyGUI
 			if (widget->getDepth() < depth)
 			{
 				mWidgetChild.insert(mWidgetChild.begin() + index, _widget);
-				_updateChilds();
 				return;
 			}
 		}
