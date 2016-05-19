@@ -44,6 +44,8 @@ namespace MyGUI
 			const IntCoord& coord = IntCoord::parse(_node->findAttribute("offset"));
 			mRect = CoordConverter::convertTextureCoord(coord, size);
 		}
+        
+        void setRect(const FloatRect& _rect) { mRect = _rect; }
 
 	private:
 		FloatRect mRect;
