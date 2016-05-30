@@ -83,7 +83,7 @@ namespace MyGUI
 		void notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id);
 		void notifyMouseReleased(Widget* _sender, int _left, int _top, MouseButton _id);
 
-		void notifyScrollChangePosition(ScrollBar* _sender, size_t _position);
+		virtual void notifyScrollChangePosition(ScrollBar* _sender, size_t _position);
 		void notifyMouseWheel(Widget* _sender, int _rel);
 
 		void updateView();
