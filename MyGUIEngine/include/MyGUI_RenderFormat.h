@@ -12,40 +12,6 @@
 namespace MyGUI
 {
 
-	struct MYGUI_EXPORT VertexColourType
-	{
-	public:
-		enum Enum
-		{
-			ColourARGB, // D3D style compact colour
-			ColourABGR, // GL style compact colour
-			MAX
-		};
-
-		VertexColourType(Enum _value = MAX) :
-			mValue(_value)
-		{
-		}
-
-		friend bool operator == (VertexColourType const& a, VertexColourType const& b)
-		{
-			return a.mValue == b.mValue;
-		}
-
-		friend bool operator != (VertexColourType const& a, VertexColourType const& b)
-		{
-			return a.mValue != b.mValue;
-		}
-
-		int getValue() const
-		{
-			return mValue;
-		}
-
-	private:
-		Enum mValue;
-	};
-
 	struct MYGUI_EXPORT PixelFormat
 	{
 		enum Enum

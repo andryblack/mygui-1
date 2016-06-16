@@ -22,7 +22,6 @@ namespace MyGUI
 		mNode(nullptr),
 		mRenderItem(nullptr)
 	{
-		mVertexFormat = RenderManager::getInstance().getVertexFormat();
 	}
 
 	RotatingSkin::~RotatingSkin()
@@ -150,7 +149,7 @@ namespace MyGUI
 
 		mNode = _node;
 		mRenderItem = mNode->addToRenderItem(_texture, true, false);
-		mRenderItem->addDrawItem(this, (GEOMETRY_VERTICIES_TOTAL_COUNT - 2) * 3);
+		mRenderItem->addDrawItem(this);
 	}
 
 	void RotatingSkin::destroyDrawItem()
@@ -162,35 +161,35 @@ namespace MyGUI
 		mRenderItem = nullptr;
 	}
 
-	void RotatingSkin::doRender()
+	void RotatingSkin::doRender(IRenderTarget* _target)
 	{
 		if (!mVisible || mEmptyView)
 			return;
-
-		Vertex* verticies = mRenderItem->getCurrentVertexBuffer();
 
 		float vertex_z = mNode->getNodeDepth();
 
 		if (mGeometryOutdated)
 		{
-			_rebuildGeometry();
+			_rebuildGeometry(_target);
 			mGeometryOutdated = false;
 		}
 
 		for (int i = 1; i < GEOMETRY_VERTICIES_TOTAL_COUNT - 1; ++i)
 		{
-			verticies[3 * i - 3].set(mResultVerticiesPos[0].left, mResultVerticiesPos[0].top, vertex_z, mResultVerticiesUV[0].left, mResultVerticiesUV[0].top, mCurrentColour);
-			verticies[3 * i - 2].set(mResultVerticiesPos[i].left, mResultVerticiesPos[i].top, vertex_z, mResultVerticiesUV[i].left, mResultVerticiesUV[i].top, mCurrentColour);
-			verticies[3 * i - 1].set(mResultVerticiesPos[i + 1].left, mResultVerticiesPos[i + 1].top, vertex_z, mResultVerticiesUV[i + 1].left, mResultVerticiesUV[i + 1].top, mCurrentColour);
+            Vertex v;
+			v.set(mResultVerticiesPos[0].left, mResultVerticiesPos[0].top, vertex_z, mResultVerticiesUV[0].left, mResultVerticiesUV[0].top, mCurrentColour);
+            _target->addVertex(v);
+			v.set(mResultVerticiesPos[i].left, mResultVerticiesPos[i].top, vertex_z, mResultVerticiesUV[i].left, mResultVerticiesUV[i].top, mCurrentColour);
+            _target->addVertex(v);
+			v.set(mResultVerticiesPos[i + 1].left, mResultVerticiesPos[i + 1].top, vertex_z, mResultVerticiesUV[i + 1].left, mResultVerticiesUV[i + 1].top, mCurrentColour);
+            _target->addVertex(v);
 		}
 
-		mRenderItem->setLastVertexCount((GEOMETRY_VERTICIES_TOTAL_COUNT - 2) * 3);
 	}
 
 	void RotatingSkin::_setColour(const Colour& _value)
 	{
 		uint32 colour = texture_utility::toColourARGB(_value);
-		texture_utility::convertColour(colour, mVertexFormat);
 		mCurrentColour = (colour & 0x00FFFFFF) | (mCurrentColour & 0xFF000000);
 
 		if (nullptr != mNode)
@@ -222,7 +221,7 @@ namespace MyGUI
 		return sqrt(x * x + y * y);
 	}
 
-	void RotatingSkin::_rebuildGeometry()
+	void RotatingSkin::_rebuildGeometry(IRenderTarget* _target)
 	{
 		/*
 			0 1
@@ -327,7 +326,7 @@ namespace MyGUI
 
 
 		// now calculate widget base offset and then resulting position in screen coordinates
-		const RenderTargetInfo& info = mRenderItem->getRenderTarget()->getInfo();
+		const RenderTargetInfo& info = _target->getInfo();
 		float vertex_left_base = ((info.pixScaleX * (float)(mCroppedParent->getAbsoluteLeft()) + info.hOffset) * 2) - 1;
 		float vertex_top_base = -(((info.pixScaleY * (float)(mCroppedParent->getAbsoluteTop()) + info.vOffset) * 2) - 1);
 

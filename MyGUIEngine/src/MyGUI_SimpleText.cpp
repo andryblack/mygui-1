@@ -29,7 +29,7 @@ namespace MyGUI
 	{
 	}
 
-	void SimpleText::doRender()
+	void SimpleText::doRender(IRenderTarget* _target)
 	{
 		bool _update = mRenderItem->getCurrentUpdate();
 		if (_update)
@@ -59,7 +59,7 @@ namespace MyGUI
 		else
 			mViewOffset.top = 0;
 
-		Base::doRender();
+		Base::doRender(_target);
 	}
 
 } // namespace MyGUI

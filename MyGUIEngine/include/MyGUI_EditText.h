@@ -37,7 +37,7 @@ namespace MyGUI
 		virtual void updateRawData();
 
 		// метод для отрисовки себя
-		virtual void doRender();
+		virtual void doRender(IRenderTarget* _target);
 
 		void setCaption(const UString& _value);
 		const UString& getCaption() const;
@@ -117,8 +117,9 @@ namespace MyGUI
 		void _setTextColour(const Colour& _value);
 		void checkVertexSize();
 
+    protected:
 		void drawQuad(
-			Vertex*& _vertex,
+			IRenderTarget* _target,
 			size_t& _vertexCount,
 			const FloatRect& _vertexRect,
 			float _vertexZ,
@@ -127,7 +128,7 @@ namespace MyGUI
 
 		void drawGlyph(
 			const RenderTargetInfo& renderTargetInfo,
-			Vertex*& _vertex,
+			IRenderTarget* _target,
 			size_t& _vertexCount,
 			FloatRect _vertexRect,
 			FloatRect _textureRect,
@@ -148,10 +149,8 @@ namespace MyGUI
 		Colour mColour;
 		Colour mShadowColour;
 		float mAlpha;
-		VertexColourType mVertexFormat;
-
+	
 		IFont* mFont;
-		ITexture* mTexture;
 		int mFontHeight;
 
 		bool mBackgroundNormal;

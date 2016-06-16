@@ -39,7 +39,7 @@ namespace MyGUI
 		virtual void destroyDrawItem();
 
 		// метод для отрисовки себя
-		virtual void doRender();
+		virtual void doRender(IRenderTarget* _target);
 
 		/*internal:*/
 		virtual void _updateView();
@@ -56,7 +56,6 @@ namespace MyGUI
 		FloatRect mRectTexture;
 		bool mEmptyView;
 
-		VertexColourType mVertexFormat;
 		uint32 mCurrentColour;
 
 		FloatRect mCurrentTexture;
@@ -64,8 +63,12 @@ namespace MyGUI
 
 		ILayerNode* mNode;
 		RenderItem* mRenderItem;
+        
+        ITexture*   mTexture;
 
 		bool mSeparate;
+        
+        void fillQuad(VertexQuad& quad,IRenderTarget* _target);
 	};
 
 } // namespace MyGUI

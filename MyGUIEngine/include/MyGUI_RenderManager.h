@@ -11,8 +11,8 @@
 #include "MyGUI_Singleton.h"
 #include "MyGUI_RenderFormat.h"
 #include "MyGUI_ITexture.h"
-#include "MyGUI_IVertexBuffer.h"
 #include "MyGUI_IRenderTarget.h"
+#include "MyGUI_Types.h"
 
 namespace MyGUI
 {
@@ -22,14 +22,7 @@ namespace MyGUI
 	{
 	public:
 
-		/** Create vertex buffer.
-			This method should create vertex buffer with triangles list type,
-			each vertex have position, colour, texture coordinates.
-		*/
-		virtual IVertexBuffer* createVertexBuffer() = 0;
-		/** Destroy vertex buffer */
-		virtual void destroyVertexBuffer(IVertexBuffer* _buffer) = 0;
-
+		
 		/** Create empty texture instance */
 		virtual ITexture* createTexture(const std::string& _name) = 0;
 		/** Destroy texture */
@@ -39,9 +32,6 @@ namespace MyGUI
 
 		//FIXME возможно перенести в структуру о рендер таргете
 		virtual const IntSize& getViewSize() const = 0;
-
-		/** Get current vertex colour type */
-		virtual VertexColourType getVertexFormat() = 0;
 
 		/** Check if texture format supported by hardware */
 		virtual bool isFormatSupported(PixelFormat _format, TextureUsage _usage);

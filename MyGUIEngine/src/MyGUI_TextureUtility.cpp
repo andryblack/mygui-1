@@ -70,11 +70,11 @@ namespace MyGUI
 		{
 			uint32 val32 = uint8(_colour.alpha * 255);
 			val32 <<= 8;
-			val32 += uint8(_colour.red * 255);
+			val32 += uint8(_colour.blue * 255);
 			val32 <<= 8;
 			val32 += uint8(_colour.green * 255);
 			val32 <<= 8;
-			val32 += uint8(_colour.blue * 255);
+			val32 += uint8(_colour.red * 255);
 			return val32;
 		}
 

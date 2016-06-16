@@ -97,7 +97,7 @@ namespace MyGUI
 	{
 	}
 
-	void TextView::update(const UString& _text, IFont* _font, int _height, Align _align, VertexColourType _format, int _maxWidth)
+	void TextView::update(const UString& _text, IFont* _font, int _height, Align _align, int _maxWidth)
 	{
 		mFontHeight = _height;
 
@@ -193,10 +193,9 @@ namespace MyGUI
 						colour <<= 4;
 						colour += convert_colour[ ((*index) - 48) & 0x3F ];
 					}
-
-					// если нужно, то меняем красный и синий компоненты
-					texture_utility::convertColour(colour, _format);
-
+                    colour = ((colour & 0x00ff0000) >> 16) |
+                             ((colour & 0x000000ff) << 16) |
+                             ((colour & 0xff00ff00));
 					line_info.simbols.push_back( CharInfo(colour) );
 
 					continue;
@@ -266,7 +265,7 @@ namespace MyGUI
 				continue;
 			}
 
-			line_info.simbols.push_back(CharInfo(info->uvRect, char_width, char_height, char_advance, char_bearingX, char_bearingY));
+			line_info.simbols.push_back(CharInfo(info->texture,info->uvRect, char_width, char_height, char_advance, char_bearingX, char_bearingY));
 			width += char_fullAdvance;
 			count ++;
 		}

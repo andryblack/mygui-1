@@ -11,12 +11,14 @@
 
 namespace MyGUI
 {
+    class ITexture;
 
 	class CharInfo
 	{
 	public:
 		CharInfo() :
-			mIsColour(false)
+            mIsColour(false),
+            mTexture(0)
 		{
 			mMetrics.mWidth = 0.0f;
 			mMetrics.mHeight = 0.0f;
@@ -26,6 +28,7 @@ namespace MyGUI
 		}
 
 		CharInfo(
+            ITexture* _texture,
 			const FloatRect& _rect,
 			float _width,
 			float _height,
@@ -33,6 +36,7 @@ namespace MyGUI
 			float _bearingX,
 			float _bearingY) :
 			mIsColour(false),
+            mTexture(_texture),
 			mUVRect(_rect)
 		{
 			mMetrics.mWidth = _width;
@@ -76,6 +80,10 @@ namespace MyGUI
 		{
 			return mMetrics.mBearingY;
 		}
+        
+        ITexture* getTexture() const {
+            return mTexture;
+        }
 
 		const FloatRect& getUVRect() const
 		{
@@ -90,6 +98,7 @@ namespace MyGUI
 	private:
 
 		bool mIsColour;
+        ITexture* mTexture;
 		FloatRect mUVRect;
 
 		struct Metrics

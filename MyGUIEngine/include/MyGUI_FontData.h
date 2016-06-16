@@ -13,6 +13,7 @@
 namespace MyGUI
 {
 
+    class ITexture;
 	namespace FontCodeType
 	{
 
@@ -52,7 +53,8 @@ namespace MyGUI
 			advance(_advance),
 			bearingX(_bearingX),
 			bearingY(_bearingY),
-			uvRect(_uvRect)
+			uvRect(_uvRect),
+            texture(0)
 		{
 		}
 
@@ -62,8 +64,9 @@ namespace MyGUI
 		float advance;
 		float bearingX;
 		float bearingY;
-		FloatRect uvRect;
-	};
+        FloatRect uvRect;
+        ITexture* texture;
+    };
 
 	typedef std::vector<GlyphInfo> VectorGlyphInfo;
 

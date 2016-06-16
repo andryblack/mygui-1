@@ -20,6 +20,7 @@ namespace MyGUI
 
 	class ISubWidget;
 	typedef std::vector<ISubWidget*> VectorSubWidget;
+    class IRenderTarget;
 
 	class MYGUI_EXPORT ISubWidget :
 		public ICroppedRectangle,
@@ -38,7 +39,7 @@ namespace MyGUI
 
 		virtual void setStateData(IStateInfo* _data) { }
 
-		virtual void doRender() = 0;
+		virtual void doRender(IRenderTarget* _target) = 0;
 
 		virtual void setAlign(Align _value)
 		{
@@ -54,7 +55,6 @@ namespace MyGUI
 
 		virtual void _setAlign(const IntSize& _oldsize)  { }
 
-		virtual void doManualRender(IVertexBuffer* _buffer, ITexture* _texture, size_t _count) { }
 
 	protected:
 		Align mAlign;

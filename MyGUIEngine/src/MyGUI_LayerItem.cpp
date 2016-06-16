@@ -6,6 +6,7 @@
 
 #include "MyGUI_Precompiled.h"
 #include "MyGUI_LayerItem.h"
+#include "MyGUI_ITexture.h"
 #include <algorithm>
 
 namespace MyGUI
@@ -149,7 +150,7 @@ namespace MyGUI
 
 		for (VectorSubWidget::iterator skin = mDrawItems.begin(); skin != mDrawItems.end(); ++skin)
 		{
-			(*skin)->createDrawItem(mTexture, _item);
+			(*skin)->createDrawItem(mTexture,_item);
 		}
 
 		for (VectorLayerItem::iterator item = mLayerItems.begin(); item != mLayerItems.end(); ++item)

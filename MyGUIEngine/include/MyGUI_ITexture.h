@@ -8,6 +8,7 @@
 #define MYGUI_I_TEXTURE_H_
 
 #include "MyGUI_Prerequest.h"
+#include "MyGUI_IObject.h"
 #include "MyGUI_IRenderTarget.h"
 #include "MyGUI_RenderFormat.h"
 #include <string>
@@ -24,8 +25,10 @@ namespace MyGUI
 		virtual void textureInvalidate(ITexture* _texture) = 0;
 	};
 
-	class MYGUI_EXPORT ITexture
+    class MYGUI_EXPORT ITexture :
+        public IObject
 	{
+        MYGUI_RTTI_DERIVED( IObject )
 	public:
 		virtual ~ITexture() { }
 

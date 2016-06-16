@@ -23,9 +23,9 @@ namespace MyGUI
 		mCurrentColour(0xFFFFFFFF),
 		mNode(nullptr),
 		mRenderItem(nullptr),
+        mTexture(nullptr),
 		mSeparate(false)
 	{
-		mVertexFormat = RenderManager::getInstance().getVertexFormat();
 	}
 
 	SubSkin::~SubSkin()
@@ -179,9 +179,10 @@ namespace MyGUI
 	{
 		MYGUI_ASSERT(!mRenderItem, "mRenderItem must be nullptr");
 
+        mTexture = _texture;
 		mNode = _node;
-		mRenderItem = mNode->addToRenderItem(_texture, true, mSeparate);
-		mRenderItem->addDrawItem(this, VertexQuad::VertexCount);
+		mRenderItem = mNode->addToRenderItem(mTexture, true, mSeparate);
+		mRenderItem->addDrawItem(this);
 	}
 
 	void SubSkin::destroyDrawItem()
@@ -227,41 +228,45 @@ namespace MyGUI
 			mNode->outOfDate(mRenderItem);
 	}
 
-	void SubSkin::doRender()
+    void SubSkin::fillQuad(VertexQuad& _quad,IRenderTarget* _target) {
+        const RenderTargetInfo& info = _target->getInfo();
+        
+        float vertex_z = mNode->getNodeDepth();
+        
+        float vertex_left = ((info.pixScaleX * (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft() - info.leftOffset) + info.hOffset) * 2) - 1;
+        float vertex_right = vertex_left + (info.pixScaleX * (float)mCurrentCoord.width * 2);
+        float vertex_top = -(((info.pixScaleY * (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop() - info.topOffset) + info.vOffset) * 2) - 1);
+        float vertex_bottom = vertex_top - (info.pixScaleY * (float)mCurrentCoord.height * 2);
+        
+        _quad.set(
+                 vertex_left,
+                 vertex_top,
+                 vertex_right,
+                 vertex_bottom,
+                 vertex_z,
+                 mCurrentTexture.left,
+                 mCurrentTexture.top,
+                 mCurrentTexture.right,
+                 mCurrentTexture.bottom,
+                 mCurrentColour);
+
+    }
+	void SubSkin::doRender(IRenderTarget* _target)
 	{
 		if (!mVisible || mEmptyView)
 			return;
 
-		VertexQuad* quad = reinterpret_cast<VertexQuad*>(mRenderItem->getCurrentVertexBuffer());
+        _target->setTexture(getTexture());
+        VertexQuad quad;
 
-		const RenderTargetInfo& info = mRenderItem->getRenderTarget()->getInfo();
-
-		float vertex_z = mNode->getNodeDepth();
-
-		float vertex_left = ((info.pixScaleX * (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft() - info.leftOffset) + info.hOffset) * 2) - 1;
-		float vertex_right = vertex_left + (info.pixScaleX * (float)mCurrentCoord.width * 2);
-		float vertex_top = -(((info.pixScaleY * (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop() - info.topOffset) + info.vOffset) * 2) - 1);
-		float vertex_bottom = vertex_top - (info.pixScaleY * (float)mCurrentCoord.height * 2);
-
-		quad->set(
-			vertex_left,
-			vertex_top,
-			vertex_right,
-			vertex_bottom,
-			vertex_z,
-			mCurrentTexture.left,
-			mCurrentTexture.top,
-			mCurrentTexture.right,
-			mCurrentTexture.bottom,
-			mCurrentColour);
-
-		mRenderItem->setLastVertexCount(VertexQuad::VertexCount);
-	}
+        fillQuad(quad, _target);
+        
+        _target->addQuad(quad);
+    }
 
 	void SubSkin::_setColour(const Colour& _value)
 	{
 		uint32 colour = texture_utility::toColourARGB(_value);
-		texture_utility::convertColour(colour, mVertexFormat);
 		mCurrentColour = (colour & 0x00FFFFFF) | (mCurrentColour & 0xFF000000);
 
 		if (nullptr != mNode)
@@ -274,9 +279,7 @@ namespace MyGUI
 	}
     
     ITexture* SubSkin::getTexture() {
-        if (nullptr != mRenderItem)
-            return mRenderItem->getTexture();
-        return nullptr;
+        return mTexture;
     }
 
 } // namespace MyGUI

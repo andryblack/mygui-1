@@ -25,7 +25,6 @@ namespace MyGUI
 		mNode(nullptr),
 		mRenderItem(nullptr)
 	{
-		mVertexFormat = RenderManager::getInstance().getVertexFormat();
 	}
 
 	PolygonalSkin::~PolygonalSkin()
@@ -78,7 +77,6 @@ namespace MyGUI
 		if (count > mVertexCount)
 		{
 			mVertexCount = count;
-			if (nullptr != mRenderItem) mRenderItem->reallockDrawItem(this, mVertexCount);
 		}
 
 		_updateView();
@@ -225,7 +223,7 @@ namespace MyGUI
 
 		mNode = _node;
 		mRenderItem = mNode->addToRenderItem(_texture, true, false);
-		mRenderItem->addDrawItem(this, mVertexCount);
+		mRenderItem->addDrawItem(this);
 	}
 
 	void PolygonalSkin::destroyDrawItem()
@@ -237,7 +235,7 @@ namespace MyGUI
 		mRenderItem = nullptr;
 	}
 
-	void PolygonalSkin::doRender()
+	void PolygonalSkin::doRender(IRenderTarget* _target)
 	{
 		if (!mVisible || mEmptyView)
 			return;
@@ -246,29 +244,28 @@ namespace MyGUI
 		if (update)
 			mGeometryOutdated = true;
 
-		Vertex* verticies = mRenderItem->getCurrentVertexBuffer();
-
+		
 		float vertex_z = mNode->getNodeDepth();
 
 		if (mGeometryOutdated)
 		{
-			_rebuildGeometry();
+			_rebuildGeometry(_target);
 		}
 
 		size_t size = mResultVerticiesPos.size();
 
 		for (size_t i = 0; i < size; ++i)
 		{
-			verticies[i].set(mResultVerticiesPos[i].left, mResultVerticiesPos[i].top, vertex_z, mResultVerticiesUV[i].left, mResultVerticiesUV[i].top, mCurrentColour);
+            Vertex v;
+            v.set(mResultVerticiesPos[i].left, mResultVerticiesPos[i].top, vertex_z, mResultVerticiesUV[i].left, mResultVerticiesUV[i].top, mCurrentColour);
+            _target->addVertex(v);
 		}
 
-		mRenderItem->setLastVertexCount(size);
 	}
 
 	void PolygonalSkin::_setColour(const Colour& _value)
 	{
 		uint32 colour = texture_utility::toColourARGB(_value);
-		texture_utility::convertColour(colour, mVertexFormat);
 		mCurrentColour = (colour & 0x00FFFFFF) | (mCurrentColour & 0xFF000000);
 
 		if (nullptr != mNode)
@@ -290,11 +287,11 @@ namespace MyGUI
 			mNode->outOfDate(mRenderItem);
 	}
 
-	void PolygonalSkin::_rebuildGeometry()
+	void PolygonalSkin::_rebuildGeometry(IRenderTarget* _target)
 	{
 		if (mLinePoints.size() < 2)
 			return;
-		if (!mRenderItem || !mRenderItem->getRenderTarget())
+		if (!mRenderItem)
 			return;
 
 		mGeometryOutdated = false;
@@ -500,7 +497,7 @@ namespace MyGUI
 
 
 		// now calculate widget base offset and then resulting position in screen coordinates
-		const RenderTargetInfo& info = mRenderItem->getRenderTarget()->getInfo();
+		const RenderTargetInfo& info = _target->getInfo();
 		float vertex_left_base = ((info.pixScaleX * (float)(mCroppedParent->getAbsoluteLeft()) + info.hOffset) * 2) - 1;
 		float vertex_top_base = -(((info.pixScaleY * (float)(mCroppedParent->getAbsoluteTop()) + info.vOffset) * 2) - 1);
 

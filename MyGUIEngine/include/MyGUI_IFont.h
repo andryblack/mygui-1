@@ -28,8 +28,6 @@ namespace MyGUI
 
 		virtual GlyphInfo* getGlyphInfo(Char _id) = 0;
 
-		virtual ITexture* getTextureFont() = 0;
-
 		virtual int getDefaultHeight() = 0;
 	};
 

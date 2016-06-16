@@ -115,26 +115,7 @@ namespace MyGUI
 				xml::ElementEnumerator state = basis->getElementEnumerator();
 
 				// проверяем на новый формат стейтов
-				bool new_format = false;
-				// если версия меньше 1.0 то переименовываем стейты
-				if (_version < Version(1, 0))
-				{
-					while (state.next())
-					{
-						if (state->getName() == "State")
-						{
-							const std::string& name_state = state->findAttribute("name");
-							if ((name_state == "normal_checked") || (state->findAttribute("name") == "normal_check"))
-							{
-								new_format = true;
-								break;
-							}
-						}
-					}
-					// обновляем
-					state = basis->getElementEnumerator();
-				}
-
+				
 				while (state.next())
 				{
 					if (state->getName() == "State")
@@ -143,33 +124,7 @@ namespace MyGUI
 						std::string basisStateName;
 						state->findAttribute("name", basisStateName);
 
-						// если версия меньше 1.0 то переименовываем стейты
-						if (_version < Version(1, 0))
-						{
-							// это обсолет новых типов
-							if (basisStateName == "disable_check")
-								basisStateName = "disabled_checked";
-							else if (basisStateName == "normal_check")
-								basisStateName = "normal_checked";
-							else if (basisStateName == "active_check")
-								basisStateName = "highlighted_checked";
-							else if (basisStateName == "pressed_check")
-								basisStateName = "pushed_checked";
-							else if (basisStateName == "disable")
-								basisStateName = "disabled";
-							else if (basisStateName == "active")
-								basisStateName = "highlighted";
-							else if (basisStateName == "select")
-								basisStateName = "pushed";
-							else if (basisStateName == "pressed")
-							{
-								if (new_format)
-									basisStateName = "pushed";
-								else
-									basisStateName = "normal_checked";
-							}
-						}
-
+						
 						// конвертируем инфу о стейте
 						IStateInfo* data = nullptr;
 						IObject* object = FactoryManager::getInstance().createObject(stateCategory, basisSkinType);

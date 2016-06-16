@@ -309,11 +309,6 @@ namespace MyGUI
 		return mSubstituteGlyphInfo;
 	}
 
-	ITexture* ResourceTrueTypeFont::getTextureFont()
-	{
-		return mTexture;
-	}
-
 	int ResourceTrueTypeFont::getDefaultHeight()
 	{
 		return mDefaultHeight;
@@ -541,7 +536,7 @@ namespace MyGUI
 				{
 					GlyphInfo& info = iter->second;
 					GlyphInfo newInfo = createFaceGlyphInfo(0, fontAscent, ftFace->glyph);
-
+                    
 					if (info.width != newInfo.width)
 					{
 						texWidth += (int)ceil(newInfo.width) - (int)ceil(info.width);
@@ -723,11 +718,17 @@ namespace MyGUI
                 iter->second.advance *= iscale;
                 iter->second.bearingX *= iscale;
                 iter->second.bearingY *= iscale;
+                iter->second.texture = mTexture;
             }
             mSpaceWidth *= iscale;
             mOffsetHeight *= iscale;
             mGlyphSpacing *= iscale;
             mDefaultHeight *= iscale;
+        } else {
+            for (GlyphMap::iterator iter = mGlyphMap.begin(); iter != mGlyphMap.end(); ++iter)
+            {
+                iter->second.texture = mTexture;
+            }
         }
 
 		delete [] fontBuffer;
@@ -875,7 +876,7 @@ namespace MyGUI
 		mCharMap[_glyphInfo.codePoint] = _glyphIndex;
 		GlyphInfo& info = mGlyphMap.insert(GlyphMap::value_type(_glyphIndex, _glyphInfo)).first->second;
 		_glyphHeightMap[(FT_Pos)height].insert(std::make_pair(_glyphIndex, &info));
-
+        
 		return (width > 0) ? mGlyphSpacing + width : 0;
 	}
 

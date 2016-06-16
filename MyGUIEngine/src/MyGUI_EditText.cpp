@@ -34,7 +34,6 @@ namespace MyGUI
 		mShadowColour(Colour::Black),
 		mAlpha(ALPHA_MAX),
 		mFont(nullptr),
-		mTexture(nullptr),
 		mFontHeight(0),
 		mBackgroundNormal(true),
 		mStartSelect(0),
@@ -52,11 +51,9 @@ namespace MyGUI
 		mManualColour(false),
 		mOldWidth(0)
 	{
-		mVertexFormat = RenderManager::getInstance().getVertexFormat();
-
+	
 		mCurrentColourNative = texture_utility::toColourARGB(mColour);
-		texture_utility::convertColour(mCurrentColourNative, mVertexFormat);
-
+	
 		mCurrentColourNative = (mCurrentColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 		mShadowColourNative =  (mShadowColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 		mInverseColourNative = mCurrentColourNative ^ 0x00FFFFFF;
@@ -203,8 +200,6 @@ namespace MyGUI
 		if (mCountVertex < need)
 		{
 			mCountVertex = need + SIMPLETEXT_COUNT_VERTEX;
-			if (nullptr != mRenderItem)
-				mRenderItem->reallockDrawItem(this, mCountVertex);
 		}
 	}
 
@@ -226,8 +221,6 @@ namespace MyGUI
 
 		mColour = _value;
 		mCurrentColourNative = texture_utility::toColourARGB(mColour);
-
-		texture_utility::convertColour(mCurrentColourNative, mVertexFormat);
 
 		mCurrentColourNative = (mCurrentColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 		mInverseColourNative = mCurrentColourNative ^ 0x00FFFFFF;
@@ -263,12 +256,10 @@ namespace MyGUI
 
 	void EditText::setFontName(const std::string& _value)
 	{
-		mTexture = 0;
 		mFont = FontManager::getInstance().getByName(_value);
 		if (mFont != nullptr)
 		{
-			mTexture = mFont->getTextureFont();
-
+		
 			// если надо, устанавливаем дефолтный размер шрифта
 			if (mFont->getDefaultHeight() != 0)
 			{
@@ -286,10 +277,10 @@ namespace MyGUI
 		}
 
 		// если есть текстура, то приаттачиваемся
-		if (nullptr != mTexture && nullptr != mNode)
+		if (nullptr != mFont && nullptr != mNode)
 		{
-			mRenderItem = mNode->addToRenderItem(mTexture, false, false);
-			mRenderItem->addDrawItem(this, mCountVertex);
+			mRenderItem = mNode->addToRenderItem(mFont, false, false);
+			mRenderItem->addDrawItem(this);
 		}
 
 		if (nullptr != mNode)
@@ -319,12 +310,12 @@ namespace MyGUI
 	{
 		mNode = _node;
 		// если уже есть текстура, то атачимся, актуально для смены леера
-		if (nullptr != mTexture)
+		if (nullptr != mFont)
 		{
 			MYGUI_ASSERT(!mRenderItem, "mRenderItem must be nullptr");
 
-			mRenderItem = mNode->addToRenderItem(mTexture, false, false);
-			mRenderItem->addDrawItem(this, mCountVertex);
+			mRenderItem = mNode->addToRenderItem(mFont, false, false);
+			mRenderItem->addDrawItem(this);
 		}
 	}
 
@@ -526,7 +517,7 @@ namespace MyGUI
 				width -= 2;
 		}
 
-		mTextView.update(mCaption, mFont, mFontHeight, mTextAlign, mVertexFormat, width);
+		mTextView.update(mCaption, mFont, mFontHeight, mTextAlign, width);
 	}
 
 	void EditText::setStateData(IStateInfo* _data)
@@ -537,7 +528,7 @@ namespace MyGUI
 		setShiftText(data->getShift());
 	}
 
-	void EditText::doRender()
+	void EditText::doRender(IRenderTarget* _target)
 	{
 		if (nullptr == mFont || !mVisible || mEmptyView)
 			return;
@@ -545,9 +536,8 @@ namespace MyGUI
 		if (mRenderItem->getCurrentUpdate() || mTextOutDate)
 			updateRawData();
 
-		Vertex* vertex = mRenderItem->getCurrentVertexBuffer();
-
-		const RenderTargetInfo& renderTargetInfo = mRenderItem->getRenderTarget()->getInfo();
+		
+		const RenderTargetInfo& renderTargetInfo = _target->getInfo();
 
 		// колличество отрисованных вершин
 		size_t vertexCount = 0;
@@ -563,7 +553,7 @@ namespace MyGUI
 
 		FloatRect vertexRect;
 
-		const FloatRect& selectedUVRect = mFont->getGlyphInfo(mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack)->uvRect;
+		const GlyphInfo* selectedInfo = mFont->getGlyphInfo(mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack);
 
 		size_t index = 0;
 
@@ -590,10 +580,12 @@ namespace MyGUI
 				if (select)
 				{
 					vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
-
-					drawGlyph(renderTargetInfo, vertex, vertexCount, vertexRect, selectedUVRect, selectedColour);
+                    _target->setTexture(selectedInfo->texture);
+					drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
 				}
 
+                _target->setTexture(sim->getTexture());
+                
 				// Render the glyph shadow, if any.
 				if (mShadow)
 				{
@@ -601,8 +593,8 @@ namespace MyGUI
 					vertexRect.top = top + sim->getBearingY() + 1.0f;
 					vertexRect.right = vertexRect.left + sim->getWidth();
 					vertexRect.bottom = vertexRect.top + sim->getHeight();
-
-					drawGlyph(renderTargetInfo, vertex, vertexCount, vertexRect, sim->getUVRect(), mShadowColourNative);
+                    
+					drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, sim->getUVRect(), mShadowColourNative);
 				}
 
 				// Render the glyph itself.
@@ -611,7 +603,7 @@ namespace MyGUI
 				vertexRect.right = vertexRect.left + sim->getWidth();
 				vertexRect.bottom = vertexRect.top + sim->getHeight();
 
-				drawGlyph(renderTargetInfo, vertex, vertexCount, vertexRect, sim->getUVRect(), (!select || !mInvertSelect) ? colour : inverseColour);
+				drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, sim->getUVRect(), (!select || !mInvertSelect) ? colour : inverseColour);
 
 				left += fullAdvance;
 				++index;
@@ -627,12 +619,10 @@ namespace MyGUI
 			IntPoint point = mTextView.getCursorPoint(mCursorPosition) - mViewOffset + mCoord.point();
 			GlyphInfo* cursorGlyph = mFont->getGlyphInfo(static_cast<Char>(FontCodeType::Cursor));
 			vertexRect.set((float)point.left, (float)point.top, (float)point.left + cursorGlyph->width, (float)(point.top + mFontHeight));
-
-			drawGlyph(renderTargetInfo, vertex, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);
+            _target->setTexture(cursorGlyph->texture);
+			drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);
 		}
 
-		// колличество реально отрисованных вершин
-		mRenderItem->setLastVertexCount(vertexCount);
 	}
 
 	void EditText::setInvertSelected(bool _value)
@@ -671,8 +661,6 @@ namespace MyGUI
 		mShadowColour = _value;
 		mShadowColourNative = texture_utility::toColourARGB(mShadowColour);
 
-		texture_utility::convertColour(mShadowColourNative, mVertexFormat);
-
 		mShadowColourNative = (mShadowColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 
 		if (nullptr != mNode)
@@ -685,69 +673,68 @@ namespace MyGUI
 	}
 
 	void EditText::drawQuad(
-		Vertex*& _vertex,
+		IRenderTarget* _target,
 		size_t& _vertexCount,
 		const FloatRect& _vertexRect,
 		float _vertexZ,
 		const FloatRect& _textureRect,
 		uint32 _colour) const
 	{
-#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
-        uint8 alpha = (_colour & 0xFF000000) >> 24;
-        _colour = ( ((_colour & 0xFF0000)*alpha >> 8) & 0xFF0000) |
-        ( ((_colour & 0x00FF00)*alpha >> 8) & 0x00FF00) |
-        ( ((_colour & 0x0000FF)*alpha >> 8) & 0x0000FF) |
-        (alpha << 24);
-#endif
-		_vertex[0].x = _vertexRect.left;
-		_vertex[0].y = _vertexRect.top;
-		_vertex[0].z = _vertexZ;
-		_vertex[0].colour = _colour;
-		_vertex[0].u = _textureRect.left;
-		_vertex[0].v = _textureRect.top;
+        Vertex _vertex;
+		_vertex.x = _vertexRect.left;
+		_vertex.y = _vertexRect.top;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.left;
+		_vertex.v = _textureRect.top;
+        _target->addVertex(_vertex);
+        
+		_vertex.x = _vertexRect.left;
+		_vertex.y = _vertexRect.bottom;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.left;
+		_vertex.v = _textureRect.bottom;
+        _target->addVertex(_vertex);
 
-		_vertex[2].x = _vertexRect.left;
-		_vertex[2].y = _vertexRect.bottom;
-		_vertex[2].z = _vertexZ;
-		_vertex[2].colour = _colour;
-		_vertex[2].u = _textureRect.left;
-		_vertex[2].v = _textureRect.bottom;
+		_vertex.x = _vertexRect.right;
+		_vertex.y = _vertexRect.top;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.right;
+		_vertex.v = _textureRect.top;
+        _target->addVertex(_vertex);
 
-		_vertex[1].x = _vertexRect.right;
-		_vertex[1].y = _vertexRect.top;
-		_vertex[1].z = _vertexZ;
-		_vertex[1].colour = _colour;
-		_vertex[1].u = _textureRect.right;
-		_vertex[1].v = _textureRect.top;
+		_vertex.x = _vertexRect.right;
+		_vertex.y = _vertexRect.top;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.right;
+		_vertex.v = _textureRect.top;
+        _target->addVertex(_vertex);
 
-		_vertex[3].x = _vertexRect.right;
-		_vertex[3].y = _vertexRect.top;
-		_vertex[3].z = _vertexZ;
-		_vertex[3].colour = _colour;
-		_vertex[3].u = _textureRect.right;
-		_vertex[3].v = _textureRect.top;
+		_vertex.x = _vertexRect.left;
+		_vertex.y = _vertexRect.bottom;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.left;
+		_vertex.v = _textureRect.bottom;
+        _target->addVertex(_vertex);
 
-		_vertex[5].x = _vertexRect.left;
-		_vertex[5].y = _vertexRect.bottom;
-		_vertex[5].z = _vertexZ;
-		_vertex[5].colour = _colour;
-		_vertex[5].u = _textureRect.left;
-		_vertex[5].v = _textureRect.bottom;
+		_vertex.x = _vertexRect.right;
+		_vertex.y = _vertexRect.bottom;
+		_vertex.z = _vertexZ;
+		_vertex.colour = _colour;
+		_vertex.u = _textureRect.right;
+		_vertex.v = _textureRect.bottom;
+        _target->addVertex(_vertex);
 
-		_vertex[4].x = _vertexRect.right;
-		_vertex[4].y = _vertexRect.bottom;
-		_vertex[4].z = _vertexZ;
-		_vertex[4].colour = _colour;
-		_vertex[4].u = _textureRect.right;
-		_vertex[4].v = _textureRect.bottom;
-
-		_vertex += VERTEX_IN_QUAD;
 		_vertexCount += VERTEX_IN_QUAD;
 	}
 
 	void EditText::drawGlyph(
 		const RenderTargetInfo& _renderTargetInfo,
-		Vertex*& _vertex,
+		IRenderTarget* _target,
 		size_t& _vertexCount,
 		FloatRect _vertexRect,
 		FloatRect _textureRect,
@@ -822,7 +809,7 @@ namespace MyGUI
 			((_renderTargetInfo.pixScaleX * (pix_left + _vertexRect.width()) + _renderTargetInfo.hOffset) * 2.0f) - 1.0f,
 			-(((_renderTargetInfo.pixScaleY * (pix_top + _vertexRect.height()) + _renderTargetInfo.vOffset) * 2.0f) - 1.0f));
 
-		drawQuad(_vertex, _vertexCount, vertexRect, mNode->getNodeDepth(), _textureRect, _colour);
+		drawQuad(_target, _vertexCount, vertexRect, mNode->getNodeDepth(), _textureRect, _colour);
 	}
 
 } // namespace MyGUI

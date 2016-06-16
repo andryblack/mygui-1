@@ -34,8 +34,6 @@ namespace MyGUI
 		// exist in this font. Returns nullptr if there is a problem with the font.
 		virtual GlyphInfo* getGlyphInfo(Char _id);
 
-		virtual ITexture* getTextureFont();
-
 		// получившаяся высота при генерации в пикселях
 		virtual int getDefaultHeight();
 

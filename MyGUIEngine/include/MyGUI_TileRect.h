@@ -36,7 +36,7 @@ namespace MyGUI
 		virtual void destroyDrawItem();
 
 		// метод для отрисовки себя
-		virtual void doRender();
+		virtual void doRender(IRenderTarget* _target);
 
 		virtual void setStateData(IStateInfo* _data);
 
@@ -52,7 +52,6 @@ namespace MyGUI
 	protected:
 		bool mEmptyView;
 
-		VertexColourType mVertexFormat;
 		uint32 mCurrentColour;
 
 		FloatRect mCurrentTexture;

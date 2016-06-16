@@ -127,31 +127,28 @@ namespace MyGUI
 		return nullptr;
 	}
 
-	RenderItem* LayerNode::addToRenderItem(ITexture* _texture, bool _firstQueue, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItem(IObject* _grouping, bool _firstQueue, bool _manualRender)
 	{
 		RenderItem* item = nullptr;
 		if (_firstQueue)
-			item = addToRenderItemFirstQueue(_texture, _manualRender);
+			item = addToRenderItemFirstQueue(_grouping, _manualRender);
 		else
-			item = addToRenderItemSecondQueue(_texture, _manualRender);
+			item = addToRenderItemSecondQueue(_grouping, _manualRender);
 
 		mOutOfDate = false;
 		return item;
 	}
 
-	RenderItem* LayerNode::addToRenderItemFirstQueue(ITexture* _texture, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItemFirstQueue(IObject* _grouping, bool _manualRender)
 	{
 		if (mFirstRenderItems.empty() || _manualRender)
 		{
 			RenderItem* item = new RenderItem();
-			item->setTexture(_texture);
-			item->setManualRender(_manualRender);
+            item->setGrouping(_grouping);
 			mFirstRenderItems.push_back(item);
 
 			return item;
 		}
-
-		updateCompression();
 
 		// first queue keep order
 
@@ -161,63 +158,46 @@ namespace MyGUI
 		bool itemFound = false;
 		while (iter != mFirstRenderItems.rend())
 		{
-            if ((*iter)->getManualRender())
-                break;
-			if ((*iter)->getNeedVertexCount() == 0)
-			{
-				iter++;
-				itemFound = true;
-				continue;
-			}
-			else if ((*iter)->getTexture() == _texture)
+            if ((*iter)->getGrouping() == _grouping)
 			{
 				iter++;
 				itemFound = true;
 				break;
 			}
-
 			break;
 		}
 
 		if (itemFound)
 		{
 			iter--;
-			(*iter)->setTexture(_texture);
+			(*iter)->setGrouping(_grouping);
 
 			return (*iter);
 		}
 
 		// not found, create new
 		RenderItem* item = new RenderItem();
-		item->setTexture(_texture);
-		item->setManualRender(_manualRender);
+		item->setGrouping(_grouping);
 		mFirstRenderItems.push_back(item);
 
 		return item;
 	}
 
-	RenderItem* LayerNode::addToRenderItemSecondQueue(ITexture* _texture, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItemSecondQueue(IObject* _grouping, bool _manualRender)
 	{
 		// order is not important in second queue
 		// use first buffer with same texture or empty buffer
 		for (VectorRenderItem::iterator iter = mSecondRenderItems.begin(); iter != mSecondRenderItems.end(); ++iter)
 		{
-			if ((*iter)->getTexture() == _texture)
+			if ((*iter)->getGrouping() == _grouping)
 			{
-				return (*iter);
-			}
-			else if ((*iter)->getNeedVertexCount() == 0)
-			{
-				(*iter)->setTexture(_texture);
-
 				return (*iter);
 			}
 		}
 
 		// not found, create new
 		RenderItem* item = new RenderItem();
-		item->setTexture(_texture);
-		item->setManualRender(_manualRender);
+		item->setGrouping(_grouping);
 		mSecondRenderItems.push_back(item);
 
 		return item;
@@ -271,42 +251,7 @@ namespace MyGUI
 		return mChildItems[_index];
 	}
 
-	void LayerNode::updateCompression()
-	{
-		if (mFirstRenderItems.size() <= 1)
-			return;
-
-		bool need_compression = false;
-		for (VectorRenderItem::iterator iter = mFirstRenderItems.begin(); iter != mFirstRenderItems.end(); ++iter)
-		{
-			if ((*iter)->getNeedCompression())
-			{
-				need_compression = true;
-				break;
-			}
-		}
-
-		// pushing all empty buffers to the end of buffers list
-		if (need_compression)
-		{
-			VectorRenderItem nonEmptyItems;
-			VectorRenderItem emptyItems;
-
-			for (VectorRenderItem::iterator iter = mFirstRenderItems.begin(); iter != mFirstRenderItems.end(); ++iter)
-			{
-				(*iter)->setNeedCompression(false);
-
-				if ((*iter)->getNeedVertexCount() == 0 && !(*iter)->getManualRender())
-					emptyItems.push_back(*iter);
-				else
-					nonEmptyItems.push_back(*iter);
-			}
-			nonEmptyItems.insert(nonEmptyItems.end(), emptyItems.begin(), emptyItems.end());
-			std::swap(mFirstRenderItems, nonEmptyItems);
-		}
-
-		mOutOfDate = true;
-	}
+	
 
 	ILayer* LayerNode::getLayer() const
 	{

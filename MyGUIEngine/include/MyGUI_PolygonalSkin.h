@@ -43,7 +43,7 @@ namespace MyGUI
 		virtual void destroyDrawItem();
 
 		// метод для отрисовки себя
-		virtual void doRender();
+		virtual void doRender(IRenderTarget* _target);
 
 		/*internal:*/
 		virtual void _updateView();
@@ -55,7 +55,7 @@ namespace MyGUI
 		virtual void _setColour(const Colour& _value);
 
 	protected:
-		void _rebuildGeometry();
+		void _rebuildGeometry(IRenderTarget* _target);
 		FloatPoint _getPerpendicular(const FloatPoint& _point1, const FloatPoint& _point2);
 		// line from center of p1-p2 line to p3
 		FloatPoint _getMiddleLine(const FloatPoint& _point1, const FloatPoint& _point2, const FloatPoint& _point3);
@@ -75,7 +75,6 @@ namespace MyGUI
 
 		bool mEmptyView;
 
-		VertexColourType mVertexFormat;
 		uint32 mCurrentColour;
 
 		FloatRect mCurrentTexture;

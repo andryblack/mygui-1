@@ -126,7 +126,7 @@ namespace MyGUI
 									coord.right() / textureWidth,
 									coord.bottom() / textureHeight)
 								))).first->second;
-
+                            glyphInfo.texture = mTexture;
 							if (id == FontCodeType::NotDefined)
 								mSubstituteGlyphInfo = &glyphInfo;
 						}
@@ -167,7 +167,7 @@ namespace MyGUI
 	void ResourceManualFont::addGlyphInfo(Char id, const GlyphInfo& info)
 	{
 		GlyphInfo& inserted = mCharMap.insert(CharMap::value_type(id, info)).first->second;
-
+        inserted.texture = mTexture;
 		if (id == FontCodeType::NotDefined)
 			mSubstituteGlyphInfo = &inserted;
 	}
