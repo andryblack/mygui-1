@@ -10,10 +10,13 @@
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_ITexture.h"
 #include "MyGUI_IFont.h"
+#include "MyGUI_Colour.h"
+
 
 #ifdef MYGUI_USE_FREETYPE
 #	include <ft2build.h>
 #	include FT_FREETYPE_H
+#   include FT_GLYPH_H
 
 namespace MyGUI
 {
@@ -56,7 +59,9 @@ namespace MyGUI
         void setScale(float _value);
 		void setResolution(uint _value);
 		void setHinting(const std::string& _value);
-		void setAntialias(bool _value);
+		void setOutline(bool _value);
+        void setOutlineColour(const Colour& _value);
+        void setOutlineWidth(float _value);
 		void setTabWidth(float _value);
 		void setOffsetHeight(int _value);
 		void setSubstituteCode(int _value);
@@ -85,7 +90,9 @@ namespace MyGUI
         float mScale; // Scale font rendered to texture for hdpi displays
 		uint mResolution; // Resolution of the font, in pixels per inch.
 		Hinting mHinting; // What type of hinting to use when rendering the font.
-		bool mAntialias; // Whether or not to anti-alias the font by copying its alpha channel to its luminance channel.
+	    bool mOutline;
+        Colour mOutlineColour;
+        float mOutlineWidth;
 		float mSpaceWidth; // The width of a "Space" character, in pixels. If zero, the default width is used.
 		int mGlyphSpacing; // How far apart the glyphs are placed from each other in the font texture, in pixels.
 		float mTabWidth; // The width of the "Tab" special character, in pixels.
@@ -113,7 +120,7 @@ namespace MyGUI
 		// A map of glyph heights to the set of paired glyph indices and glyph info objects that are of that height.
 		typedef std::map<FT_Pos, std::map<FT_UInt, GlyphInfo*> > GlyphHeightMap;
 
-		template<bool LAMode, bool Antialias>
+		template<bool Outline>
 		void initialiseFreeType();
 
 		// Loads the font face as specified by mSource, mSize, and mResolution. Automatically adjusts code-point ranges according
@@ -136,22 +143,28 @@ namespace MyGUI
 
 		// Creates a glyph with the specified index from the specified font face and assigns it to the specified code point.
 		// Automatically updates _glyphHeightMap with data from the newly created glyph.
-		int createFaceGlyph(FT_UInt _glyphIndex, Char _codePoint, int _fontAscent, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, GlyphHeightMap& _glyphHeightMap);
+		int createFaceGlyph(const FT_Library& _ftLibrary,FT_UInt _glyphIndex, Char _codePoint, int _fontAscent, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, GlyphHeightMap& _glyphHeightMap);
 
 		// Renders all of the glyphs in _glyphHeightMap into the specified texture buffer using data from the specified font face.
-		template<bool LAMode, bool Antialias>
+		template<bool Outline>
 		void renderGlyphs(const GlyphHeightMap& _glyphHeightMap, const FT_Library& _ftLibrary, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, uint8* _texBuffer, int _texWidth, int _texHeight);
 
 		// Renders the glyph described by the specified glyph info according to the specified parameters.
 		// Supports two types of rendering, depending on the value of UseBuffer: Texture block transfer and rectangular color fill.
 		// The _luminance0 value is used for even-numbered columns (from zero), while _luminance1 is used for odd-numbered ones.
-		template<bool LAMode, bool UseBuffer, bool Antialias>
-		void renderGlyph(GlyphInfo& _info, uint8 _luminance0, uint8 _luminance1, uint8 _alpha, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY, uint8* _glyphBuffer = nullptr);
+		void fillGlyph(GlyphInfo& _info, uint8 _luminance, uint8 _alpha, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY);
+        void putGlyph(GlyphInfo& _info, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY,const FT_Bitmap* _bitmap,const Colour& _clr);
+        void blendGlyph(GlyphInfo& _info, int _dx,int _dy, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY,const FT_Bitmap* _bitmap,const Colour& _clr);
+        template<bool Outline>
+        void renderGlyph(const FT_Library& _ftLibrary,GlyphInfo& _info, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY, FT_UInt _glyphIndex,FT_Bitmap& _ftBitmap);
+        
 
 		CharMap mCharMap; // A map of code points to glyph indices.
 		GlyphMap mGlyphMap; // A map of glyph indices to glyph info objects.
 
 
+        std::map<FT_UInt,FT_Bitmap> m_bitmaps_map;
+        std::map<FT_UInt,FT_Glyph> m_outline_bitmaps_map;
 	};
 
 } // namespace MyGUI

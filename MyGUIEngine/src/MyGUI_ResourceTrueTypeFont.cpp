@@ -17,25 +17,8 @@
 #	include FT_TRUETYPE_TABLES_H
 #	include FT_BITMAP_H
 #	include FT_WINFONTS_H
+#   include FT_STROKER_H
 
-//	The following macro enables a workaround for a bug in FreeType's bytecode interpreter that, when using certain fonts at
-//	certain sizes, causes FreeType to start measuring and rendering some glyphs inconsistently after certain other glyphs have
-//	been loaded. See FreeType bug #35374 for details: https://savannah.nongnu.org/bugs/?35374
-//
-//	To reproduce the bug, first disable the workaround by defining MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX to 0. Then load the
-//	DejaVu Sans font at 10 pt using default values for all other properties. Observe that the glyphs for the "0", 6", "8", and
-//	"9" characters are now badly corrupted when rendered.
-//
-//	This bug still exists as of FreeType 2.4.8 and there are currently no plans to fix it. If the bug is ever fixed, this
-//	workaround should be disabled, as it causes fonts to take longer to load.
-//
-//	The bug can currently also be suppressed by disabling FreeType's bytecode interpreter altogether. To do so, remove the
-//	TT_CONFIG_OPTION_BYTECODE_INTERPRETER macro in the "ftoption.h" FreeType header file. Once this is done, this workaround can
-//	be safely disabled. Note that disabling FreeType's bytecode interpreter will cause rendered text to look somewhat different.
-//	Whether it looks better or worse is a matter of taste and may also depend on the font.
-#	ifndef MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX
-#		define MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX 1
-#	endif
 
 
 namespace MyGUI
@@ -65,23 +48,8 @@ namespace MyGUI
 		const uint8 charMaskBlack = (const uint8)'\x00';
 		const uint8 charMaskWhite = (const uint8)'\xFF';
 
-		template<bool LAMode>
+		
 		struct PixelBase
-		{
-			// Returns PixelFormat::R8G8B8A8 when LAMode is false, or PixelFormat::L8A8 when LAMode is true.
-			static PixelFormat::Enum getFormat();
-
-			// Returns 4 when LAMode is false, or 2 when LAMode is true.
-			static size_t getNumBytes();
-
-		protected:
-			// Sets a pixel in _dest as 4 or 2 bytes: L8L8L8A8 if LAMode is false, or L8A8 if LAMode is true.
-			// Automatically advances _dest just past the pixel written.
-			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha);
-		};
-
-		template<>
-		struct PixelBase<false>
 		{
 			static size_t getNumBytes()
 			{
@@ -93,87 +61,49 @@ namespace MyGUI
 				return PixelFormat::R8G8B8A8;
 			}
 
-		protected:
 			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha)
 			{
 #ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
                 _luminance = (uint16(_luminance) * _alpha) >> 8;
+#endif
                 *_dest++ = _luminance;
                 *_dest++ = _luminance;
                 *_dest++ = _luminance;
                 *_dest++ = _alpha;
+			}
+            
+            static void set(uint8*& _dest, const Colour& _luminance, uint8 _alpha)
+            {
+#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
+                *_dest++ = _luminance.red * _alpha ;
+                *_dest++ = _luminance.green * _alpha ;
+                *_dest++ = _luminance.blue * _alpha;
+                *_dest++ = _alpha;
 #else
-				*_dest++ = _luminance;
-				*_dest++ = _luminance;
-				*_dest++ = _luminance;
-				*_dest++ = _alpha;
+                *_dest++ = _luminance.red * 255;
+                *_dest++ = _luminance.green * 255;
+                *_dest++ = _luminance.blue * 255;
+                *_dest++ = _alpha;
 #endif
-			}
+            }
+            
+            static void blend_c(uint8& _dest, float _src, uint8 _a) {
+#ifdef MYGUI_USE_PREMULTIPLIED_ALPHA
+                _dest = (uint16(_dest) * (255-_a))/255 + (_src * _a);
+#endif
+            }
+            
+            static void blend(uint8*& _dest, const Colour& _clr, uint8 _alpha)
+            {
+                blend_c(*_dest++ , _clr.red , _alpha);
+                blend_c(*_dest++ , _clr.green , _alpha);
+                blend_c(*_dest++ , _clr.blue , _alpha);
+                blend_c(*_dest++ , _alpha / 255.0f , _alpha);
+
+            }
 		};
 
-		template<>
-		struct PixelBase<true>
-		{
-			static size_t getNumBytes()
-			{
-				return 2;
-			}
-
-			static PixelFormat::Enum getFormat()
-			{
-				return PixelFormat::L8A8;
-			}
-
-		protected:
-			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha)
-			{
-				*_dest++ = _luminance;
-				*_dest++ = _alpha;
-			}
-		};
-
-		template<bool LAMode, bool FromSource = false, bool Antialias = false>
-		struct Pixel : PixelBase<LAMode>
-		{
-			// Sets a pixel in _dest as 4 or 2 bytes: L8L8L8A8 if LAMode is false, or L8A8 if LAMode is true.
-			// Sets luminance from _source if both FromSource and Antialias are true; otherwise, uses the specified value.
-			// Sets alpha from _source if FromSource is true; otherwise, uses the specified value.
-			// Automatically advances _source just past the pixel read if FromSource is true.
-			// Automatically advances _dest just past the pixel written.
-			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha, uint8*& _source);
-		};
-
-		template<bool LAMode, bool Antialias>
-		struct Pixel<LAMode, false, Antialias> : PixelBase<LAMode>
-		{
-			// Sets the destination pixel using the specified luminance and alpha. Source is ignored, since FromSource is false.
-			static void set(uint8*& _dest, uint8 _luminance, uint8 _alpha, uint8* = nullptr)
-			{
-				PixelBase<LAMode>::set(_dest, _luminance, _alpha);
-			}
-		};
-
-		template<bool LAMode>
-		struct Pixel<LAMode, true, false> : PixelBase<LAMode>
-		{
-			// Sets the destination pixel using the specified _luminance and using the alpha from the specified source.
-			static void set(uint8*& _dest, uint8 _luminance, uint8, uint8*& _source)
-			{
-				PixelBase<LAMode>::set(_dest, _luminance, *_source++);
-			}
-		};
-
-		template<bool LAMode>
-		struct Pixel<LAMode, true, true> : PixelBase<LAMode>
-		{
-			// Sets the destination pixel using both the luminance and alpha from the specified source, since Antialias is true.
-			static void set(uint8*& _dest, uint8, uint8, uint8*& _source)
-			{
-				PixelBase<LAMode>::set(_dest, *_source, *_source);
-				++_source;
-			}
-		};
-
+		
 	}
 
 	const int ResourceTrueTypeFont::mDefaultGlyphSpacing = 1;
@@ -186,7 +116,9 @@ namespace MyGUI
         mScale(1.0f),
 		mResolution(96),
 		mHinting(HintingUseNative),
-		mAntialias(false),
+	    mOutline(false),
+        mOutlineColour(0,0,0,1),
+        mOutlineWidth(1.0f),
 		mSpaceWidth(0.0f),
 		mGlyphSpacing(-1),
 		mTabWidth(0.0f),
@@ -227,7 +159,13 @@ namespace MyGUI
 				else if (key == "Resolution")
 					setResolution(utility::parseUInt(value));
 				else if (key == "Antialias")
-					setAntialias(utility::parseBool(value));
+                {}
+                else if (key == "Outline")
+                    setOutline(utility::parseBool(value));
+                else if (key == "OutlineColour")
+                    setOutlineColour(utility::parseValue<Colour>(value));
+                else if (key == "OutlineWidth")
+                    setOutlineWidth(utility::parseFloat(value));
 				else if (key == "TabWidth")
 					setTabWidth(utility::parseFloat(value));
 				else if (key == "OffsetHeight")
@@ -399,32 +337,24 @@ namespace MyGUI
         
         mScale = MyGUI::RenderManager::getInstance().getDisplayScale();
 
-		// If L8A8 (2 bytes per pixel) is supported, use it; otherwise, use R8G8B8A8 (4 bytes per pixel) as L8L8L8A8.
-		bool laMode = MyGUI::RenderManager::getInstance().isFormatSupported(Pixel<true>::getFormat(), TextureUsage::Static | TextureUsage::Write);
-
+		
 		// Select and call an appropriate initialisation method. By making this decision up front, we avoid having to branch on
 		// these variables many thousands of times inside tight nested loops later. From this point on, the various function
 		// templates ensure that all of the necessary branching is done purely at compile time for all combinations.
-		int init = (laMode ? 2 : 0) | (mAntialias ? 1 : 0);
+        int init = (mOutline ? 1 : 0);
 
 		switch (init)
 		{
 		case 0:
-			ResourceTrueTypeFont::initialiseFreeType<false, false>();
+			ResourceTrueTypeFont::initialiseFreeType<false>();
 			break;
 		case 1:
-			ResourceTrueTypeFont::initialiseFreeType<false, true>();
-			break;
-		case 2:
-			ResourceTrueTypeFont::initialiseFreeType<true, false>();
-			break;
-		case 3:
-			ResourceTrueTypeFont::initialiseFreeType<true, true>();
+			ResourceTrueTypeFont::initialiseFreeType<true>();
 			break;
 		}
 	}
 
-	template<bool LAMode, bool Antialias>
+	template<bool Outline>
 	void ResourceTrueTypeFont::initialiseFreeType()
 	{
 		//-------------------------------------------------------------------//
@@ -513,7 +443,7 @@ namespace MyGUI
 			const Char& codePoint = iter->first;
 			FT_UInt glyphIndex = FT_Get_Char_Index(ftFace, codePoint);
 
-			texWidth += createFaceGlyph(glyphIndex, codePoint, fontAscent, ftFace, ftLoadFlags, glyphHeightMap);
+			texWidth += createFaceGlyph(ftLibrary,glyphIndex, codePoint, fontAscent, ftFace, ftLoadFlags, glyphHeightMap);
 
 			// If the newly created glyph is the "Not Defined" glyph, it means that the code point is not supported by the font.
 			// Remove it from the character map so that we can provide our own substitute instead of letting FreeType do it.
@@ -523,52 +453,6 @@ namespace MyGUI
 				mCharMap.erase(iter++);
 		}
 
-#if MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX
-
-		bool isBytecodeAvailable = (ftFace->face_flags & FT_FACE_FLAG_HINTER) != 0;
-		bool isBytecodeUsedByLoadFlags = (ftLoadFlags & (FT_LOAD_FORCE_AUTOHINT | FT_LOAD_NO_HINTING)) == 0;
-
-		if (isBytecodeAvailable && isBytecodeUsedByLoadFlags)
-		{
-			for (GlyphMap::iterator iter = mGlyphMap.begin(); iter != mGlyphMap.end(); ++iter)
-			{
-				if (FT_Load_Glyph(ftFace, iter->first, ftLoadFlags) == 0)
-				{
-					GlyphInfo& info = iter->second;
-					GlyphInfo newInfo = createFaceGlyphInfo(0, fontAscent, ftFace->glyph);
-                    
-					if (info.width != newInfo.width)
-					{
-						texWidth += (int)ceil(newInfo.width) - (int)ceil(info.width);
-						info.width = newInfo.width;
-					}
-
-					if (info.height != newInfo.height)
-					{
-						GlyphHeightMap::mapped_type oldHeightMap = glyphHeightMap[(FT_Pos)info.height];
-						GlyphHeightMap::mapped_type::iterator heightMapItem = oldHeightMap.find(iter->first);
-						glyphHeightMap[(FT_Pos)newInfo.height].insert(*heightMapItem);
-						oldHeightMap.erase(heightMapItem);
-						info.height = newInfo.height;
-					}
-
-					if (info.advance != newInfo.advance)
-						info.advance = newInfo.advance;
-
-					if (info.bearingX != newInfo.bearingX)
-						info.bearingX = newInfo.bearingX;
-
-					if (info.bearingY != newInfo.bearingY)
-						info.bearingY = newInfo.bearingY;
-				}
-				else
-				{
-					MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot load glyph " << iter->first << " for character " << iter->second.codePoint << " in font '" << getResourceName() << "'.");
-				}
-			}
-		}
-
-#endif // MYGUI_USE_FREETYPE_BYTECODE_BUG_FIX
 
 		// Do some special handling for the "Space" and "Tab" glyphs.
 		GlyphInfo* spaceGlyphInfo = getGlyphInfo(FontCodeType::Space);
@@ -608,7 +492,7 @@ namespace MyGUI
 
 		// Create the "Not Defined" code point (and its corresponding glyph) if it's in use as the substitute code point.
 		if (mSubstituteCodePoint == FontCodeType::NotDefined)
-			texWidth += createFaceGlyph(0, static_cast<Char>(FontCodeType::NotDefined), fontAscent, ftFace, ftLoadFlags, glyphHeightMap);
+			texWidth += createFaceGlyph(ftLibrary, 0, static_cast<Char>(FontCodeType::NotDefined), fontAscent, ftFace, ftLoadFlags, glyphHeightMap);
 
 		// Cache a pointer to the substitute glyph info for fast lookup.
 		mSubstituteGlyphInfo = &mGlyphMap.find(mCharMap.find(mSubstituteCodePoint)->second)->second;
@@ -683,7 +567,7 @@ namespace MyGUI
 
 		mTexture = RenderManager::getInstance().createTexture(MyGUI::utility::toString((size_t)this, "_TrueTypeFont"));
 
-		mTexture->createManual(texWidth, texHeight, TextureUsage::Static | TextureUsage::Write, Pixel<LAMode>::getFormat());
+		mTexture->createManual(texWidth, texHeight, TextureUsage::Static | TextureUsage::Write, PixelBase::getFormat());
 		mTexture->setInvalidateListener(this);
 
 		uint8* texBuffer = static_cast<uint8*>(mTexture->lock(TextureUsage::Write));
@@ -691,10 +575,9 @@ namespace MyGUI
 		if (texBuffer != nullptr)
 		{
 			// Make the texture background transparent white.
-			for (uint8* dest = texBuffer, * endDest = dest + texWidth * texHeight * Pixel<LAMode>::getNumBytes(); dest != endDest; )
-				Pixel<LAMode, false, false>::set(dest, charMaskWhite, charMaskBlack);
+            ::memset(texBuffer, 0, texWidth*texHeight*PixelBase::getNumBytes());
 
-			renderGlyphs<LAMode, Antialias>(glyphHeightMap, ftLibrary, ftFace, ftLoadFlags, texBuffer, texWidth, texHeight);
+			renderGlyphs<Outline>(glyphHeightMap, ftLibrary, ftFace, ftLoadFlags, texBuffer, texWidth, texHeight);
 
 			mTexture->unlock();
 
@@ -705,6 +588,13 @@ namespace MyGUI
 		{
 			MYGUI_LOG(Error, "ResourceTrueTypeFont: Error locking texture; pointer is nullptr.");
 		}
+        
+        for (std::map<FT_UInt, FT_Bitmap>::iterator it = m_bitmaps_map.begin();it!=m_bitmaps_map.end();++it) {
+            FT_Bitmap_Done(ftLibrary, &it->second);
+        }
+        for (std::map<FT_UInt, FT_Glyph>::iterator it = m_outline_bitmaps_map.begin();it!=m_outline_bitmaps_map.end();++it) {
+            FT_Done_Glyph(it->second);
+        }
 
 		FT_Done_Face(ftFace);
 		FT_Done_FreeType(ftLibrary);
@@ -777,66 +667,7 @@ namespace MyGUI
 		}
 		else
 		{
-			// The font isn't scalable, so try to load it as a Windows FNT/FON file.
-			FT_WinFNT_HeaderRec fnt;
-
-			// Enumerate all of the faces in the font and select the smallest one that's at least as large as the requested size
-			// (after adjusting for resolution). If none of the faces are large enough, use the largest one.
-			std::map<float, FT_Long> faceSizes;
-
-			do
-			{
-				if (FT_Get_WinFNT_Header(result, &fnt) != 0)
-					MYGUI_EXCEPT("ResourceTrueTypeFont: Could not load the font '" << getResourceName() << "'!");
-
-				faceSizes.insert(std::make_pair((float)fnt.nominal_point_size * fnt.vertical_resolution / mResolution, faceIndex));
-
-				FT_Done_Face(result);
-
-				if (++faceIndex < numFaces)
-					if (FT_New_Memory_Face(_ftLibrary, _fontBuffer, (FT_Long)fontBufferSize, faceIndex, &result) != 0)
-						MYGUI_EXCEPT("ResourceTrueTypeFont: Could not load the font '" << getResourceName() << "'!");
-			}
-			while (faceIndex < numFaces);
-
-			std::map<float, FT_Long>::const_iterator iter = faceSizes.lower_bound(mSize);
-
-			faceIndex = (iter != faceSizes.end()) ? iter->second : faceSizes.rbegin()->second;
-
-			if (FT_New_Memory_Face(_ftLibrary, _fontBuffer, (FT_Long)fontBufferSize, faceIndex, &result) != 0)
-				MYGUI_EXCEPT("ResourceTrueTypeFont: Could not load the font '" << getResourceName() << "'!");
-
-			// Select the first bitmap strike available in the selected face. This needs to be done explicitly even though Windows
-			// FNT/FON files contain only one bitmap strike per face.
-			if (FT_Select_Size(result, 0) != 0)
-				MYGUI_EXCEPT("ResourceTrueTypeFont: Could not set the font size for '" << getResourceName() << "'!");
-
-			// Windows FNT/FON files do not support Unicode, so restrict the code-point range to either ISO-8859-1 or ASCII,
-			// depending on the font's encoding.
-			if (mCharMap.empty())
-			{
-				// No code points have been specified, so add the printable ASCII range by default.
-				addCodePointRange(0x20, 0x7E);
-
-				// Additionally, if the font's character set is CP-1252, add the range of non-ASCII 8-bit code points that are
-				// common between CP-1252 and ISO-8859-1; i.e., everything but 0x80 through 0x9F.
-				if (fnt.charset == FT_WinFNT_ID_CP1252)
-					addCodePointRange(0xA0, 0xFF);
-			}
-			else
-			{
-				// Some code points have been specified, so remove anything in the non-printable ASCII range as well as anything
-				// over 8 bits.
-				removeCodePointRange(0, 0x1F);
-				removeCodePointRange(0x100, std::numeric_limits<Char>::max());
-
-				// Additionally, remove non-ASCII 8-bit code points (plus ASCII DEL, 0x7F). If the font's character set is CP-1252,
-				// remove only the code points that differ between CP-1252 and ISO-8859-1; otherwise, remove all of them.
-				if (fnt.charset == FT_WinFNT_ID_CP1252)
-					removeCodePointRange(0x7F, 0x9F);
-				else
-					removeCodePointRange(0x7F, 0xFF);
-			}
+			MYGUI_EXCEPT("ResourceTrueTypeFont: Could not load the font '" << getResourceName() << "'!");
 		}
 
 		return result;
@@ -880,14 +711,83 @@ namespace MyGUI
 		return (width > 0) ? mGlyphSpacing + width : 0;
 	}
 
-	int ResourceTrueTypeFont::createFaceGlyph(FT_UInt _glyphIndex, Char _codePoint, int _fontAscent, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, GlyphHeightMap& _glyphHeightMap)
+	int ResourceTrueTypeFont::createFaceGlyph(const FT_Library& _ftLibrary,FT_UInt _glyphIndex, Char _codePoint, int _fontAscent, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, GlyphHeightMap& _glyphHeightMap)
 	{
 		if (mGlyphMap.find(_glyphIndex) == mGlyphMap.end())
 		{
-			if (FT_Load_Glyph(_ftFace, _glyphIndex, _ftLoadFlags) == 0)
-				return createGlyph(_glyphIndex, createFaceGlyphInfo(_codePoint, _fontAscent, _ftFace->glyph), _glyphHeightMap);
-			else
-				MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot load glyph " << _glyphIndex << " for character " << _codePoint << " in font '" << getResourceName() << "'.");
+            if (mOutline) {
+                
+                if (FT_Load_Glyph(_ftFace, _glyphIndex, (_ftLoadFlags & (~FT_LOAD_RENDER)) | FT_LOAD_NO_BITMAP) == 0) {
+                    // Set up a stroker.
+                    int res = 0;
+                    float outlineWidth = mOutlineWidth * mScale;
+                    FT_Stroker stroker;
+                    FT_Stroker_New(_ftLibrary, &stroker);
+                    FT_Stroker_Set(stroker,
+                                   (int)(outlineWidth * 64),
+                                   FT_STROKER_LINECAP_ROUND,
+                                   FT_STROKER_LINEJOIN_ROUND,
+                                   0);
+                    
+                    FT_Glyph glyph;
+                    if (FT_Get_Glyph(_ftFace->glyph, &glyph) == 0)
+                    {
+                        FT_Glyph_StrokeBorder(&glyph, stroker,0, 1);
+                        // Render the outline spans to the span list
+                        FT_Glyph_To_Bitmap(&glyph,FT_RENDER_MODE_NORMAL,0,1);
+                        FT_BitmapGlyph ft_bitmap_glyph = (FT_BitmapGlyph) glyph;
+                     
+                        m_outline_bitmaps_map[_glyphIndex] = glyph;
+                        
+                        float bearingX = _ftFace->glyph->metrics.horiBearingX / 64.0f;
+                        
+                        // The following calculations aren't currently needed but are kept here for future use.
+                        // float ascent = _glyph->metrics.horiBearingY / 64.0f;
+                        // float descent = (_glyph->metrics.height / 64.0f) - ascent;
+                        
+                        GlyphInfo info(
+                                         _codePoint,
+                                         ft_bitmap_glyph->bitmap.width,
+                                         ft_bitmap_glyph->bitmap.rows,
+                                         (_ftFace->glyph->advance.x / 64.0f) - bearingX,
+                                         bearingX,
+                                         floor(_fontAscent - (_ftFace->glyph->metrics.horiBearingY / 64.0f) - mOffsetHeight));
+                        
+                        res = createGlyph(_glyphIndex, info, _glyphHeightMap);
+                        
+                        if (FT_Load_Glyph(_ftFace, _glyphIndex, _ftLoadFlags | FT_LOAD_RENDER) == 0) {
+                            FT_Bitmap new_bitmap;
+                            FT_Bitmap_New(&new_bitmap);
+                            FT_Bitmap_Copy(_ftLibrary, &_ftFace->glyph->bitmap, &new_bitmap);
+                            m_bitmaps_map[_glyphIndex] = new_bitmap;
+                            
+                            ft_bitmap_glyph->left -= _ftFace->glyph->bitmap_left;
+                            ft_bitmap_glyph->top -= _ftFace->glyph->bitmap_top;
+                        }
+
+                    }
+                    // Clean up afterwards.
+                    FT_Stroker_Done(stroker);
+                    
+                    
+                    
+                    return res;
+                } else {
+                    MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot load glyph " << _glyphIndex << " for character " << _codePoint << " in font '" << getResourceName() << "'.");
+                }
+
+            } else {
+                if (FT_Load_Glyph(_ftFace, _glyphIndex, _ftLoadFlags | FT_LOAD_RENDER) == 0) {
+                    FT_Bitmap new_bitmap;
+                    FT_Bitmap_New(&new_bitmap);
+                    FT_Bitmap_Copy(_ftLibrary, &_ftFace->glyph->bitmap, &new_bitmap);
+                    m_bitmaps_map[_glyphIndex] = new_bitmap;
+                    return createGlyph(_glyphIndex, createFaceGlyphInfo(_codePoint, _fontAscent, _ftFace->glyph), _glyphHeightMap);
+                }
+                else
+                    MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot load glyph " << _glyphIndex << " for character " << _codePoint << " in font '" << getResourceName() << "'.");
+            }
+			
 		}
 		else
 		{
@@ -897,7 +797,7 @@ namespace MyGUI
 		return 0;
 	}
 
-	template<bool LAMode, bool Antialias>
+	template<bool Outline>
 	void ResourceTrueTypeFont::renderGlyphs(const GlyphHeightMap& _glyphHeightMap, const FT_Library& _ftLibrary, const FT_Face& _ftFace, FT_Int32 _ftLoadFlags, uint8* _texBuffer, int _texWidth, int _texHeight)
 	{
 		FT_Bitmap ftBitmap;
@@ -916,7 +816,7 @@ namespace MyGUI
 				case FontCodeType::Selected:
 				case FontCodeType::SelectedBack:
 				{
-					renderGlyph<LAMode, false, false>(info, charMaskWhite, charMaskBlack, charMask.find(info.codePoint)->second, j->first, _texBuffer, _texWidth, _texHeight, texX, texY);
+					fillGlyph(info, charMaskWhite, charMask.find(info.codePoint)->second, j->first, _texBuffer, _texWidth, _texHeight, texX, texY);
 
 					// Manually adjust the glyph's width to zero. This prevents artifacts from appearing at the seams when
 					// rendering multi-character selections.
@@ -928,44 +828,15 @@ namespace MyGUI
 
 				case FontCodeType::Cursor:
 				case FontCodeType::Tab:
-					renderGlyph<LAMode, false, false>(info, charMaskWhite, charMaskBlack, charMask.find(info.codePoint)->second, j->first, _texBuffer, _texWidth, _texHeight, texX, texY);
+					fillGlyph(info, charMaskWhite, charMask.find(info.codePoint)->second, j->first, _texBuffer, _texWidth, _texHeight, texX, texY);
 					break;
 
 				default:
-					if (FT_Load_Glyph(_ftFace, i->first, _ftLoadFlags | FT_LOAD_RENDER) == 0)
-					{
-						if (_ftFace->glyph->bitmap.buffer != nullptr)
-						{
-							uint8* glyphBuffer = nullptr;
-
-							switch (_ftFace->glyph->bitmap.pixel_mode)
-							{
-							case FT_PIXEL_MODE_GRAY:
-								glyphBuffer = _ftFace->glyph->bitmap.buffer;
-								break;
-
-							case FT_PIXEL_MODE_MONO:
-								// Convert the monochrome bitmap to 8-bit before rendering it.
-								if (FT_Bitmap_Convert(_ftLibrary, &_ftFace->glyph->bitmap, &ftBitmap, 1) == 0)
-								{
-									// Go through the bitmap and convert all of the nonzero values to 0xFF (white).
-									for (uint8* p = ftBitmap.buffer, * endP = p + ftBitmap.width * ftBitmap.rows; p != endP; ++p)
-										*p ^= -*p ^ *p;
-
-									glyphBuffer = ftBitmap.buffer;
-								}
-								break;
-							}
-
-							if (glyphBuffer != nullptr)
-								renderGlyph<LAMode, true, Antialias>(info, charMaskWhite, charMaskWhite, charMaskWhite, j->first, _texBuffer, _texWidth, _texHeight, texX, texY, glyphBuffer);
-						}
-					}
-					else
-					{
-						MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot render glyph " << i->first << " for character " << info.codePoint << " in font '" << getResourceName() << "'.");
-					}
-					break;
+                    {
+                        renderGlyph<Outline>(_ftLibrary,info,j->first,_texBuffer,_texWidth,_texHeight,texX,texY,i->first,ftBitmap);
+                        
+                    }
+                    break;
 				}
 			}
 		}
@@ -973,31 +844,25 @@ namespace MyGUI
 		FT_Bitmap_Done(_ftLibrary, &ftBitmap);
 	}
 
-	template<bool LAMode, bool UseBuffer, bool Antialias>
-	void ResourceTrueTypeFont::renderGlyph(GlyphInfo& _info, uint8 _luminance0, uint8 _luminance1, uint8 _alpha, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY, uint8* _glyphBuffer)
+	void ResourceTrueTypeFont::fillGlyph(GlyphInfo& _info, uint8 _luminance, uint8 _alpha, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY)
 	{
 		int width = (int)ceil(_info.width);
 		int height = (int)ceil(_info.height);
 
 		autoWrapGlyphPos(width, _texWidth, _lineHeight, _texX, _texY);
 
-		uint8* dest = _texBuffer + (_texY * _texWidth + _texX) * Pixel<LAMode>::getNumBytes();
+		uint8* dest = _texBuffer + (_texY * _texWidth + _texX) * PixelBase::getNumBytes();
 
 		// Calculate how much to advance the destination pointer after each row to get to the start of the next row.
-		ptrdiff_t destNextRow = (_texWidth - width) * Pixel<LAMode>::getNumBytes();
+		ptrdiff_t destNextRow = (_texWidth - width) * PixelBase::getNumBytes();
 
+        
+        
 		for (int j = height; j > 0; --j)
 		{
-			int i;
-			for (i = width; i > 1; i -= 2)
-			{
-				Pixel<LAMode, UseBuffer, Antialias>::set(dest, _luminance0, _alpha, _glyphBuffer);
-				Pixel<LAMode, UseBuffer, Antialias>::set(dest, _luminance1, _alpha, _glyphBuffer);
-			}
-
-			if (i > 0)
-				Pixel<LAMode, UseBuffer, Antialias>::set(dest, _luminance0, _alpha, _glyphBuffer);
-
+            for (int i=0;i<width;++i) {
+                PixelBase::set(dest, _luminance, _alpha);
+            }
 			dest += destNextRow;
 		}
 
@@ -1010,7 +875,178 @@ namespace MyGUI
         if (width > 0)
 			_texX += mGlyphSpacing + width;
 	}
-
+    
+    void ResourceTrueTypeFont::putGlyph(GlyphInfo& _info,  int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY,const FT_Bitmap* _bitmap,const Colour& _clr) {
+        int width = (int)ceil(_info.width);
+        int height = (int)ceil(_info.height);
+        
+        autoWrapGlyphPos(width, _texWidth, _lineHeight, _texX, _texY);
+        
+        uint8* dest = _texBuffer + (_texY * _texWidth + _texX ) * PixelBase::getNumBytes();
+        
+        // Calculate how much to advance the destination pointer after each row to get to the start of the next row.
+        ptrdiff_t destNextRow = (_texWidth - _bitmap->width) * PixelBase::getNumBytes();
+        
+        const unsigned char* src = _bitmap->buffer;
+        
+        for (int j = _bitmap->rows; j > 0; --j)
+        {
+            for (int i=0;i<_bitmap->width;++i) {
+                PixelBase::set(dest, _clr, *src++);
+            }
+            dest += destNextRow;
+        }
+        
+        // Calculate and store the glyph's UV coordinates within the texture.
+        _info.uvRect.left = (float)_texX / _texWidth; // u1
+        _info.uvRect.top = (float)_texY / _texHeight; // v1
+        _info.uvRect.right = (float)(_texX + _info.width) / _texWidth; // u2
+        _info.uvRect.bottom = (float)(_texY + _info.height) / _texHeight; // v2
+        
+        if (width > 0)
+            _texX += mGlyphSpacing + width;
+    }
+    
+    void ResourceTrueTypeFont::blendGlyph(GlyphInfo& _info, int _dx,int _dy, int _lineHeight, uint8* _texBuffer, int _texWidth, int _texHeight, int& _texX, int& _texY,const FT_Bitmap* _bitmap,const Colour& _clr) {
+        int width = (int)ceil(_info.width);
+        int height = (int)ceil(_info.height);
+        
+        autoWrapGlyphPos(width, _texWidth, _lineHeight, _texX, _texY);
+        
+        uint8* dest = _texBuffer + ((_texY+_dy) * _texWidth + _texX + _dx) * PixelBase::getNumBytes();
+        
+        // Calculate how much to advance the destination pointer after each row to get to the start of the next row.
+        ptrdiff_t destNextRow = (_texWidth - _bitmap->width) * PixelBase::getNumBytes();
+        
+        const unsigned char* src = _bitmap->buffer;
+        
+        for (int j = _bitmap->rows; j > 0; --j)
+        {
+            for (int i=0;i<_bitmap->width;++i) {
+                PixelBase::blend(dest, _clr, *src++);
+            }
+            dest += destNextRow;
+        }
+    }
+    
+    template <>
+    void ResourceTrueTypeFont::renderGlyph<false>(const FT_Library& _ftLibrary,MyGUI::GlyphInfo &_info, int _lineHeight, uint8 *_texBuffer, int _texWidth, int _texHeight, int &_texX, int &_texY, FT_UInt _glyphIndex, FT_Bitmap& _ftBitmap) {
+        std::map<FT_UInt,FT_Bitmap>::const_iterator it = m_bitmaps_map.find(_glyphIndex);
+        if (it != m_bitmaps_map.end()) {
+            const FT_Bitmap& bitmap(it->second);
+            if (bitmap.buffer != nullptr)
+            {
+                const FT_Bitmap* bitmap_buffer = 0;
+                
+                switch (bitmap.pixel_mode)
+                {
+                    case FT_PIXEL_MODE_GRAY:
+                        bitmap_buffer = &bitmap;
+                        break;
+                        
+                    case FT_PIXEL_MODE_MONO:
+                        // Convert the monochrome bitmap to 8-bit before rendering it.
+                        if (FT_Bitmap_Convert(_ftLibrary, &bitmap, &_ftBitmap, 1) == 0)
+                        {
+                            // Go through the bitmap and convert all of the nonzero values to 0xFF (white).
+                            for (uint8* p = _ftBitmap.buffer, * endP = p + _ftBitmap.width * _ftBitmap.rows; p != endP; ++p)
+                                *p ^= -*p ^ *p;
+                            
+                            bitmap_buffer = &_ftBitmap;
+                        }
+                        break;
+                }
+                if (bitmap_buffer) {
+                    putGlyph(_info,_lineHeight,_texBuffer,_texWidth,_texHeight,_texX,_texY,bitmap_buffer,Colour::White);
+                }
+            }
+            
+        } else {
+            MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot rendered glyph " << _glyphIndex << " for character " << _info.codePoint << " in font '" << getResourceName() << "'.");
+        }
+    }
+    
+    template <>
+    void ResourceTrueTypeFont::renderGlyph<true>(const FT_Library& _ftLibrary,MyGUI::GlyphInfo &_info, int _lineHeight, uint8 *_texBuffer, int _texWidth, int _texHeight, int &_texX, int &_texY, FT_UInt _glyphIndex, FT_Bitmap& _ftBitmap) {
+        
+        std::map<FT_UInt,FT_Glyph>::const_iterator it = m_outline_bitmaps_map.find(_glyphIndex);
+        if (it != m_outline_bitmaps_map.end()) {
+            FT_BitmapGlyph glyph = (FT_BitmapGlyph)it->second;
+            
+            
+            if (glyph->bitmap.buffer != nullptr)
+            {
+                const FT_Bitmap* bitmap_buffer = 0;
+                
+                switch (glyph->bitmap.pixel_mode)
+                {
+                    case FT_PIXEL_MODE_GRAY:
+                        bitmap_buffer = &(glyph->bitmap);
+                        break;
+                        
+                    case FT_PIXEL_MODE_MONO:
+                        // Convert the monochrome bitmap to 8-bit before rendering it.
+                        if (FT_Bitmap_Convert(_ftLibrary, &(glyph->bitmap), &_ftBitmap, 1) == 0)
+                        {
+                            // Go through the bitmap and convert all of the nonzero values to 0xFF (white).
+                            for (uint8* p = _ftBitmap.buffer, * endP = p + _ftBitmap.width * _ftBitmap.rows; p != endP; ++p)
+                                *p ^= -*p ^ *p;
+                            
+                            bitmap_buffer = &_ftBitmap;
+                        }
+                        break;
+                }
+                int texX = _texX;
+                int texY = _texY;
+                if (bitmap_buffer) {
+                    putGlyph(_info,_lineHeight,_texBuffer,_texWidth,_texHeight,_texX,_texY,bitmap_buffer,mOutlineColour);
+                }
+                
+#if 1
+                std::map<FT_UInt,FT_Bitmap>::const_iterator it = m_bitmaps_map.find(_glyphIndex);
+                if (it != m_bitmaps_map.end()) {
+                    const FT_Bitmap& bitmap(it->second);
+                    if (bitmap.buffer != nullptr)
+                    {
+                        const FT_Bitmap* bitmap_buffer = 0;
+                        
+                        switch (bitmap.pixel_mode)
+                        {
+                            case FT_PIXEL_MODE_GRAY:
+                                bitmap_buffer = &bitmap;
+                                break;
+                                
+                            case FT_PIXEL_MODE_MONO:
+                                // Convert the monochrome bitmap to 8-bit before rendering it.
+                                if (FT_Bitmap_Convert(_ftLibrary, &bitmap, &_ftBitmap, 1) == 0)
+                                {
+                                    // Go through the bitmap and convert all of the nonzero values to 0xFF (white).
+                                    for (uint8* p = _ftBitmap.buffer, * endP = p + _ftBitmap.width * _ftBitmap.rows; p != endP; ++p)
+                                        *p ^= -*p ^ *p;
+                                    
+                                    bitmap_buffer = &_ftBitmap;
+                                }
+                                break;
+                        }
+                        if (bitmap_buffer) {
+                            blendGlyph(_info,-glyph->left,
+                                       glyph->top,_lineHeight,_texBuffer,_texWidth,_texHeight,texX,texY,bitmap_buffer,Colour::White);
+                        }
+                    }
+                    
+                } else {
+                    MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot rendered glyph " << _glyphIndex << " for character " << _info.codePoint << " in font '" << getResourceName() << "'.");
+                }
+#endif
+                
+            }
+            
+        } else {
+            MYGUI_LOG(Warning, "ResourceTrueTypeFont: Cannot rendered glyph " << _glyphIndex << " for character " << _info.codePoint << " in font '" << getResourceName() << "'.");
+        }
+    }
+    
+ 
 	void ResourceTrueTypeFont::setSource(const std::string& _value)
 	{
 		mSource = _value;
@@ -1043,11 +1079,18 @@ namespace MyGUI
 		else
 			mHinting = HintingUseNative;
 	}
-
-	void ResourceTrueTypeFont::setAntialias(bool _value)
-	{
-		mAntialias = _value;
-	}
+    
+    void ResourceTrueTypeFont::setOutline(bool _value) {
+        mOutline = _value;
+    }
+    
+    void ResourceTrueTypeFont::setOutlineColour(const MyGUI::Colour &_value) {
+        mOutlineColour = _value;
+    }
+    
+    void ResourceTrueTypeFont::setOutlineWidth(float _value) {
+        mOutlineWidth = _value;
+    }
 
 	void ResourceTrueTypeFont::setTabWidth(float _value)
 	{
