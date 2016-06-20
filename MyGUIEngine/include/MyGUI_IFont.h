@@ -29,6 +29,7 @@ namespace MyGUI
 		virtual GlyphInfo* getGlyphInfo(Char _id) = 0;
 
 		virtual int getDefaultHeight() = 0;
+        virtual int getOutlineWidth() const = 0;
 	};
 
 } // namespace MyGUI

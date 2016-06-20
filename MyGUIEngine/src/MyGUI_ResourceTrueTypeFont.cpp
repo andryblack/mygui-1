@@ -252,6 +252,10 @@ namespace MyGUI
 		return mDefaultHeight;
 	}
 
+    int ResourceTrueTypeFont::getOutlineWidth() const {
+        return mOutline ? mOutlineWidth : 0;
+    }
+    
 	void ResourceTrueTypeFont::textureInvalidate(ITexture* _texture)
 	{
 		mGlyphMap.clear();

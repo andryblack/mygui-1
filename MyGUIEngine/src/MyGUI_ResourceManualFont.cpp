@@ -146,6 +146,10 @@ namespace MyGUI
 		return mDefaultHeight;
 	}
 
+    int ResourceManualFont::getOutlineWidth() const {
+        return 0;
+    }
+    
 	void ResourceManualFont::setSource(const std::string& value)
 	{
 		mTexture = nullptr;

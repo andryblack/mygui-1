@@ -146,7 +146,7 @@ namespace MyGUI
 						index = peeki; // skip both as one newline
 				}
 
-				line_info.width = (int)ceil(width);
+				line_info.width = (int)ceil(width + _font->getOutlineWidth());
 				line_info.count = count;
 				mLength += line_info.count + 1;
 
@@ -247,7 +247,7 @@ namespace MyGUI
 				line_info.simbols.erase(line_info.simbols.begin() + roll_back.getPosition(), line_info.simbols.end());
 
 				// запоминаем место отката, как полную строку
-				line_info.width = (int)ceil(width);
+				line_info.width = (int)ceil(width + _font->getOutlineWidth());
 				line_info.count = count;
 				mLength += line_info.count + 1;
 
@@ -270,13 +270,15 @@ namespace MyGUI
 			count ++;
 		}
 
-		line_info.width = (int)ceil(width);
+		line_info.width = (int)ceil(width + _font->getOutlineWidth());
 		line_info.count = count;
 		mLength += line_info.count;
 
 		mLineInfo.push_back(line_info);
 
 		setMax(result.width, line_info.width);
+        
+        result.height += _font->getOutlineWidth() * 2;
 
 		// теперь выравниванием строки
 		for (VectorLineInfo::iterator line = mLineInfo.begin(); line != mLineInfo.end(); ++line)

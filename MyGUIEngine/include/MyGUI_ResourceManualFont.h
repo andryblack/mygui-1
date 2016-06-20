@@ -33,6 +33,8 @@ namespace MyGUI
 
 		// дефолтная высота, указанная в настройках шрифта
 		virtual int getDefaultHeight();
+        
+        virtual int getOutlineWidth() const;
 
 		// Manual loading methods, not needed when loading from XML
 		// Set the source texture by name

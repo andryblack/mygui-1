@@ -39,6 +39,8 @@ namespace MyGUI
 
 		// получившаяся высота при генерации в пикселях
 		virtual int getDefaultHeight();
+        
+        virtual int getOutlineWidth() const;
 
 		// update texture after render device lost event
 		virtual void textureInvalidate(ITexture* _texture);
