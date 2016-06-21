@@ -16,7 +16,6 @@
 #include "MyGUI_ResourceLayout.h"
 #include "MyGUI_IObject.h"
 #include "MyGUI_SkinItem.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -32,8 +31,7 @@ namespace MyGUI
 		public UserData,
 		public WidgetInput,
 		public delegates::IDelegateUnlink,
-		public SkinItem,
-		public MemberObsolete<Widget>
+		public SkinItem
 	{
 		// для вызова закрытых деструкторов
 		friend class WidgetManager;

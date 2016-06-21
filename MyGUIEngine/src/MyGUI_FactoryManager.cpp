@@ -6,7 +6,6 @@
 
 #include "MyGUI_Precompiled.h"
 #include "MyGUI_FactoryManager.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -77,8 +76,7 @@ namespace MyGUI
 			return nullptr;
 		}
 
-		std::string typeName = BackwardCompatibility::getFactoryRename(_category, _type);
-		MapFactoryItem::iterator type = category->second.find(typeName);
+		MapFactoryItem::iterator type = category->second.find(_type);
 		if (type == category->second.end())
 		{
 			return nullptr;

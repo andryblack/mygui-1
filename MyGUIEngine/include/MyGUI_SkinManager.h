@@ -13,14 +13,12 @@
 #include "MyGUI_ResourceSkin.h"
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_ResourceManager.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
 
 	class MYGUI_EXPORT SkinManager :
-		public Singleton<SkinManager>,
-		public MemberObsolete<SkinManager>
+		public Singleton<SkinManager>
 	{
 	public:
 		SkinManager();

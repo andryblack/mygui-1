@@ -14,7 +14,6 @@
 #include "MyGUI_Version.h"
 #include "MyGUI_DynLib.h"
 #include <set>
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -22,8 +21,7 @@ namespace MyGUI
 	/*!	\brief Plugin manager. Load/unload and register plugins.
 	*/
 	class MYGUI_EXPORT PluginManager :
-		public Singleton<PluginManager>,
-		public MemberObsolete<PluginManager>
+		public Singleton<PluginManager>
 	{
 	public:
 		PluginManager();

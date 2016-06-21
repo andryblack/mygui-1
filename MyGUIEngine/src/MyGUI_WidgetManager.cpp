@@ -33,7 +33,6 @@
 #include "MyGUI_Widget.h"
 #include "MyGUI_Window.h"
 
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -76,8 +75,6 @@ namespace MyGUI
 		factory.registerFactory<TabItem>(mCategoryName);
 		factory.registerFactory<Widget>(mCategoryName);
 		factory.registerFactory<Window>(mCategoryName);
-
-		BackwardCompatibility::registerWidgetTypes();
 
 		Gui::getInstance().eventFrameStart += newDelegate(this, &WidgetManager::notifyEventFrameStart);
 

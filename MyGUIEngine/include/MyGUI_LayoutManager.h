@@ -12,7 +12,6 @@
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_WidgetDefines.h"
 #include "MyGUI_ResourceLayout.h"
-#include "MyGUI_BackwardCompatibility.h"
 #include "MyGUI_Gui.h"
 
 namespace MyGUI
@@ -21,8 +20,7 @@ namespace MyGUI
 	typedef delegates::CMultiDelegate3<Widget*, const std::string&, const std::string&> EventHandle_AddUserStringDelegate;
 
 	class MYGUI_EXPORT LayoutManager :
-		public Singleton<LayoutManager>,
-		public MemberObsolete<LayoutManager>
+		public Singleton<LayoutManager>
 	{
 	public:
 		LayoutManager();

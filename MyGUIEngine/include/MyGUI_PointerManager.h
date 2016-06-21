@@ -12,15 +12,13 @@
 #include "MyGUI_IUnlinkWidget.h"
 #include "MyGUI_ImageBox.h"
 #include "MyGUI_IPointer.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
 
 	class MYGUI_EXPORT PointerManager :
 		public Singleton<PointerManager>,
-		public IUnlinkWidget,
-		public MemberObsolete<PointerManager>
+		public IUnlinkWidget
 	{
 	public:
 		PointerManager();

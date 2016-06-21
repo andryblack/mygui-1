@@ -14,15 +14,13 @@
 #include "MyGUI_IUnlinkWidget.h"
 #include "MyGUI_ResourceManager.h"
 #include "MyGUI_ILayer.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
 
 	class MYGUI_EXPORT LayerManager :
 		public Singleton<LayerManager>,
-		public IUnlinkWidget,
-		public MemberObsolete<LayerManager>
+		public IUnlinkWidget
 	{
 	public:
 		typedef std::vector<ILayer*> VectorLayer;

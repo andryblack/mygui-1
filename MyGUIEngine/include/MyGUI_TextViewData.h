@@ -17,33 +17,16 @@ namespace MyGUI
 	{
 	public:
 		CharInfo() :
-            mIsColour(false),
-            mTexture(0)
+            mIsColour(false)
 		{
-			mMetrics.mWidth = 0.0f;
-			mMetrics.mHeight = 0.0f;
-			mMetrics.mAdvance = 0.0f;
-			mMetrics.mBearingX = 0.0f;
-			mMetrics.mBearingY = 0.0f;
+            mSymbol.mChar = 0;
+            mSymbol.mAdvance = 0;
 		}
 
-		CharInfo(
-            ITexture* _texture,
-			const FloatRect& _rect,
-			float _width,
-			float _height,
-			float _advance,
-			float _bearingX,
-			float _bearingY) :
-			mIsColour(false),
-            mTexture(_texture),
-			mUVRect(_rect)
+        CharInfo( Char ch, float advance ) : mIsColour(false)
 		{
-			mMetrics.mWidth = _width;
-			mMetrics.mHeight = _height;
-			mMetrics.mAdvance = _advance;
-			mMetrics.mBearingX = _bearingX;
-			mMetrics.mBearingY = _bearingY;
+            mSymbol.mChar = ch;
+            mSymbol.mAdvance = advance;
 		}
 
 		CharInfo(uint32 _colour) :
@@ -56,39 +39,15 @@ namespace MyGUI
 			return mIsColour;
 		}
 
-		float getWidth() const
-		{
-			return mMetrics.mWidth;
-		}
-
-		float getHeight() const
-		{
-			return mMetrics.mHeight;
-		}
-
 		float getAdvance() const
 		{
-			return mMetrics.mAdvance;
-		}
-
-		float getBearingX() const
-		{
-			return mMetrics.mBearingX;
-		}
-
-		float getBearingY() const
-		{
-			return mMetrics.mBearingY;
+            return mSymbol.mAdvance;
 		}
         
-        ITexture* getTexture() const {
-            return mTexture;
+        Char getChar() const {
+            return mSymbol.mChar;
         }
 
-		const FloatRect& getUVRect() const
-		{
-			return mUVRect;
-		}
 
 		uint32 getColour() const
 		{
@@ -98,21 +57,17 @@ namespace MyGUI
 	private:
 
 		bool mIsColour;
-        ITexture* mTexture;
-		FloatRect mUVRect;
-
-		struct Metrics
+        
+		
+		struct Symbol
 		{
-			float mWidth;
-			float mHeight;
-			float mAdvance;
-			float mBearingX;
-			float mBearingY;
+			Char mChar;
+            float mAdvance;
 		};
 
 		union
 		{
-			Metrics mMetrics;
+			Symbol mSymbol;
 			uint32 mColour;
 		};
 
@@ -143,7 +98,16 @@ namespace MyGUI
 		VectorCharInfo simbols;
 	};
 
-	typedef std::vector<LineInfo> VectorLineInfo;
+    typedef std::vector<LineInfo> VectorLineInfoLines;
+    struct VectorLineInfo {
+        VectorLineInfoLines lines;
+        float scale;
+        void clear() {
+            scale = 1.0f;
+            lines.clear();
+        }
+    };
+	
 
 } // namespace MyGUI
 

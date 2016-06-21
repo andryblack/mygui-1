@@ -85,7 +85,7 @@ namespace MyGUI
 
 	ResourceLayout* LayoutManager::getByName(const std::string& _name, bool _throw) const
 	{
-		std::string skinName = BackwardCompatibility::getSkinRename(_name);
+		std::string skinName = _name;
 		IResource* result = ResourceManager::getInstance().getByName(skinName, false);
 
 		if (result != nullptr)

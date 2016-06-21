@@ -24,7 +24,7 @@ namespace MyGUI
 	{
 	}
 
-	GlyphInfo* ResourceManualFont::getGlyphInfo(Char _id)
+	GlyphInfo* ResourceManualFont::getGlyphInfo(int,Char _id)
 	{
 		CharMap::iterator iter = mCharMap.find(_id);
 
@@ -136,19 +136,11 @@ namespace MyGUI
 		}
 	}
 
-	ITexture* ResourceManualFont::getTextureFont()
-	{
-		return mTexture;
-	}
-
 	int ResourceManualFont::getDefaultHeight()
 	{
 		return mDefaultHeight;
 	}
 
-    int ResourceManualFont::getOutlineWidth() const {
-        return 0;
-    }
     
 	void ResourceManualFont::setSource(const std::string& value)
 	{

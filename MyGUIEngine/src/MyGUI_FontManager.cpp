@@ -10,7 +10,6 @@
 #include "MyGUI_XmlDocument.h"
 
 #include "MyGUI_ResourceManualFont.h"
-#include "MyGUI_ResourceTrueTypeFont.h"
 
 namespace MyGUI
 {
@@ -35,9 +34,6 @@ namespace MyGUI
 
 		std::string resourceCategory = ResourceManager::getInstance().getCategoryName();
 		FactoryManager::getInstance().registerFactory<ResourceManualFont>(resourceCategory);
-#ifdef MYGUI_USE_FREETYPE
-		FactoryManager::getInstance().registerFactory<ResourceTrueTypeFont>(resourceCategory);
-#endif
 
 		mDefaultName = "Default";
 
@@ -54,9 +50,6 @@ namespace MyGUI
 
 		std::string resourceCategory = ResourceManager::getInstance().getCategoryName();
 		FactoryManager::getInstance().unregisterFactory<ResourceManualFont>(resourceCategory);
-#ifdef MYGUI_USE_FREETYPE
-		FactoryManager::getInstance().unregisterFactory<ResourceTrueTypeFont>(resourceCategory);
-#endif
 		MYGUI_LOG(Info, getClassTypeName() << " successfully shutdown");
 		mIsInitialise = false;
 	}
@@ -74,11 +67,7 @@ namespace MyGUI
 			{
 				const std::string& key = node->findAttribute("key");
 				const std::string& value = node->findAttribute("value");
-#ifdef MYGUI_USE_FREETYPE
 				if (key == "Default")
-#else
-				if (key == "DefaultGenerated")
-#endif
 					mDefaultName = value;
 			}
 		}

@@ -13,7 +13,6 @@
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_IResource.h"
 #include "MyGUI_Delegate.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {

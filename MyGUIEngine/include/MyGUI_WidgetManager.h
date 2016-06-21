@@ -13,13 +13,11 @@
 #include "MyGUI_ICroppedRectangle.h"
 #include "MyGUI_Widget.h"
 #include <set>
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
 	class MYGUI_EXPORT WidgetManager :
-		public Singleton<WidgetManager>,
-		public MemberObsolete<WidgetManager>
+		public Singleton<WidgetManager>
 	{
 	public:
 		WidgetManager();

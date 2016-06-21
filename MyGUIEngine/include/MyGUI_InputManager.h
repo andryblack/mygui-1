@@ -19,7 +19,6 @@
 #include "MyGUI_Timer.h"
 #include "MyGUI_ILayer.h"
 #include "MyGUI_Delegate.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -29,8 +28,7 @@ namespace MyGUI
 	
 	class MYGUI_EXPORT InputManager :
 		public Singleton<InputManager>,
-		public IUnlinkWidget,
-		public MemberObsolete<InputManager>
+		public IUnlinkWidget
 	{
 	public:
 		InputManager();

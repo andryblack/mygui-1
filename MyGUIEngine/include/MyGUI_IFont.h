@@ -16,6 +16,7 @@ namespace MyGUI
 {
 
 	class ITexture;
+    struct Colour;
 
 	class MYGUI_EXPORT IFont :
 		public IResource
@@ -26,11 +27,13 @@ namespace MyGUI
 		IFont() { }
 		virtual ~IFont() { }
 
-		virtual GlyphInfo* getGlyphInfo(Char _id) = 0;
+        virtual size_t getNumPasses() const { return 1; }
+		virtual GlyphInfo* getGlyphInfo( int pass, Char _id) = 0;
 
 		virtual int getDefaultHeight() = 0;
-        virtual int getOutlineWidth() const = 0;
-	};
+        virtual bool getColour( size_t pass, Colour& clr ) { return false; }
+        virtual FloatSize getOffset( size_t pass ) { return FloatSize(0.0f,0.0f); }
+   };
 
 } // namespace MyGUI
 

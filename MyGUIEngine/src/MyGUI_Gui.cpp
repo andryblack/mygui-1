@@ -106,8 +106,6 @@ namespace MyGUI
 		if (!_core.empty())
 			mResourceManager->load(_core);
 
-		BackwardCompatibility::initialise();
-
 		MYGUI_LOG(Info, getClassTypeName() << " successfully initialized");
 		mIsInitialise = true;
 	}
@@ -123,8 +121,6 @@ namespace MyGUI
 	{
 		MYGUI_ASSERT(mIsInitialise, getClassTypeName() << " is not initialised");
 		MYGUI_LOG(Info, "* Shutdown: " << getClassTypeName());
-
-		BackwardCompatibility::shutdown();
 
 		_destroyAllChildWidget();
 

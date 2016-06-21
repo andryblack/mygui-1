@@ -12,14 +12,12 @@
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_Delegate.h"
 #include "MyGUI_Types.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
 
 	class MYGUI_EXPORT LanguageManager :
-		public Singleton<LanguageManager>,
-		public MemberObsolete<LanguageManager>
+		public Singleton<LanguageManager>
 	{
 	public:
 		LanguageManager();

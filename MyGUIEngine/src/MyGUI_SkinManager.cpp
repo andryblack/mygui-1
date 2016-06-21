@@ -15,7 +15,6 @@
 #include "MyGUI_FactoryManager.h"
 #include "MyGUI_IStateInfo.h"
 #include "MyGUI_LayoutManager.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -79,7 +78,7 @@ namespace MyGUI
 
 	ResourceSkin* SkinManager::getByName(const std::string& _name) const
 	{
-		std::string skinName = BackwardCompatibility::getSkinRename(_name);
+		std::string skinName =_name;
 		IResource* result = nullptr;
 		if (!skinName.empty() && skinName != mXmlDefaultSkinValue)
 			result = ResourceManager::getInstance().getByName(skinName, false);
@@ -98,7 +97,7 @@ namespace MyGUI
 
 	bool SkinManager::isExist(const std::string& _name) const
 	{
-		std::string skinName = BackwardCompatibility::getSkinRename(_name);
+		std::string skinName =_name;
 		IResource* result = ResourceManager::getInstance().getByName(skinName, false);
 		return (result != nullptr) && (result->isType<ResourceSkin>());
 	}

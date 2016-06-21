@@ -549,75 +549,124 @@ namespace MyGUI
 
 		const VectorLineInfo& textViewData = mTextView.getData();
 
-		float top = (float)(-mViewOffset.top + mCoord.top);
+		
 
 		FloatRect vertexRect;
 
-		const GlyphInfo* selectedInfo = mFont->getGlyphInfo(mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack);
+		const GlyphInfo* selectedInfo = mFont->getGlyphInfo(-1,mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack);
 
 		size_t index = 0;
 
-		for (VectorLineInfo::const_iterator line = textViewData.begin(); line != textViewData.end(); ++line)
-		{
-			float left = (float)(line->offset - mViewOffset.left + mCoord.left);
+        if (mShadow)
+        for (size_t pass=0;pass<mFont->getNumPasses();++pass) {
+            FloatSize offset = mFont->getOffset(pass);
+            float top = (float)(-mViewOffset.top + mCoord.top) + offset.height;
+            
+            for (VectorLineInfoLines::const_iterator line = textViewData.lines.begin(); line != textViewData.lines.end(); ++line)
+            {
+                float left = (float)(line->offset - mViewOffset.left + mCoord.left) + offset.width;
 
-			for (VectorCharInfo::const_iterator sim = line->simbols.begin(); sim != line->simbols.end(); ++sim)
-			{
-				if (sim->isColour())
-				{
-					colour = sim->getColour() | (colour & 0xFF000000);
-					inverseColour = colour ^ 0x00FFFFFF;
-					selectedColour = mInvertSelect ? inverseColour : colour | 0x00FFFFFF;
-					continue;
-				}
+                for (VectorCharInfo::const_iterator sim = line->simbols.begin(); sim != line->simbols.end(); ++sim)
+                {
+                    if (sim->isColour())
+                    {
+                        continue;
+                    }
 
-				// смещение текстуры для фона
-				bool select = index >= mStartSelect && index < mEndSelect;
+                    // смещение текстуры для фона
+                    bool select = index >= mStartSelect && index < mEndSelect;
 
-				float fullAdvance = sim->getBearingX() + sim->getAdvance();
+                    float fullAdvance = sim->getAdvance();
 
-				// Render the selection, if any, first.
-				if (select)
-				{
-					vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
-                    _target->setTexture(selectedInfo->texture);
-					drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
-				}
-
-                _target->setTexture(sim->getTexture());
-                
-				// Render the glyph shadow, if any.
-				if (mShadow)
-				{
-					vertexRect.left = left + sim->getBearingX() + 1.0f;
-					vertexRect.top = top + sim->getBearingY() + 1.0f;
-					vertexRect.right = vertexRect.left + sim->getWidth();
-					vertexRect.bottom = vertexRect.top + sim->getHeight();
+                    // Render the selection, if any, first.
+                    if (select && pass == 0)
+                    {
+                        vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
+                        _target->setTexture(selectedInfo->texture);
+                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
+                    }
                     
-					drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, sim->getUVRect(), mShadowColourNative);
-				}
+                    const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
+                    if (info) {
+                        vertexRect.left = left + (info->bearingX + 1.0f) * textViewData.scale;
+                        vertexRect.top = top + (info->bearingY + 1.0f) * textViewData.scale;
+                        vertexRect.right = vertexRect.left + info->width * textViewData.scale;
+                        vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
+                        _target->setTexture(info->texture);
+                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, mShadowColourNative);
+                    }
+                   ;
 
-				// Render the glyph itself.
-				vertexRect.left = left + sim->getBearingX();
-				vertexRect.top = top + sim->getBearingY();
-				vertexRect.right = vertexRect.left + sim->getWidth();
-				vertexRect.bottom = vertexRect.top + sim->getHeight();
+                    left += fullAdvance;
+                    ++index;
+                }
 
-				drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, sim->getUVRect(), (!select || !mInvertSelect) ? colour : inverseColour);
-
-				left += fullAdvance;
-				++index;
-			}
-
-			top += mFontHeight;
-			++index;
-		}
-
+                top += mFontHeight;
+                ++index;
+            }
+        }
+        
+       
+        
+        for (size_t pass=0;pass<mFont->getNumPasses();++pass) {
+            
+            Colour pass_colour;
+            bool fixed_color = mFont->getColour(pass, pass_colour);
+            if (fixed_color) {
+                pass_colour.alpha *= mAlpha;
+                colour = texture_utility::toColourARGB(pass_colour);
+            } else {
+                colour = mCurrentColourNative;
+            }
+            FloatSize offset = mFont->getOffset(pass);
+            float  top = (float)(-mViewOffset.top + mCoord.top) + offset.height;
+            for (VectorLineInfoLines::const_iterator line = textViewData.lines.begin(); line != textViewData.lines.end(); ++line)
+            {
+                float left = (float)(line->offset - mViewOffset.left + mCoord.left) + offset.width;
+                
+                for (VectorCharInfo::const_iterator sim = line->simbols.begin(); sim != line->simbols.end(); ++sim)
+                {
+                    if (sim->isColour())
+                    {
+                        if (!fixed_color) {
+                            colour = sim->getColour() | (colour & 0xFF000000);
+                            inverseColour = colour ^ 0x00FFFFFF;
+                            selectedColour = mInvertSelect ? inverseColour : colour | 0x00FFFFFF;
+                        }
+                        continue;
+                    }
+                    
+                    // смещение текстуры для фона
+                    bool select = index >= mStartSelect && index < mEndSelect;
+                    
+                    float fullAdvance = sim->getAdvance();
+                    
+                    
+                    const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
+                    if (info) {
+                        vertexRect.left = left + (info->bearingX ) * textViewData.scale;
+                        vertexRect.top = top + (info->bearingY ) * textViewData.scale;
+                        vertexRect.right = vertexRect.left + info->width * textViewData.scale;
+                        vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
+                        _target->setTexture(info->texture);
+                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, (!select || !mInvertSelect) ? colour : inverseColour);
+                    }
+                    ;
+                    
+                    left += fullAdvance;
+                    ++index;
+                }
+                
+                top += mFontHeight;
+                ++index;
+            }
+        }
+        
 		// Render the cursor, if any, last.
 		if (mVisibleCursor)
 		{
 			IntPoint point = mTextView.getCursorPoint(mCursorPosition) - mViewOffset + mCoord.point();
-			GlyphInfo* cursorGlyph = mFont->getGlyphInfo(static_cast<Char>(FontCodeType::Cursor));
+			GlyphInfo* cursorGlyph = mFont->getGlyphInfo(-1,static_cast<Char>(FontCodeType::Cursor));
 			vertexRect.set((float)point.left, (float)point.top, (float)point.left + cursorGlyph->width, (float)(point.top + mFontHeight));
             _target->setTexture(cursorGlyph->texture);
 			drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);

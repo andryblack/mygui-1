@@ -227,13 +227,7 @@ namespace MyGUI
 
 		if (!skinOnly)
 		{
-			const MapString& properties = _skinInfo->getProperties();
-			for (MapString::const_iterator item = properties.begin(); item != properties.end(); ++item)
-			{
-				if (BackwardCompatibility::isIgnoreProperty((*item).first))
-					setUserString((*item).first, (*item).second);
-			}
-
+			
 			// создаем детей скина
 			const VectorChildSkinInfo& child = _skinInfo->getChild();
 			for (VectorChildSkinInfo::const_iterator iter = child.begin(); iter != child.end(); ++iter)
@@ -1092,18 +1086,14 @@ namespace MyGUI
 	{
 		std::string key = _key;
 		std::string value = _value;
-
-		if (BackwardCompatibility::checkProperty(this, key, value))
-		{
-			size_t index = key.find("_");
-			if (index != std::string::npos)
-			{
-				MYGUI_LOG(Warning, "Widget property '" << key << "' have type prefix - use '" << key.substr(index + 1) << "' instead [" << LayoutManager::getInstance().getCurrentLayout() << "]");
-				key = key.substr(index + 1);
-			}
-
-			setPropertyOverride(key, value);
-		}
+        size_t index = key.find("_");
+        if (index != std::string::npos)
+        {
+            MYGUI_LOG(Warning, "Widget property '" << key << "' have type prefix - use '" << key.substr(index + 1) << "' instead [" << LayoutManager::getInstance().getCurrentLayout() << "]");
+            key = key.substr(index + 1);
+        }
+        
+        setPropertyOverride(key, value);
 	}
 
 	VectorWidgetPtr Widget::getSkinWidgetsByName(const std::string& _name)

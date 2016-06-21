@@ -120,6 +120,10 @@ namespace MyGUI
 		mLineInfo.clear();
 		LineInfo line_info;
 		int font_height = _font->getDefaultHeight();
+        
+        if (_height != font_height) {
+            mLineInfo.scale = (float)_height / font_height;
+        }
 
 		UString::const_iterator end = _text.end();
 		UString::const_iterator index = _text.begin();
@@ -146,16 +150,16 @@ namespace MyGUI
 						index = peeki; // skip both as one newline
 				}
 
-				line_info.width = (int)ceil(width + _font->getOutlineWidth());
+				line_info.width = (int)ceil(width);
 				line_info.count = count;
 				mLength += line_info.count + 1;
 
 				result.height += _height;
-				setMax(result.width, line_info.width);
+				
 				width = 0;
 				count = 0;
 
-				mLineInfo.push_back(line_info);
+				mLineInfo.lines.push_back(line_info);
 				line_info.clear();
 
 				// отменяем откат
@@ -202,7 +206,7 @@ namespace MyGUI
 				}
 			}
 
-			GlyphInfo* info = _font->getGlyphInfo(character);
+			GlyphInfo* info = _font->getGlyphInfo(-1,character);
 
 			if (info == nullptr)
 				continue;
@@ -216,24 +220,9 @@ namespace MyGUI
 				roll_back.set(line_info.simbols.size(), index, count, width);
 			}
 
-			float char_width = info->width;
-			float char_height = info->height;
-			float char_advance = info->advance;
-			float char_bearingX = info->bearingX;
-			float char_bearingY = info->bearingY;
-
-			if (_height != font_height)
-			{
-				float scale = (float)_height / font_height;
-
-				char_width *= scale;
-				char_height *= scale;
-				char_advance *= scale;
-				char_bearingX *= scale;
-				char_bearingY *= scale;
-			}
-
-			float char_fullAdvance = char_bearingX + char_advance;
+			float char_advance = info->advance * mLineInfo.scale;
+			
+			float char_fullAdvance = char_advance;
 
 			// перенос слов
 			if (_maxWidth != -1
@@ -247,16 +236,16 @@ namespace MyGUI
 				line_info.simbols.erase(line_info.simbols.begin() + roll_back.getPosition(), line_info.simbols.end());
 
 				// запоминаем место отката, как полную строку
-				line_info.width = (int)ceil(width + _font->getOutlineWidth());
+				line_info.width = (int)ceil(width);
 				line_info.count = count;
 				mLength += line_info.count + 1;
 
 				result.height += _height;
-				setMax(result.width, line_info.width);
+				
 				width = 0;
 				count = 0;
 
-				mLineInfo.push_back(line_info);
+				mLineInfo.lines.push_back(line_info);
 				line_info.clear();
 
 				// отменяем откат
@@ -265,32 +254,85 @@ namespace MyGUI
 				continue;
 			}
 
-			line_info.simbols.push_back(CharInfo(info->texture,info->uvRect, char_width, char_height, char_advance, char_bearingX, char_bearingY));
+			line_info.simbols.push_back(CharInfo(character,char_fullAdvance));
 			width += char_fullAdvance;
 			count ++;
 		}
 
-		line_info.width = (int)ceil(width + _font->getOutlineWidth());
+		line_info.width = (int)ceil(width);
 		line_info.count = count;
 		mLength += line_info.count;
 
-		mLineInfo.push_back(line_info);
-
-		setMax(result.width, line_info.width);
+		mLineInfo.lines.push_back(line_info);
+        result.width = 0.0f;
+        float offset = 0.0f;
+        for (VectorLineInfoLines::iterator line = mLineInfo.lines.begin(); line != mLineInfo.lines.end(); ++line)
+        {
+            line->offset = 0;
+            width = line->width;
+            if (!line->simbols.empty()) {
+                for (VectorCharInfo::const_iterator simbol = line->simbols.begin();simbol!=line->simbols.end();++simbol) {
+                    if (!simbol->isColour()) {
+                        const GlyphInfo* info = _font->getGlyphInfo(-1, simbol->getChar());
+                        if (info) {
+                            if (info->bearingX < 0) {
+                                float firstOffset = info->bearingX * mLineInfo.scale;
+                                setMax(offset, firstOffset);
+                                width += firstOffset;
+                            }
+                        }
+                        break;
+                    }
+                }
+                for (VectorCharInfo::const_reverse_iterator simbol = line->simbols.rbegin();simbol!=line->simbols.rend();++simbol) {
+                    if (!simbol->isColour()) {
+                        const GlyphInfo* info = _font->getGlyphInfo(-1, simbol->getChar());
+                        if (info) {
+                            float rightOffset = ((info->bearingX + info->width) - info->advance) * mLineInfo.scale;
+                            if (rightOffset > 0) {
+                                width += rightOffset;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            line->width = (int)ceil(width);
+            setMax(result.width, line_info.width);
+        }
         
-        result.height += _font->getOutlineWidth() * 2;
-
+        if (!mLineInfo.lines.empty()) {
+            int addHeight = 0;
+            for (VectorCharInfo::const_reverse_iterator simbol = mLineInfo.lines.back().simbols.rbegin();simbol!=mLineInfo.lines.back().simbols.rend();++simbol) {
+                if (!simbol->isColour()) {
+                    const GlyphInfo* info = _font->getGlyphInfo(-1, simbol->getChar());
+                    if (info) {
+                        int bottomOffset = int(ceil(((info->bearingY + info->height) * mLineInfo.scale - _height)));
+                        if (bottomOffset > 0) {
+                            setMax(addHeight, bottomOffset);
+                        }
+                    }
+                    break;
+                }
+            }
+            result.height += addHeight;
+        }
+		
 		// теперь выравниванием строки
-		for (VectorLineInfo::iterator line = mLineInfo.begin(); line != mLineInfo.end(); ++line)
+		for (VectorLineInfoLines::iterator line = mLineInfo.lines.begin(); line != mLineInfo.lines.end(); ++line)
 		{
+            line->offset = offset;
 			if (_align.isRight())
-				line->offset = result.width - line->width;
+				line->offset += result.width - line->width;
 			else if (_align.isHCenter())
-				line->offset = (result.width - line->width) / 2;
+				line->offset += (result.width - line->width) / 2;
 		}
+        
 
 		mViewSize = result;
 	}
+    
+   
 
 	size_t TextView::getCursorPosition(const IntPoint& _value)
 	{
@@ -298,10 +340,10 @@ namespace MyGUI
 		size_t result = 0;
 		int top = 0;
 
-		for (VectorLineInfo::const_iterator line = mLineInfo.begin(); line != mLineInfo.end(); ++line)
+		for (VectorLineInfoLines::const_iterator line = mLineInfo.lines.begin(); line != mLineInfo.lines.end(); ++line)
 		{
 			// это последняя строка
-			bool lastline = !(line + 1 != mLineInfo.end());
+			bool lastline = !(line + 1 != mLineInfo.lines.end());
 
 			// наша строчка
 			if (top + height > _value.top || lastline)
@@ -316,7 +358,7 @@ namespace MyGUI
 					if (sim->isColour())
 						continue;
 
-					float fullAdvance = sim->getAdvance() + sim->getBearingX();
+					float fullAdvance = sim->getAdvance();
 					if (left + fullAdvance / 2.0f > _value.left)
 					{
 						break;
@@ -346,7 +388,7 @@ namespace MyGUI
 		size_t position = 0;
 		int top = 0;
 		float left = 0.0f;
-		for (VectorLineInfo::const_iterator line = mLineInfo.begin(); line != mLineInfo.end(); ++line)
+		for (VectorLineInfoLines::const_iterator line = mLineInfo.lines.begin(); line != mLineInfo.lines.end(); ++line)
 		{
 			left = (float)line->offset;
 			if (position + line->count >= _position)
@@ -360,7 +402,7 @@ namespace MyGUI
 						break;
 
 					position ++;
-					left += sim->getBearingX() + sim->getAdvance();
+					left += sim->getAdvance();
 				}
 				break;
 			}

@@ -13,7 +13,6 @@
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_IUnlinkWidget.h"
 #include "MyGUI_Widget.h"
-#include "MyGUI_BackwardCompatibility.h"
 
 namespace MyGUI
 {
@@ -22,8 +21,7 @@ namespace MyGUI
 
 	class MYGUI_EXPORT Gui :
 		public Singleton<Gui>,
-		public IUnlinkWidget,
-		public MemberObsolete<Gui>
+		public IUnlinkWidget
 	{
 		friend class WidgetManager;
 

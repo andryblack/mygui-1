@@ -27,15 +27,11 @@ namespace MyGUI
 
 		// Returns the glyph info for the specified code point, or the glyph info for a substitute glyph if the code point does not
 		// exist in this font. Returns nullptr if the code point does not exist and there is no substitute glyph available.
-		virtual GlyphInfo* getGlyphInfo(Char _id);
-
-		virtual ITexture* getTextureFont();
+		virtual GlyphInfo* getGlyphInfo(int pass,Char _id);
 
 		// дефолтная высота, указанная в настройках шрифта
 		virtual int getDefaultHeight();
-        
-        virtual int getOutlineWidth() const;
-
+       
 		// Manual loading methods, not needed when loading from XML
 		// Set the source texture by name
 		void setSource(const std::string& value);
