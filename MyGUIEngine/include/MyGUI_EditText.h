@@ -92,9 +92,6 @@ namespace MyGUI
 		// возвращает положение курсора в обсолютных координатах
 		virtual IntCoord getCursorCoord(size_t _position);
 
-		virtual bool getShadow() const;
-		virtual void setShadow(bool _value);
-
 		virtual void setShiftText(bool _shift);
 
         virtual bool getWordWrap() const;
@@ -158,8 +155,7 @@ namespace MyGUI
 		size_t mCursorPosition;
 		bool mVisibleCursor;
 		bool mInvertSelect;
-		bool mShadow;
-
+		
 		IntPoint mViewOffset; // смещение текста
 
 		ILayerNode* mNode;

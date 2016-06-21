@@ -2219,12 +2219,4 @@ namespace MyGUI
 			mClientText->setPassColour(pass,_value);
 	}
 
-	void EditBox::setTextShadow(bool _value)
-	{
-		Base::setTextShadow(_value);
-
-		if (mClientText != nullptr)
-			mClientText->setShadow(_value);
-	}
-
 } // namespace MyGUI

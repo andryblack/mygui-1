@@ -315,8 +315,16 @@ namespace MyGUI
                     break;
                 }
             }
+            
+            for (size_t pass=0;pass<_font->getNumPasses();++pass) {
+                MyGUI::FloatSize offset = _font->getOffset(pass);
+                if (offset.height > 0) {
+                    setMax(addHeight, int(offset.height));
+                }
+            }
             result.height += addHeight;
         }
+        
 		
 		// теперь выравниванием строки
 		for (VectorLineInfoLines::iterator line = mLineInfo.lines.begin(); line != mLineInfo.lines.end(); ++line)

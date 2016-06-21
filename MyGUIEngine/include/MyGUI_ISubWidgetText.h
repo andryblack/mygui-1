@@ -54,14 +54,6 @@ namespace MyGUI
 
 		virtual void setInvertSelected(bool _value) { }
 
-		// нужно ли показывать тень
-		virtual bool getShadow() const
-		{
-			return false;
-		}
-
-		virtual void setShadow(bool _value) { }
-
 		// управление видимостью курсора
 		virtual bool isVisibleCursor() const
 		{

@@ -235,9 +235,6 @@ namespace MyGUI
 		//! @copydoc TextBox::setTextPassColour
         virtual void setTextPassColour(const std::string& pass,const Colour& _value);
 
-		//! @copydoc TextBox::setTextShadow
-		virtual void setTextShadow(bool _value);
-
 		/*events:*/
 		/** Event : Enter pressed (Ctrl+enter in multiline mode).\n
 			signature : void method(MyGUI::EditBox* _sender)

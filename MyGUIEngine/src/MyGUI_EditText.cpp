@@ -39,7 +39,6 @@ namespace MyGUI
 		mCursorPosition(0),
 		mVisibleCursor(false),
 		mInvertSelect(true),
-		mShadow(false),
 		mNode(nullptr),
 		mRenderItem(nullptr),
 		mCountVertex(SIMPLETEXT_COUNT_VERTEX),
@@ -193,7 +192,7 @@ namespace MyGUI
 	void EditText::checkVertexSize()
 	{
 		// если вершин не хватит, делаем реалок, с учетом выделения * 2 и курсора
-		size_t need = (mCaption.size() * (mShadow ? 3 : 2) + 2) * VERTEX_IN_QUAD;
+		size_t need = (mCaption.size() * 2 + 2) * VERTEX_IN_QUAD;
 		if (mCountVertex < need)
 		{
 			mCountVertex = need + SIMPLETEXT_COUNT_VERTEX;
@@ -413,13 +412,6 @@ namespace MyGUI
 		if (mIsAddCursorWidth)
 			size.width += 2;
 
-		if (mShadow)
-		{
-			if (!mIsAddCursorWidth)
-				size.width ++;
-			size.height ++;
-		}
-
 		return size;
 	}
 
@@ -552,64 +544,6 @@ namespace MyGUI
 		const GlyphInfo* selectedInfo = mFont->getGlyphInfo(-1,mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack);
 
 		size_t index = 0;
-
-        if (mShadow)
-        for (size_t pass=0;pass<mFont->getNumPasses();++pass) {
-            FloatSize offset = mFont->getOffset(pass);
-            float top = (float)(-mViewOffset.top + mCoord.top) + offset.height;
-            
-            MyGUI::Colour shadowColour = MyGUI::Colour::Black;
-            std::map<std::string,MyGUI::Colour>::const_iterator it = mPassColour.find("Shadow");
-            if (it != mPassColour.end()) {
-                shadowColour = it->second;
-            }
-            shadowColour.alpha *= mAlpha;
-            MyGUI::uint32 clr = MyGUI::texture_utility::toColourARGB(shadowColour);
-            
-            for (VectorLineInfoLines::const_iterator line = textViewData.lines.begin(); line != textViewData.lines.end(); ++line)
-            {
-                float left = (float)(line->offset - mViewOffset.left + mCoord.left) + offset.width;
-
-                for (VectorCharInfo::const_iterator sim = line->simbols.begin(); sim != line->simbols.end(); ++sim)
-                {
-                    if (sim->isColour())
-                    {
-                        continue;
-                    }
-
-                    // смещение текстуры для фона
-                    bool select = index >= mStartSelect && index < mEndSelect;
-
-                    float fullAdvance = sim->getAdvance();
-
-                    // Render the selection, if any, first.
-                    if (select && pass == 0)
-                    {
-                        vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
-                        _target->setTexture(selectedInfo->texture);
-                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
-                    }
-                    
-                    const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
-                    if (info) {
-                        vertexRect.left = left + (info->bearingX + 1.0f) * textViewData.scale;
-                        vertexRect.top = top + (info->bearingY + 1.0f) * textViewData.scale;
-                        vertexRect.right = vertexRect.left + info->width * textViewData.scale;
-                        vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
-                        _target->setTexture(info->texture);
-                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, clr);
-                    }
-                   ;
-
-                    left += fullAdvance;
-                    ++index;
-                }
-
-                top += mFontHeight;
-                ++index;
-            }
-        }
-        
        
         
         for (size_t pass=0;pass<mFont->getNumPasses();++pass) {
@@ -641,11 +575,19 @@ namespace MyGUI
                         continue;
                     }
                     
-                    // смещение текстуры для фона
-                    bool select = index >= mStartSelect && index < mEndSelect;
                     
                     float fullAdvance = sim->getAdvance();
                     
+                    // смещение текстуры для фона
+                    bool select = index >= mStartSelect && index < mEndSelect;
+                    
+                    // Render the selection, if any, first.
+                    if (select && pass == 0)
+                    {
+                        vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
+                        _target->setTexture(selectedInfo->texture);
+                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
+                    }
                     
                     const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
                     if (info) {
@@ -656,7 +598,7 @@ namespace MyGUI
                         _target->setTexture(info->texture);
                         drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, (!select || !mInvertSelect) ? colour : inverseColour);
                     }
-                    ;
+                    
                     
                     left += fullAdvance;
                     ++index;
@@ -692,22 +634,6 @@ namespace MyGUI
 	bool EditText::getInvertSelected() const
 	{
 		return mInvertSelect;
-	}
-
-	bool EditText::getShadow() const
-	{
-		return mShadow;
-	}
-
-	void EditText::setShadow(bool _value)
-	{
-		mShadow = _value;
-		mTextOutDate = true;
-
-		checkVertexSize();
-
-		if (nullptr != mNode)
-			mNode->outOfDate(mRenderItem);
 	}
 
     void EditText::setPassColour(const std::string& pass,const Colour& _value)
