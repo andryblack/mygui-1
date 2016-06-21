@@ -27,11 +27,9 @@ namespace MyGUI
 		mCurrentColourNative(0x00FFFFFF),
 		mInverseColourNative(0x00000000),
 		mCurrentAlphaNative(0xFF000000),
-		mShadowColourNative(0x00000000),
 		mTextOutDate(false),
 		mTextAlign(Align::Default),
 		mColour(Colour::White),
-		mShadowColour(Colour::Black),
 		mAlpha(ALPHA_MAX),
 		mFont(nullptr),
 		mFontHeight(0),
@@ -55,7 +53,6 @@ namespace MyGUI
 		mCurrentColourNative = texture_utility::toColourARGB(mColour);
 	
 		mCurrentColourNative = (mCurrentColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
-		mShadowColourNative =  (mShadowColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 		mInverseColourNative = mCurrentColourNative ^ 0x00FFFFFF;
 	}
 
@@ -242,7 +239,6 @@ namespace MyGUI
 
 		mCurrentAlphaNative = ((uint8)(mAlpha * 255) << 24);
 		mCurrentColourNative = (mCurrentColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
-		mShadowColourNative = (mShadowColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
 		mInverseColourNative = mCurrentColourNative ^ 0x00FFFFFF;
 
 		if (nullptr != mNode)
@@ -562,6 +558,14 @@ namespace MyGUI
             FloatSize offset = mFont->getOffset(pass);
             float top = (float)(-mViewOffset.top + mCoord.top) + offset.height;
             
+            MyGUI::Colour shadowColour = MyGUI::Colour::Black;
+            std::map<std::string,MyGUI::Colour>::const_iterator it = mPassColour.find("Shadow");
+            if (it != mPassColour.end()) {
+                shadowColour = it->second;
+            }
+            shadowColour.alpha *= mAlpha;
+            MyGUI::uint32 clr = MyGUI::texture_utility::toColourARGB(shadowColour);
+            
             for (VectorLineInfoLines::const_iterator line = textViewData.lines.begin(); line != textViewData.lines.end(); ++line)
             {
                 float left = (float)(line->offset - mViewOffset.left + mCoord.left) + offset.width;
@@ -593,7 +597,7 @@ namespace MyGUI
                         vertexRect.right = vertexRect.left + info->width * textViewData.scale;
                         vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
                         _target->setTexture(info->texture);
-                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, mShadowColourNative);
+                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, clr);
                     }
                    ;
 
@@ -610,9 +614,10 @@ namespace MyGUI
         
         for (size_t pass=0;pass<mFont->getNumPasses();++pass) {
             
-            Colour pass_colour;
-            bool fixed_color = mFont->getColour(pass, pass_colour);
+            std::map<std::string,MyGUI::Colour>::const_iterator clrit = mPassColour.find(mFont->getPassName(pass));
+            bool fixed_color = clrit != mPassColour.end();
             if (fixed_color) {
+                MyGUI::Colour pass_colour = clrit->second;
                 pass_colour.alpha *= mAlpha;
                 colour = texture_utility::toColourARGB(pass_colour);
             } else {
@@ -705,20 +710,12 @@ namespace MyGUI
 			mNode->outOfDate(mRenderItem);
 	}
 
-	void EditText::setShadowColour(const Colour& _value)
+    void EditText::setPassColour(const std::string& pass,const Colour& _value)
 	{
-		mShadowColour = _value;
-		mShadowColourNative = texture_utility::toColourARGB(mShadowColour);
-
-		mShadowColourNative = (mShadowColourNative & 0x00FFFFFF) | (mCurrentAlphaNative & 0xFF000000);
-
+        mPassColour[pass] = _value;
+		
 		if (nullptr != mNode)
 			mNode->outOfDate(mRenderItem);
-	}
-
-	const Colour& EditText::getShadowColour() const
-	{
-		return mShadowColour;
 	}
 
 	void EditText::drawQuad(

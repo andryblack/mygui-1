@@ -102,9 +102,8 @@ namespace MyGUI
 
 		virtual void setStateData(IStateInfo* _data);
 
-		virtual void setShadowColour(const Colour& _value);
-		virtual const Colour& getShadowColour() const;
-
+        virtual void setPassColour(const std::string& pass,const Colour& _value);
+		
 		/*internal:*/
 		virtual void _updateView();
 		virtual void _correctView();
@@ -139,7 +138,6 @@ namespace MyGUI
 		uint32 mCurrentColourNative;
 		uint32 mInverseColourNative;
 		uint32 mCurrentAlphaNative;
-		uint32 mShadowColourNative;
 		IntCoord mCurrentCoord;
 
 		UString mCaption;
@@ -147,7 +145,8 @@ namespace MyGUI
 		Align mTextAlign;
 
 		Colour mColour;
-		Colour mShadowColour;
+        std::map<std::string,Colour> mPassColour;
+		
 		float mAlpha;
 	
 		IFont* mFont;

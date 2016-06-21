@@ -108,16 +108,12 @@ namespace MyGUI
 		}
 	}
 
-	void TextBox::setTextShadowColour(const Colour& _value)
+    void TextBox::setTextPassColour(const std::string& pass, const Colour& _value)
 	{
 		if (nullptr != getSubWidgetText())
-			getSubWidgetText()->setShadowColour(_value);
+			getSubWidgetText()->setPassColour(pass,_value);
 	}
 
-	const Colour& TextBox::getTextShadowColour()
-	{
-		return (nullptr == getSubWidgetText()) ? Colour::Black : getSubWidgetText()->getShadowColour();
-	}
 
 	void TextBox::setTextShadow(bool _value)
 	{
@@ -153,8 +149,9 @@ namespace MyGUI
 			setCaptionWithReplacing(_value);
 
 		/// @wproperty{TextBox, TextShadowColour, Colour} Цвет тени текста.
-		else if (_key == "TextShadowColour")
-			setTextShadowColour(utility::parseValue<Colour>(_value));
+        else if (_key.length() > 10 && _key.substr(0,4)=="Text" && _key.substr(_key.length()-6,6)=="Colour") {
+            setTextPassColour(_key.substr(4,_key.length()-10), utility::parseValue<Colour>(_value));
+        }
 
 		/// @wproperty{TextBox, TextShadow, bool} Режим показа тени текста.
 		else if (_key == "TextShadow")

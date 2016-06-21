@@ -232,8 +232,8 @@ namespace MyGUI
 		//! @copydoc TextBox::getTextSize
 		virtual IntSize getTextSize() const;
 
-		//! @copydoc TextBox::setTextShadowColour
-		virtual void setTextShadowColour(const Colour& _value);
+		//! @copydoc TextBox::setTextPassColour
+        virtual void setTextPassColour(const std::string& pass,const Colour& _value);
 
 		//! @copydoc TextBox::setTextShadow
 		virtual void setTextShadow(bool _value);

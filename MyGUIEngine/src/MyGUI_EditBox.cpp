@@ -2211,12 +2211,12 @@ namespace MyGUI
 		mVectorUndoChangeInfo.clear();
 	}
 
-	void EditBox::setTextShadowColour(const Colour& _value)
+    void EditBox::setTextPassColour(const std::string& pass,const Colour& _value)
 	{
-		Base::setTextShadowColour(_value);
+		Base::setTextPassColour(pass,_value);
 
 		if (mClientText != nullptr)
-			mClientText->setShadowColour(_value);
+			mClientText->setPassColour(pass,_value);
 	}
 
 	void EditBox::setTextShadow(bool _value)

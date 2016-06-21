@@ -153,12 +153,7 @@ namespace MyGUI
 
 		virtual void setShiftText(bool _value) { }
 
-		virtual void setShadowColour(const Colour& _value) { }
-		virtual const Colour& getShadowColour() const
-		{
-			return Colour::Zero;
-		}
-
+        virtual void setPassColour(const std::string& passName,const Colour& _value) { }
 	};
 
 } // namespace MyGUI

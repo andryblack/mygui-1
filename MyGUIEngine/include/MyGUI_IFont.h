@@ -31,7 +31,7 @@ namespace MyGUI
 		virtual GlyphInfo* getGlyphInfo( int pass, Char _id) = 0;
 
 		virtual int getDefaultHeight() = 0;
-        virtual bool getColour( size_t pass, Colour& clr ) { return false; }
+        virtual std::string getPassName(size_t pass) { return ""; }
         virtual FloatSize getOffset( size_t pass ) { return FloatSize(0.0f,0.0f); }
    };
 
