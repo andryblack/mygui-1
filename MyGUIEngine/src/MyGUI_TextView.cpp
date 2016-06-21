@@ -316,12 +316,6 @@ namespace MyGUI
                 }
             }
             
-            for (size_t pass=0;pass<_font->getNumPasses();++pass) {
-                MyGUI::FloatSize offset = _font->getOffset(pass);
-                if (offset.height > 0) {
-                    setMax(addHeight, int(offset.height));
-                }
-            }
             result.height += addHeight;
         }
         
