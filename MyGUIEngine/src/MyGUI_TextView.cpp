@@ -276,7 +276,7 @@ namespace MyGUI
                         const GlyphInfo* info = _font->getGlyphInfo(-1, simbol->getChar());
                         if (info) {
                             if (info->bearingX < 0) {
-                                float firstOffset = info->bearingX * mLineInfo.scale;
+                                float firstOffset = - info->bearingX * mLineInfo.scale;
                                 setMax(offset, firstOffset);
                                 width += firstOffset;
                             }
@@ -298,7 +298,7 @@ namespace MyGUI
                 }
             }
             line->width = (int)ceil(width);
-            setMax(result.width, line_info.width);
+            setMax(result.width, line->width);
         }
         
         if (!mLineInfo.lines.empty()) {
