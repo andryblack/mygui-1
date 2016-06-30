@@ -496,7 +496,7 @@ namespace MyGUI
 		MYGUI_ASSERT(_widget, "ItemBox::getIndexByWidget : Widget == nullptr");
 		if (_widget == _getClientWidget()) return ITEM_NONE;
 		MYGUI_ASSERT(_widget->getParent() == _getClientWidget(), "ItemBox::getIndexByWidget : Widget is not child");
-
+        if (!_widget->getVisible()) return ITEM_NONE;
 		size_t index = calcIndexByWidget(_widget);
 		MYGUI_ASSERT_RANGE(index, mItemsInfo.size(), "ItemBox::getIndexByWidget");
 
@@ -649,8 +649,11 @@ namespace MyGUI
 		bool needEvent = !mStartDrop;
 		mouseButtonReleased(_id);
 
-		if (needEvent)
-			eventNotifyItem(this, IBNotifyItemData(getIndexByWidget(_sender), IBNotifyItemData::MouseReleased, _left, _top, _id));
+        if (needEvent) {
+            size_t index = getIndexByWidget(_sender);
+            if (index != ITEM_NONE)
+                eventNotifyItem(this, IBNotifyItemData(index, IBNotifyItemData::MouseReleased, _left, _top, _id));
+        }
 	}
 
 	void ItemBox::notifyRootMouseChangeFocus(Widget* _sender, bool _focus)
