@@ -40,9 +40,9 @@ namespace MyGUI
 		size_t getScrollRange() const;
 
 		/** Set scroll position (value from 0 to range - 1) */
-		void setScrollPosition(size_t _value);
+		void setScrollPosition(int _value);
 		/** Get scroll position (value from 0 to range - 1) */
-		size_t getScrollPosition() const;
+		int getScrollPosition() const;
 
 		/** Set scroll page
 			@param _value Tracker step when buttons pressed

@@ -354,13 +354,14 @@ namespace MyGUI
 		updateTrack();
 	}
 
-	void ScrollBar::setScrollPosition(size_t _position)
+	void ScrollBar::setScrollPosition(int _position)
 	{
 		if (_position == mScrollPosition)
 			return;
-
+        if (_position < 0 )
+            _position = 0;
 		if (_position >= mScrollRange)
-			_position = 0;
+			_position = mScrollRange;
 
 		mScrollPosition = _position;
 		updateTrack();
@@ -612,9 +613,9 @@ namespace MyGUI
 		return mScrollRange;
 	}
 
-	size_t ScrollBar::getScrollPosition() const
+	int ScrollBar::getScrollPosition() const
 	{
-		return mScrollPosition;
+		return int(mScrollPosition);
 	}
 
 	void ScrollBar::setScrollPage(size_t _value)
