@@ -56,7 +56,7 @@ namespace MyGUI
 			getSubWidgetText()->setFontName(_value);
 	}
 
-	const std::string& TextBox::getFontName()
+	const std::string& TextBox::getFontName() const
 	{
 		if (nullptr == getSubWidgetText())
 			return Constants::getEmptyString();
@@ -69,7 +69,7 @@ namespace MyGUI
 			getSubWidgetText()->setFontHeight(_height);
 	}
 
-	int TextBox::getFontHeight()
+	int TextBox::getFontHeight() const
 	{
 		return (nullptr == getSubWidgetText()) ? 0 : getSubWidgetText()->getFontHeight();
 	}

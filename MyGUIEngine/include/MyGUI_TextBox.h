@@ -38,12 +38,12 @@ namespace MyGUI
 		/** Set widget text font */
 		virtual void setFontName(const std::string& _value);
 		/** Get widget text font name */
-		const std::string& getFontName();
+		const std::string& getFontName() const;
 
 		/** Set widget text font height */
 		virtual void setFontHeight(int _value);
 		/** Get widget text font height */
-		int getFontHeight();
+		int getFontHeight() const;
 
 		/** Set widget text align */
 		virtual void setTextAlign(Align _value);
