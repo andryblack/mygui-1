@@ -561,7 +561,36 @@ namespace MyGUI
 		}
 		return nullptr;
 	}
+    
+    Widget* Widget::findSkinWidget(const std::string& _name)
+    {
+        if (_name == mName)
+            return this;
+        MYGUI_ASSERT(mWidgetClient != this, "mWidgetClient can not be this widget");
+        if (mWidgetClient != nullptr)
+            return mWidgetClient->findSkinWidget(_name);
+        
+        for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
+        {
+            Widget* find = (*widget)->findSkinWidget(_name);
+            if (nullptr != find)
+                return find;
+        }
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
+        {
+            Widget* find = (*widget)->findSkinWidget(_name);
+            if (nullptr != find)
+                return find;
+        }
+        return nullptr;
+    }
 
+    /** Find skin widget by name.
+     Search recursively through all childs starting from this widget.
+     @return Return first found widget with given name
+     */
+    Widget* findSkinWidget(const std::string& _name);
+    
 	void Widget::setRealPosition(const FloatPoint& _point)
 	{
 		setPosition(CoordConverter::convertFromRelative(_point, mCroppedParent == nullptr ? RenderManager::getInstance().getViewSize() : mCroppedParent->getSize()));

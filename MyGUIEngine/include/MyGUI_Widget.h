@@ -205,6 +205,11 @@ namespace MyGUI
 			@return Return first found widget with given name
 		*/
 		Widget* findWidget(const std::string& _name);
+        /** Find skin widget by name.
+         Search recursively through all childs starting from this widget.
+         @return Return first found widget with given name
+         */
+        Widget* findSkinWidget(const std::string& _name);
 
 		/** Find all widgets with given name and add them into _result.
 			Search recursively through all childs starting from this widget.
