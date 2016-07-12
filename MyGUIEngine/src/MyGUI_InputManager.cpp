@@ -667,6 +667,10 @@ namespace MyGUI
 	{
 		return !mVectorModalRootWidget.empty();
 	}
+    
+    Widget* InputManager::getTopModalWidget() const {
+        return mVectorModalRootWidget.empty() ? 0 : mVectorModalRootWidget.back();
+    }
 
 	bool InputManager::isControlPressed() const
 	{

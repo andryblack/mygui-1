@@ -100,6 +100,7 @@ namespace MyGUI
 
 		/** Return true if any modal widget exist */
 		bool isModalAny() const;
+        Widget* getTopModalWidget() const;
 
 		/** Is control button pressed */
 		bool isControlPressed() const;
