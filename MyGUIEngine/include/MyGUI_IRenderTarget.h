@@ -8,7 +8,6 @@
 #define MYGUI_I_RENDER_TARGET_H_
 
 #include "MyGUI_Prerequest.h"
-#include "MyGUI_RenderTargetInfo.h"
 #include <stddef.h>
 
 namespace MyGUI
@@ -31,8 +30,7 @@ namespace MyGUI
         virtual void addVertex(const Vertex& v) = 0;
         virtual void addQuad(const VertexQuad& q) = 0;
 		
-		virtual const RenderTargetInfo& getInfo() = 0;
-	};
+    };
 
 } // namespace MyGUI
 

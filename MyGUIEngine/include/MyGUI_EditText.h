@@ -123,7 +123,6 @@ namespace MyGUI
 			uint32 _colour) const;
 
 		void drawGlyph(
-			const RenderTargetInfo& renderTargetInfo,
 			IRenderTarget* _target,
 			size_t& _vertexCount,
 			FloatRect _vertexRect,

@@ -229,14 +229,13 @@ namespace MyGUI
 	}
 
     void SubSkin::fillQuad(VertexQuad& _quad,IRenderTarget* _target) {
-        const RenderTargetInfo& info = _target->getInfo();
         
         float vertex_z = mNode->getNodeDepth();
         
-        float vertex_left = ((info.pixScaleX * (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft() - info.leftOffset) + info.hOffset) * 2) - 1;
-        float vertex_right = vertex_left + (info.pixScaleX * (float)mCurrentCoord.width * 2);
-        float vertex_top = -(((info.pixScaleY * (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop() - info.topOffset) + info.vOffset) * 2) - 1);
-        float vertex_bottom = vertex_top - (info.pixScaleY * (float)mCurrentCoord.height * 2);
+        float vertex_left = (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft());
+        float vertex_right = vertex_left + (float)mCurrentCoord.width;
+        float vertex_top = (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop()) ;
+        float vertex_bottom = vertex_top + (float)mCurrentCoord.height;
         
         _quad.set(
                  vertex_left,

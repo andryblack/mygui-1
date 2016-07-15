@@ -190,11 +190,9 @@ namespace MyGUI
 
 		VertexQuad quad;
 
-		const RenderTargetInfo& info = _target->getInfo();
-
-		// размер одного тайла
-		mRealTileWidth = info.pixScaleX * (float)(mTileSize.width) * 2;
-		mRealTileHeight = info.pixScaleY * (float)(mTileSize.height) * 2;
+        // размер одного тайла
+		mRealTileWidth = (float)(mTileSize.width);
+		mRealTileHeight = (float)(mTileSize.height);
 
 		mTextureHeightOne = (mCurrentTexture.bottom - mCurrentTexture.top) / mRealTileHeight;
 		mTextureWidthOne = (mCurrentTexture.right - mCurrentTexture.left) / mRealTileWidth;
@@ -202,14 +200,14 @@ namespace MyGUI
 		float vertex_z = mNode->getNodeDepth();
 
 		// абсолютный размер окна
-		float window_left = ((info.pixScaleX * (float)(mCoord.left + mCroppedParent->getAbsoluteLeft() - info.leftOffset) + info.hOffset) * 2) - 1;
-		float window_top = -(((info.pixScaleY * (float)(mCoord.top + mCroppedParent->getAbsoluteTop() - info.topOffset) + info.vOffset) * 2) - 1);
+		float window_left = (float)(mCoord.left + mCroppedParent->getAbsoluteLeft());
+		float window_top = (float)(mCoord.top + mCroppedParent->getAbsoluteTop());
 
 		// размер вьюпорта
-		float real_left = ((info.pixScaleX * (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft() - info.leftOffset) + info.hOffset) * 2) - 1;
-		float real_right = real_left + (info.pixScaleX * (float)mCurrentCoord.width * 2);
-		float real_top = -(((info.pixScaleY * (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop() - info.topOffset) + info.vOffset) * 2) - 1);
-		float real_bottom = real_top - (info.pixScaleY * (float)mCurrentCoord.height * 2);
+		float real_left = (float)(mCurrentCoord.left + mCroppedParent->getAbsoluteLeft());
+		float real_right = real_left + (float)mCurrentCoord.width;
+		float real_top = (float)(mCurrentCoord.top + mCroppedParent->getAbsoluteTop());
+		float real_bottom = real_top + (float)mCurrentCoord.height;
 
 		size_t count = 0;
 

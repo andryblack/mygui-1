@@ -497,14 +497,13 @@ namespace MyGUI
 
 
 		// now calculate widget base offset and then resulting position in screen coordinates
-		const RenderTargetInfo& info = _target->getInfo();
-		float vertex_left_base = ((info.pixScaleX * (float)(mCroppedParent->getAbsoluteLeft()) + info.hOffset) * 2) - 1;
-		float vertex_top_base = -(((info.pixScaleY * (float)(mCroppedParent->getAbsoluteTop()) + info.vOffset) * 2) - 1);
+		float vertex_left_base = mCroppedParent->getAbsoluteLeft();
+		float vertex_top_base = mCroppedParent->getAbsoluteTop();
 
 		for (size_t i = 0; i < mResultVerticiesPos.size(); ++i)
 		{
-			mResultVerticiesPos[i].left = vertex_left_base + mResultVerticiesPos[i].left * info.pixScaleX * 2;
-			mResultVerticiesPos[i].top = vertex_top_base + mResultVerticiesPos[i].top * info.pixScaleY * -2;
+			mResultVerticiesPos[i].left = vertex_left_base + mResultVerticiesPos[i].left;
+			mResultVerticiesPos[i].top = vertex_top_base + mResultVerticiesPos[i].top;
 		}
 	}
 

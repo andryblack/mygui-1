@@ -524,10 +524,7 @@ namespace MyGUI
 		if (mRenderItem->getCurrentUpdate() || mTextOutDate)
 			updateRawData();
 
-		
-		const RenderTargetInfo& renderTargetInfo = _target->getInfo();
-
-		// колличество отрисованных вершин
+				// колличество отрисованных вершин
 		size_t vertexCount = 0;
 
 		// текущие цвета
@@ -586,7 +583,7 @@ namespace MyGUI
                     {
                         vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
                         _target->setTexture(selectedInfo->texture);
-                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
+                        drawGlyph(_target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
                     }
                     
                     const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
@@ -596,7 +593,7 @@ namespace MyGUI
                         vertexRect.right = vertexRect.left + info->width * textViewData.scale;
                         vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
                         _target->setTexture(info->texture);
-                        drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, info->uvRect, (!select || !mInvertSelect) ? colour : inverseColour);
+                        drawGlyph(_target, vertexCount, vertexRect, info->uvRect, (!select || !mInvertSelect) ? colour : inverseColour);
                     }
                     
                     
@@ -616,7 +613,7 @@ namespace MyGUI
 			GlyphInfo* cursorGlyph = mFont->getGlyphInfo(-1,static_cast<Char>(FontCodeType::Cursor));
 			vertexRect.set((float)point.left, (float)point.top, (float)point.left + cursorGlyph->width, (float)(point.top + mFontHeight));
             _target->setTexture(cursorGlyph->texture);
-			drawGlyph(renderTargetInfo, _target, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);
+			drawGlyph(_target, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);
 		}
 
 	}
@@ -705,7 +702,6 @@ namespace MyGUI
 	}
 
 	void EditText::drawGlyph(
-		const RenderTargetInfo& _renderTargetInfo,
 		IRenderTarget* _target,
 		size_t& _vertexCount,
 		FloatRect _vertexRect,
@@ -772,15 +768,10 @@ namespace MyGUI
 			}
 		}
 
-		float pix_left = mCroppedParent->getAbsoluteLeft() - _renderTargetInfo.leftOffset + _vertexRect.left;
-		float pix_top = mCroppedParent->getAbsoluteTop() - _renderTargetInfo.topOffset + (mShiftText ? 1.0f : 0.0f) + _vertexRect.top;
+		float pix_left = mCroppedParent->getAbsoluteLeft() + _vertexRect.left;
+		float pix_top = mCroppedParent->getAbsoluteTop() + (mShiftText ? 1.0f : 0.0f) + _vertexRect.top;
 
-		FloatRect vertexRect(
-			((_renderTargetInfo.pixScaleX * pix_left + _renderTargetInfo.hOffset) * 2.0f) - 1.0f,
-			-(((_renderTargetInfo.pixScaleY * pix_top + _renderTargetInfo.vOffset) * 2.0f) - 1.0f),
-			((_renderTargetInfo.pixScaleX * (pix_left + _vertexRect.width()) + _renderTargetInfo.hOffset) * 2.0f) - 1.0f,
-			-(((_renderTargetInfo.pixScaleY * (pix_top + _vertexRect.height()) + _renderTargetInfo.vOffset) * 2.0f) - 1.0f));
-
+        FloatRect vertexRect(pix_left,pix_top,pix_left+_vertexRect.width(),pix_top+_vertexRect.height());
 		drawQuad(_target, _vertexCount, vertexRect, mNode->getNodeDepth(), _textureRect, _colour);
 	}
 

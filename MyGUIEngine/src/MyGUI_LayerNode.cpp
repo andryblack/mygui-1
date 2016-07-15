@@ -83,7 +83,7 @@ namespace MyGUI
 
 	void LayerNode::renderToTarget(IRenderTarget* _target, bool _update)
 	{
-		mDepth = _target->getInfo().maximumDepth;
+        mDepth = 0.f;
 
 		// сначала отрисовываем свое
 		for (VectorRenderItem::iterator iter = mFirstRenderItems.begin(); iter != mFirstRenderItems.end(); ++iter)
