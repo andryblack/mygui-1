@@ -133,9 +133,9 @@ namespace MyGUI
 
 		result.height += _height;
 
-		for (; index != end; ++index)
+		for (; index != end; index.moveNext())
 		{
-			Char character = *index;
+            Char character = index.getCharacter();
 
 			// новая строка
 			if (character == FontCodeType::CR
