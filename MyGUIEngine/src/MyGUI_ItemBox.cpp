@@ -151,11 +151,11 @@ namespace MyGUI
 			if (mAlignVert)
 			{
 				item->setPosition(mContentMargins.left + ((int)index % mCountItemInLine) * mSizeItem.width - mContentPosition.left,
-					mContentMargins.top + (((int)index / mCountItemInLine) * mSizeItem.height)  - mFirstOffsetIndex);
+                    (((int)index / mCountItemInLine) * mSizeItem.height)  - mFirstOffsetIndex);
 			}
 			else
 			{
-				item->setPosition(mContentMargins.left + (((int)index / mCountItemInLine) * mSizeItem.width)  - mFirstOffsetIndex,
+				item->setPosition( (((int)index / mCountItemInLine) * mSizeItem.width)  - mFirstOffsetIndex,
 					mContentMargins.top + ((int)index % mCountItemInLine) * mSizeItem.height - mContentPosition.top);
 			}
 
