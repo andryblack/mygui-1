@@ -327,7 +327,9 @@ namespace MyGUI
 		/// @wproperty{ProgressBar, FlowDirection, FlowDirection} Напревление движения трекера.
 		else if (_key == "FlowDirection")
 			setFlowDirection(utility::parseValue<FlowDirection>(_value));
-
+        
+        else if (_key == "TrackColour")
+            setTrackColour(utility::parseValue<Colour>(_value));
 		else
 		{
 			Base::setPropertyOverride(_key, _value);
