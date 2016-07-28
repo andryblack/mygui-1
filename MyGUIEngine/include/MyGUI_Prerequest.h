@@ -30,7 +30,9 @@
 #			endif
 #		endif
 #	else
-#		define nullptr 0
+#       ifndef nullptr
+#           define nullptr 0
+#       endif
 #	endif
 #endif
 
