@@ -63,9 +63,9 @@ namespace MyGUI
 	{
 		// get executable path
 		char buf[MAX_PATH];
-		GetModuleFileName(0, (LPCH)&buf, MAX_PATH);
+		GetModuleFileNameA(0, (LPCH)&buf, MAX_PATH);
 		// get module instance
-		HINSTANCE instance = GetModuleHandle(buf);
+		HINSTANCE instance = GetModuleHandleA(buf);
 
 		EnumChildWindows(GetDesktopWindow(), (WNDENUMPROC)EnumWindowProc, (LPARAM)instance);
 		mHwnd = (size_t)g_hWnd;
