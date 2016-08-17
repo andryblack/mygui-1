@@ -22,8 +22,7 @@ namespace MyGUI
 		mIndexSelect(ITEM_NONE),
 		mFrameAdvise(false),
 		mCurrentTime(0),
-		mCurrentFrame(0),
-		mResource(nullptr)
+		mCurrentFrame(0)
 	{
 	}
 
@@ -317,110 +316,7 @@ namespace MyGUI
 		iter->images.erase(iter->images.begin() + _indexFrame);
 	}
 
-	void ImageBox::setItemResourceInfo(const ImageIndexInfo& _info)
-	{
-		mCurrentTextureName = _info.texture;
-		mSizeTexture = texture_utility::getTextureSize(mCurrentTextureName);
-
-		mItems.clear();
-
-		if (_info.frames.size() != 0)
-		{
-			std::vector<IntPoint>::const_iterator iter = _info.frames.begin();
-
-			addItem(IntCoord(*iter, _info.size));
-			setItemFrameRate(0, _info.rate);
-
-			for (++iter; iter != _info.frames.end(); ++iter)
-			{
-				addItemFrame(0, MyGUI::IntCoord(*iter, _info.size));
-			}
-
-		}
-
-		mIndexSelect = 0;
-		updateSelectIndex(mIndexSelect);
-	}
-
-	bool ImageBox::setItemResource(const std::string& _name)
-	{
-		IResourcePtr resource = ResourceManager::getInstance().getByName(_name, false);
-		setItemResourcePtr(resource ? resource->castType<ResourceImageSet>() : nullptr);
-		return resource != nullptr;
-	}
-
-	void ImageBox::setItemResourcePtr(ResourceImageSetPtr _resource)
-	{
-		if (mResource == _resource)
-			return;
-
-		// если первый раз то устанавливаем дефолтное
-		if (mResource == nullptr && _resource != nullptr)
-		{
-			if (mItemGroup.empty())
-			{
-				EnumeratorGroupImage iter_group = _resource->getEnumerator();
-				while (iter_group.next())
-				{
-					mItemGroup = iter_group.current().name;
-					if (mItemName.empty() && !iter_group.current().indexes.empty())
-					{
-						mItemName = iter_group.current().indexes[0].name;
-					}
-					break;
-				}
-			}
-			else if (mItemName.empty())
-			{
-				EnumeratorGroupImage iter_group = _resource->getEnumerator();
-				while (iter_group.next())
-				{
-					if (mItemGroup == iter_group.current().name)
-					{
-						if (!iter_group.current().indexes.empty())
-						{
-							mItemName = iter_group.current().indexes[0].name;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		mResource = _resource;
-		if (!mResource || mItemGroup.empty() || mItemName.empty()) updateSelectIndex(ITEM_NONE);
-		else setItemResourceInfo(mResource->getIndexInfo(mItemGroup, mItemName));
-	}
-
-	void ImageBox::setItemGroup(const std::string& _group)
-	{
-		if (mItemGroup == _group)
-			return;
-
-		mItemGroup = _group;
-		if (!mResource || mItemGroup.empty() || mItemName.empty()) updateSelectIndex(ITEM_NONE);
-		else setItemResourceInfo(mResource->getIndexInfo(mItemGroup, mItemName));
-	}
-
-	void ImageBox::setItemName(const std::string& _name)
-	{
-		if (mItemName == _name)
-			return;
-
-		mItemName = _name;
-		if (!mResource || mItemGroup.empty() || mItemName.empty()) updateSelectIndex(ITEM_NONE);
-		else setItemResourceInfo(mResource->getIndexInfo(mItemGroup, mItemName));
-	}
-
-	void ImageBox::setItemResourceInfo(ResourceImageSetPtr _resource, const std::string& _group, const std::string& _name)
-	{
-		mResource = _resource;
-		mItemGroup = _group;
-		mItemName = _name;
-		if (!mResource || mItemGroup.empty() || mItemName.empty()) updateSelectIndex(ITEM_NONE);
-		else setItemResourceInfo(mResource->getIndexInfo(mItemGroup, mItemName));
-	}
-
+	
 	void ImageBox::frameAdvise(bool _advise)
 	{
 		if ( _advise )
@@ -484,19 +380,6 @@ namespace MyGUI
 		/// @wproperty{ImageBox, ImageIndex, size_t} Индекс тайла в текстуре.
 		else if (_key == "ImageIndex")
 			setItemSelect(utility::parseValue<size_t>(_value));
-
-		/// @wproperty{ImageBox, ImageResource, string} Имя ресурса картинки.
-		else if (_key == "ImageResource")
-			setItemResource(_value);
-
-		/// @wproperty{ImageBox, ImageGroup, string} Имя группы картинки в ресурсе.
-		else if (_key == "ImageGroup")
-			setItemGroup(_value);
-
-		/// @wproperty{ImageBox, ImageName, string} Имя картинки в группе ресурса.
-		else if (_key == "ImageName")
-			setItemName(_value);
-
 		else
 		{
 			Base::setPropertyOverride(_key, _value);
@@ -524,11 +407,6 @@ namespace MyGUI
 	void ImageBox::addItem(const IntCoord& _item)
 	{
 		insertItem(ITEM_NONE, _item);
-	}
-
-	ResourceImageSetPtr ImageBox::getItemResource() const
-	{
-		return mResource;
 	}
 
 } // namespace MyGUI

@@ -38,12 +38,6 @@ namespace MyGUI
 		/** Get Image mode flag */
 		bool getModeImage() const;
 
-		void setImageResource(const std::string& _name);
-
-		void setImageGroup(const std::string& _name);
-
-		void setImageName(const std::string& _name);
-
 		/*internal:*/
 		void _setMouseFocus(bool _focus);
 

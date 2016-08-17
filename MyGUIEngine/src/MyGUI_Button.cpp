@@ -141,34 +141,11 @@ namespace MyGUI
 	{
 		if (mModeImage)
 		{
-			if (mImage)
-				mImage->setItemName(_value);
-
-			_setWidgetState(_value);
+            _setWidgetState(_value);
 			return true;
 		}
 
 		return _setWidgetState(_value);
-	}
-
-	void Button::setImageResource(const std::string& _name)
-	{
-		if (mImage)
-			mImage->setItemResource(_name);
-		updateButtonState();
-	}
-
-	void Button::setImageGroup(const std::string& _name)
-	{
-		if (mImage)
-			mImage->setItemGroup(_name);
-		updateButtonState();
-	}
-
-	void Button::setImageName(const std::string& _name)
-	{
-		if (mImage)
-			mImage->setItemName(_name);
 	}
 
 	void Button::setPropertyOverride(const std::string& _key, const std::string& _value)
@@ -180,19 +157,6 @@ namespace MyGUI
 		/// @wproperty{Button, ModeImage, bool} Устанавливает режим работы кнопки, в котором она свои состояния берет из картинки.
 		else if (_key == "ModeImage")
 			setModeImage(utility::parseValue<bool>(_value));
-
-		/// @wproperty{Button, ImageResource, string} Ссылка на ресурс картинки.
-		else if (_key == "ImageResource")
-			setImageResource(_value);
-
-		/// @wproperty{Button, ImageGroup, string} Группа картинки в ресурсе.
-		else if (_key == "ImageGroup")
-			setImageGroup(_value);
-
-		/// @wproperty{Button, ImageName, string} Имя картинки в ресурсе.
-		else if (_key == "ImageName")
-			setImageName(_value);
-
 		else
 		{
 			Base::setPropertyOverride(_key, _value);

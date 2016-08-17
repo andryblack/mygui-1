@@ -11,7 +11,6 @@
 #include "MyGUI_SkinManager.h"
 #include "MyGUI_InputManager.h"
 #include "MyGUI_ClipboardManager.h"
-#include "MyGUI_PointerManager.h"
 #include "MyGUI_ISubWidgetText.h"
 #include "MyGUI_ScrollBar.h"
 

@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Widget.h"
-#include "MyGUI_ResourceImageSet.h"
 #include "MyGUI_ImageInfo.h"
 
 namespace MyGUI
@@ -19,8 +18,7 @@ namespace MyGUI
 		ImageBox widget description should be here.
 	*/
 	class MYGUI_EXPORT ImageBox :
-		public Widget,
-		public MemberObsolete<ImageBox>
+		public Widget
 	{
 		MYGUI_RTTI_DERIVED( ImageBox )
 
@@ -153,32 +151,8 @@ namespace MyGUI
 		*/
 		float getItemFrameRate(size_t _index);
 
-		//------------------------------------------------------------------------------//
-		// The interface with support of resources
-		//------------------------------------------------------------------------------//
 
-		/** Select current items resource used in ImageBox
-			@param _name Resource name
-			@return false if resource with such name not exist
-		*/
-		bool setItemResource(const std::string& _name);
-
-		/** Select current item group */
-		void setItemGroup(const std::string& _value);
-		/** Select current item mane */
-		void setItemName(const std::string& _value);
-
-		/** Select current items resource used in ImageBox
-			@param _resource Resource pointer
-		*/
-		void setItemResourcePtr(ResourceImageSetPtr _resource);
-		/** Set current item */
-		void setItemResourceInfo(const ImageIndexInfo& _info);
-
-		/** Get current items resource used in ImageBox */
-		ResourceImageSetPtr getItemResource() const;
-		/** Select current item resource, group and name */
-		void setItemResourceInfo(ResourceImageSetPtr _resource, const std::string& _group, const std::string& _name);
+		
 
 	protected:
 		virtual void shutdownOverride();
@@ -211,9 +185,6 @@ namespace MyGUI
 		float mCurrentTime;
 		size_t mCurrentFrame;
 
-		ResourceImageSetPtr mResource;
-		std::string mItemName;
-		std::string mItemGroup;
 		std::string mCurrentTextureName;
 	};
 

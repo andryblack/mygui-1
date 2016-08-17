@@ -16,7 +16,6 @@
 #include "MyGUI_LayerManager.h"
 #include "MyGUI_FontManager.h"
 #include "MyGUI_ControllerManager.h"
-#include "MyGUI_PointerManager.h"
 #include "MyGUI_ClipboardManager.h"
 #include "MyGUI_LayoutManager.h"
 #include "MyGUI_LanguageManager.h"
@@ -70,7 +69,6 @@ namespace MyGUI
 		mSkinManager = new SkinManager();
 		mFontManager = new FontManager();
 		mControllerManager = new ControllerManager();
-		mPointerManager = new PointerManager();
 		mClipboardManager = new ClipboardManager();
 		mLayoutManager = new LayoutManager();
 		mLanguageManager = new LanguageManager();
@@ -85,7 +83,6 @@ namespace MyGUI
 		mSkinManager->initialise();
 		mFontManager->initialise();
 		mControllerManager->initialise();
-		mPointerManager->initialise();
 		mClipboardManager->initialise();
 		mLayoutManager->initialise();
 		mLanguageManager->initialise();
@@ -117,7 +114,6 @@ namespace MyGUI
 		_destroyAllChildWidget();
 
 		// деинициализируем и удаляем синглтоны
-		mPointerManager->shutdown();
 		mInputManager->shutdown();
 		mSkinManager->shutdown();
 		mSubWidgetManager->shutdown();

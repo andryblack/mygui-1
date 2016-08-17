@@ -42,9 +42,7 @@ namespace MyGUI
 	typedef Canvas RenderBox;
 	typedef Canvas* RenderBoxPtr;
 
-	typedef ImageBox StaticImage;
-	typedef StaticImage* StaticImagePtr;
-
+	
 	typedef TextBox StaticText;
 	typedef StaticText* StaticTextPtr;
 

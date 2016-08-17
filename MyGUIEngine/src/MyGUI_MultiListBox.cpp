@@ -298,16 +298,6 @@ namespace MyGUI
 		size_t pos = 0;
 		for (VectorColumnInfo::iterator iter = mVectorColumnInfo.begin(); iter != mVectorColumnInfo.end(); ++iter)
 		{
-			if (pos == mSortColumnIndex)
-			{
-				if (mSortUp)
-					(*iter).button->setImageName("Up");
-				else
-					(*iter).button->setImageName("Down");
-			}
-			else
-				(*iter).button->setImageName("None");
-
 			(*iter).button->setCaption((*iter).name);
 			pos++;
 		}

@@ -11,7 +11,6 @@
 #include "MyGUI_DataManager.h"
 #include "MyGUI_FactoryManager.h"
 #include "MyGUI_DataStreamHolder.h"
-#include "MyGUI_ResourceImageSet.h"
 
 namespace MyGUI
 {
@@ -34,9 +33,6 @@ namespace MyGUI
 		registerLoadXmlDelegate(mCategoryName) = newDelegate(this, &ResourceManager::loadFromXmlNode);
 		registerLoadXmlDelegate(mXmlListTagName) = newDelegate(this, &ResourceManager::_loadList);
 
-		// регестрируем дефолтные ресурсы
-		FactoryManager::getInstance().registerFactory<ResourceImageSet>(mCategoryName);
-
 		MYGUI_LOG(Info, getClassTypeName() << " successfully initialized");
 		mIsInitialise = true;
 	}
@@ -45,8 +41,6 @@ namespace MyGUI
 	{
 		MYGUI_ASSERT(mIsInitialise, getClassTypeName() << " is not initialised");
 		MYGUI_LOG(Info, "* Shutdown: " << getClassTypeName());
-
-		FactoryManager::getInstance().unregisterFactory<ResourceImageSet>(mCategoryName);
 
 		clear();
 		unregisterLoadXmlDelegate(mCategoryName);

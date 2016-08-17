@@ -307,7 +307,6 @@ namespace MyGUI
 		info.item->changeWidgetSkin(getSkinByType(_type));
 		mChangeChildSkin = false;
 
-		info.item->setImageName(getIconIndexByType(_type ));
 		info.item->setCaption(info.name);
 
 		update();
@@ -512,8 +511,6 @@ namespace MyGUI
 		_item->eventRootKeyChangeFocus += newDelegate(this, &MenuControl::notifyRootKeyChangeFocus);
 		_item->eventMouseButtonClick += newDelegate(this, &MenuControl::notifyMouseButtonClick);
 		_item->eventMouseSetFocus += newDelegate(this, &MenuControl::notifyMouseSetFocus);
-
-		_item->setImageName(getIconIndexByType(_type ));
 
 		MenuControl* submenu = nullptr;
 
