@@ -21,7 +21,7 @@ namespace MyGUI
 
 	bool MaskPickInfo::load(const std::string& _file)
 	{
-		if (!DataManager::getInstance().isDataExist(_file))
+		if (!DataManager::getInstance().isDataExist(_file,true))
 			return false;
 
 		RenderManager& render = RenderManager::getInstance();

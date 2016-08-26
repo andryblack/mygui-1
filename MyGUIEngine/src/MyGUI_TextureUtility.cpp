@@ -36,7 +36,7 @@ namespace MyGUI
 			ITexture* texture = render.getTexture(_texture);
 			if (texture == nullptr)
 			{
-				if (!DataManager::getInstance().isDataExist(_texture))
+				if (!DataManager::getInstance().isDataExist(_texture,true))
 				{
 					MYGUI_LOG(Error, "Texture '" + _texture + "' not found");
 					return Constants::getZeroIntSize();

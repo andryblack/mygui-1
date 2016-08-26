@@ -33,7 +33,7 @@ namespace MyGUI
 		/** Is data with specified name exist.
 			@param _name Resource name.
 		*/
-		virtual bool isDataExist(const std::string& _name) = 0;
+		virtual bool isDataExist(const std::string& _name, bool _texture = false) = 0;
 
 		/** Get all data names with names that matches pattern.
 			@param _pattern Pattern to match (for example "*.layout").
