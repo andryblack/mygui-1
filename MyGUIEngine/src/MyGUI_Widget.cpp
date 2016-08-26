@@ -567,8 +567,9 @@ namespace MyGUI
         if (_name == mName)
             return this;
         MYGUI_ASSERT(mWidgetClient != this, "mWidgetClient can not be this widget");
-        if (mWidgetClient != nullptr)
+        /*if (mWidgetClient != nullptr)
             return mWidgetClient->findSkinWidget(_name);
+        */
         
         for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
         {
