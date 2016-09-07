@@ -114,13 +114,7 @@ namespace MyGUI
 		void checkVertexSize();
 
     protected:
-		void drawQuad(
-			IRenderTarget* _target,
-			size_t& _vertexCount,
-			const FloatRect& _vertexRect,
-			float _vertexZ,
-			const FloatRect& _textureRect,
-			uint32 _colour) const;
+		
 
 		void drawGlyph(
 			IRenderTarget* _target,

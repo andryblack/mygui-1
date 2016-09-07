@@ -18,7 +18,7 @@
 namespace MyGUI
 {
 
-	const size_t VERTEX_IN_QUAD = 6;
+	const size_t VERTEX_IN_QUAD = 4;
 	const size_t SIMPLETEXT_COUNT_VERTEX = 32 * VERTEX_IN_QUAD;
 
 	EditText::EditText() :
@@ -641,66 +641,6 @@ namespace MyGUI
 			mNode->outOfDate(mRenderItem);
 	}
 
-	void EditText::drawQuad(
-		IRenderTarget* _target,
-		size_t& _vertexCount,
-		const FloatRect& _vertexRect,
-		float _vertexZ,
-		const FloatRect& _textureRect,
-		uint32 _colour) const
-	{
-        Vertex _vertex;
-		_vertex.x = _vertexRect.left;
-		_vertex.y = _vertexRect.top;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.left;
-		_vertex.v = _textureRect.top;
-        _target->addVertex(_vertex);
-        
-		_vertex.x = _vertexRect.left;
-		_vertex.y = _vertexRect.bottom;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.left;
-		_vertex.v = _textureRect.bottom;
-        _target->addVertex(_vertex);
-
-		_vertex.x = _vertexRect.right;
-		_vertex.y = _vertexRect.top;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.right;
-		_vertex.v = _textureRect.top;
-        _target->addVertex(_vertex);
-
-		_vertex.x = _vertexRect.right;
-		_vertex.y = _vertexRect.top;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.right;
-		_vertex.v = _textureRect.top;
-        _target->addVertex(_vertex);
-
-		_vertex.x = _vertexRect.left;
-		_vertex.y = _vertexRect.bottom;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.left;
-		_vertex.v = _textureRect.bottom;
-        _target->addVertex(_vertex);
-
-		_vertex.x = _vertexRect.right;
-		_vertex.y = _vertexRect.bottom;
-		_vertex.z = _vertexZ;
-		_vertex.colour = _colour;
-		_vertex.u = _textureRect.right;
-		_vertex.v = _textureRect.bottom;
-        _target->addVertex(_vertex);
-
-		_vertexCount += VERTEX_IN_QUAD;
-	}
-
 	void EditText::drawGlyph(
 		IRenderTarget* _target,
 		size_t& _vertexCount,
@@ -771,8 +711,13 @@ namespace MyGUI
 		float pix_left = mCroppedParent->getAbsoluteLeft() + _vertexRect.left;
 		float pix_top = mCroppedParent->getAbsoluteTop() + (mShiftText ? 1.0f : 0.0f) + _vertexRect.top;
 
-        FloatRect vertexRect(pix_left,pix_top,pix_left+_vertexRect.width(),pix_top+_vertexRect.height());
-		drawQuad(_target, _vertexCount, vertexRect, mNode->getNodeDepth(), _textureRect, _colour);
+        VertexQuad quad;
+        quad.set(pix_left, pix_top, pix_left+_vertexRect.width(), pix_top+_vertexRect.height(),
+                 mNode->getNodeDepth(),
+                 _textureRect.left, _textureRect.top, _textureRect.right, _textureRect.bottom,
+                 _colour);
+        _target->addQuad(quad);
+        _vertexCount += VERTEX_IN_QUAD;
 	}
 
 } // namespace MyGUI
