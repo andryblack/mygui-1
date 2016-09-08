@@ -45,7 +45,6 @@ namespace MyGUI
 	class WidgetManager;
 	class FontManager;
 	class ControllerManager;
-	class PointerManager;
 	class ClipboardManager;
 	class LayoutManager;
 	class PluginManager;

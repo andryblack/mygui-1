@@ -39,7 +39,6 @@ namespace MyGUI
 		mWidgetManager(nullptr),
 		mFontManager(nullptr),
 		mControllerManager(nullptr),
-		mPointerManager(nullptr),
 		mClipboardManager(nullptr),
 		mLayoutManager(nullptr),
 		mLanguageManager(nullptr),
@@ -130,7 +129,6 @@ namespace MyGUI
 		WidgetManager::getInstance().unregisterUnlinker(this);
 		mWidgetManager->shutdown();
 
-		delete mPointerManager;
 		delete mWidgetManager;
 		delete mInputManager;
 		delete mSkinManager;

@@ -175,7 +175,6 @@ namespace MyGUI
 		WidgetManager* mWidgetManager;
 		FontManager* mFontManager;
 		ControllerManager* mControllerManager;
-		PointerManager* mPointerManager;
 		ClipboardManager* mClipboardManager;
 		LayoutManager* mLayoutManager;
 		LanguageManager* mLanguageManager;
