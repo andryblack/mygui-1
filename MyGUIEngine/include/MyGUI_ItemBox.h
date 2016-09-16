@@ -68,7 +68,7 @@ namespace MyGUI
 		size_t getIndexSelected() const;
 
 		//! Select specified _index
-		void setIndexSelected(size_t _index);
+		virtual void setIndexSelected(size_t _index);
 
 		//! Clear item selection
 		void clearIndexSelected();
@@ -227,8 +227,8 @@ namespace MyGUI
 		void notifyMouseButtonDoubleClick(Widget* _sender);
 		virtual size_t _getItemIndex(Widget* _item);
 		void notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id);
-		void notifyMouseButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id);
-		void notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id);
+		virtual void notifyMouseButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id);
+		virtual void notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id);
 
 
 		virtual void removeDropItems();

@@ -447,7 +447,7 @@ namespace MyGUI
 
 			if ((index >= start) && (index < (start + mVectorItems.size())))
 			{
-				IBDrawItemInfo data(index, mIndexSelect, mIndexActive, mIndexAccept, mIndexRefuse, false, false);
+				IBDrawItemInfo data(index, mIndexSelect, mIndexActive, mIndexAccept, mIndexRefuse, true, false);
 				requestDrawItem(this, mVectorItems[index - start], data);
 			}
 		}
@@ -457,7 +457,7 @@ namespace MyGUI
 		{
 			if ((_index >= start) && (_index < (start + mVectorItems.size())))
 			{
-				IBDrawItemInfo data(_index, mIndexSelect, mIndexActive, mIndexAccept, mIndexRefuse, false, false);
+				IBDrawItemInfo data(_index, mIndexSelect, mIndexActive, mIndexAccept, mIndexRefuse, true, false);
 				requestDrawItem(this, mVectorItems[_index - start], data);
 			}
 		}
