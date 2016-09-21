@@ -29,6 +29,10 @@ namespace MyGUI
 
         virtual size_t getNumPasses() const { return 1; }
 		virtual GlyphInfo* getGlyphInfo( int pass, Char _id) = 0;
+        virtual const GlyphInfo* getSubstituteGlyphInfo() const { return 0; }
+        bool hasGlyph(Char _id) {
+            return getGlyphInfo(-1, _id)!=getSubstituteGlyphInfo();
+        }
 
 		virtual int getDefaultHeight() = 0;
         virtual std::string getPassName(size_t pass) { return ""; }

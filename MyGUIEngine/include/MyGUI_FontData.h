@@ -23,6 +23,7 @@ namespace MyGUI
 			LF = 0x000A,
 			CR = 0x000D,
 			Space = 0x0020,
+            NBSP = 0x00A0,
 			NEL = 0x0085,
 
 			// The following are special code points. These are used represent displayable text elements that do not correspond to

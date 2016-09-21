@@ -359,25 +359,6 @@ namespace MyGUI
 			return mType;
 		}
 
-#if MYGUI_COMPILER == MYGUI_COMPILER_MSVC && !defined(STLPORT)
-		inline void open_stream(std::ofstream& _stream, const std::wstring& _wide)
-		{
-			_stream.open(_wide.c_str());
-		}
-		inline void open_stream(std::ifstream& _stream, const std::wstring& _wide)
-		{
-			_stream.open(_wide.c_str());
-		}
-#else
-		inline void open_stream(std::ofstream& _stream, const std::wstring& _wide)
-		{
-			_stream.open(UString(_wide).asUTF8_c_str());
-		}
-		inline void open_stream(std::ifstream& _stream, const std::wstring& _wide)
-		{
-			_stream.open(UString(_wide).asUTF8_c_str());
-		}
-#endif
 
 		//----------------------------------------------------------------------//
 		// class Document
@@ -415,25 +396,7 @@ namespace MyGUI
 			return result;
 		}
 
-		// открывает обычным файлом, имя файла в utf16 или utf32
-		bool Document::open(const std::wstring& _filename)
-		{
-			std::ifstream stream;
-			open_stream(stream, _filename);
-
-			if (!stream.is_open())
-			{
-				mLastError = ErrorType::OpenFileFail;
-				setLastFileError(_filename);
-				return false;
-			}
-
-			bool result = open(stream);
-
-			stream.close();
-			return result;
-		}
-
+		
 		bool Document::open(std::istream& _stream)
 		{
 			DataStream* data = new DataStream(&_stream);
@@ -468,30 +431,7 @@ namespace MyGUI
 			return result;
 		}
 
-		// сохраняет файл, имя файла в кодировке utf16 или utf32
-		bool Document::save(const std::wstring& _filename)
-		{
-			std::ofstream stream;
-			open_stream(stream, _filename);
-
-			if (!stream.is_open())
-			{
-				mLastError = ErrorType::CreateFileFail;
-				setLastFileError(_filename);
-				return false;
-			}
-
-			bool result = save(stream);
-
-			if (!result)
-			{
-				setLastFileError(_filename);
-			}
-
-			stream.close();
-			return result;
-		}
-
+		
 		// открывает обычным потоком
 		bool Document::open(IDataStream* _stream)
 		{
@@ -931,12 +871,12 @@ namespace MyGUI
 
 		bool Document::open(const UString& _filename)
 		{
-			return open(_filename.asWStr());
+			return open(_filename);
 		}
 
 		bool Document::save(const UString& _filename)
 		{
-			return save(_filename.asWStr());
+			return save(_filename);
 		}
 
 		void Document::clearLastError()
@@ -952,11 +892,6 @@ namespace MyGUI
 		void Document::setLastFileError(const std::string& _filename)
 		{
 			mLastErrorFile = _filename;
-		}
-
-		void Document::setLastFileError(const std::wstring& _filename)
-		{
-			mLastErrorFile = UString(_filename).asUTF8();
 		}
 
 	} // namespace xml

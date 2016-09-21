@@ -34,11 +34,8 @@ namespace MyGUI
 		mFont(nullptr),
 		mFontHeight(0),
 		mBackgroundNormal(true),
-		mStartSelect(0),
-		mEndSelect(0),
 		mCursorPosition(0),
 		mVisibleCursor(false),
-		mInvertSelect(true),
 		mNode(nullptr),
 		mRenderItem(nullptr),
 		mCountVertex(SIMPLETEXT_COUNT_VERTEX),
@@ -192,7 +189,7 @@ namespace MyGUI
 	void EditText::checkVertexSize()
 	{
 		// если вершин не хватит, делаем реалок, с учетом выделения * 2 и курсора
-		size_t need = (mCaption.size() * 2 + 2) * VERTEX_IN_QUAD;
+		size_t need = (mCaption.length() * 2 + 2) * VERTEX_IN_QUAD;
 		if (mCountVertex < need)
 		{
 			mCountVertex = need + SIMPLETEXT_COUNT_VERTEX;
@@ -282,9 +279,9 @@ namespace MyGUI
 			mNode->outOfDate(mRenderItem);
 	}
 
-	const std::string& EditText::getFontName() const
+	IFont* EditText::getFont() const
 	{
-		return mFont->getResourceName();
+		return mFont;
 	}
 
 	void EditText::setFontHeight(int _value)
@@ -322,40 +319,6 @@ namespace MyGUI
 			mRenderItem = nullptr;
 		}
 		mNode = nullptr;
-	}
-
-	size_t EditText::getTextSelectionStart() const
-	{
-		return mStartSelect;
-	}
-
-	size_t EditText::getTextSelectionEnd() const
-	{
-		return mEndSelect;
-	}
-
-	void EditText::setTextSelection(size_t _start, size_t _end)
-	{
-		mStartSelect = _start;
-		mEndSelect = _end;
-
-		if (nullptr != mNode)
-			mNode->outOfDate(mRenderItem);
-	}
-
-	bool EditText::getSelectBackground() const
-	{
-		return mBackgroundNormal;
-	}
-
-	void EditText::setSelectBackground(bool _normal)
-	{
-		if (mBackgroundNormal == _normal)
-			return;
-		mBackgroundNormal = _normal;
-
-		if (nullptr != mNode)
-			mNode->outOfDate(mRenderItem);
 	}
 
 	bool EditText::isVisibleCursor() const
@@ -529,17 +492,14 @@ namespace MyGUI
 
 		// текущие цвета
 		uint32 colour = mCurrentColourNative;
-		uint32 inverseColour = mInverseColourNative;
-		uint32 selectedColour = mInvertSelect ? inverseColour : colour | 0x00FFFFFF;
-
+		
 		const VectorLineInfo& textViewData = mTextView.getData();
 
 		
 
 		FloatRect vertexRect;
 
-		const GlyphInfo* selectedInfo = mFont->getGlyphInfo(-1,mBackgroundNormal ? FontCodeType::Selected : FontCodeType::SelectedBack);
-
+		
 		size_t index = 0;
        
         
@@ -566,8 +526,6 @@ namespace MyGUI
                     {
                         if (!fixed_color) {
                             colour = sim->getColour() | (colour & 0xFF000000);
-                            inverseColour = colour ^ 0x00FFFFFF;
-                            selectedColour = mInvertSelect ? inverseColour : colour | 0x00FFFFFF;
                         }
                         continue;
                     }
@@ -575,16 +533,6 @@ namespace MyGUI
                     
                     float fullAdvance = sim->getAdvance();
                     
-                    // смещение текстуры для фона
-                    bool select = index >= mStartSelect && index < mEndSelect;
-                    
-                    // Render the selection, if any, first.
-                    if (select && pass == 0)
-                    {
-                        vertexRect.set(left, top, left + fullAdvance, top + (float)mFontHeight);
-                        _target->setTexture(selectedInfo->texture);
-                        drawGlyph(_target, vertexCount, vertexRect, selectedInfo->uvRect, selectedColour);
-                    }
                     
                     const GlyphInfo* info = mFont->getGlyphInfo(pass, sim->getChar());
                     if (info) {
@@ -593,7 +541,7 @@ namespace MyGUI
                         vertexRect.right = vertexRect.left + info->width * textViewData.scale;
                         vertexRect.bottom = vertexRect.top + info->height * textViewData.scale;
                         _target->setTexture(info->texture);
-                        drawGlyph(_target, vertexCount, vertexRect, info->uvRect, (!select || !mInvertSelect) ? colour : inverseColour);
+                        drawGlyph(_target, vertexCount, vertexRect, info->uvRect, colour);
                     }
                     
                     
@@ -616,21 +564,6 @@ namespace MyGUI
 			drawGlyph(_target, vertexCount, vertexRect, cursorGlyph->uvRect, mCurrentColourNative | 0x00FFFFFF);
 		}
 
-	}
-
-	void EditText::setInvertSelected(bool _value)
-	{
-		if (mInvertSelect == _value)
-			return;
-		mInvertSelect = _value;
-
-		if (nullptr != mNode)
-			mNode->outOfDate(mRenderItem);
-	}
-
-	bool EditText::getInvertSelected() const
-	{
-		return mInvertSelect;
 	}
 
     void EditText::setPassColour(const std::string& pass,const Colour& _value)

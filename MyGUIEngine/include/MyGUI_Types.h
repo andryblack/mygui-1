@@ -48,7 +48,7 @@ namespace MyGUI
 	typedef unsigned int uint32;
 	typedef unsigned int uint;
 
-	typedef unsigned int Char;
+	typedef uint32 Char;
 
 } // namespace MyGUI
 

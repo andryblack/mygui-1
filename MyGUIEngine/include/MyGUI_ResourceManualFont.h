@@ -28,6 +28,7 @@ namespace MyGUI
 		// Returns the glyph info for the specified code point, or the glyph info for a substitute glyph if the code point does not
 		// exist in this font. Returns nullptr if the code point does not exist and there is no substitute glyph available.
 		virtual GlyphInfo* getGlyphInfo(int pass,Char _id);
+        virtual const GlyphInfo* getSubstituteGlyphInfo() const { return mSubstituteGlyphInfo; }
 
 		// дефолтная высота, указанная в настройках шрифта
 		virtual int getDefaultHeight();

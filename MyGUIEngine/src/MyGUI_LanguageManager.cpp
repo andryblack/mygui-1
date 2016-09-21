@@ -267,6 +267,7 @@ namespace MyGUI
 		{
 			if (*iter == '#')
 			{
+                UString::iterator begin_replace = iter;
 				++iter;
 				if (iter == end)
 				{
@@ -281,7 +282,7 @@ namespace MyGUI
 					}
 					UString::iterator iter2 = iter;
 					++iter2;
-
+                    UString::iterator start = iter2;
 					while (true)
 					{
 						if (iter2 == end)
@@ -289,9 +290,7 @@ namespace MyGUI
 
 						if (*iter2 == '}')
 						{
-							size_t start = iter - line.begin();
-							size_t len = (iter2 - line.begin()) - start - 1;
-							const UString& tag = line.substr(start + 1, len);
+                            UString tag = UString(start,iter2);
 							UString replacement;
 
 							bool find = true;
@@ -314,6 +313,9 @@ namespace MyGUI
 									find = false;
 								}
 							}
+                            
+                            UString::iterator end_replace = iter2;
+                            ++end_replace;
 
 							// try to ask user if event assigned or use #{_tag} instead
 							if (!find)
@@ -324,18 +326,14 @@ namespace MyGUI
 								}
 								else
 								{
-									iter = line.insert(iter, '#') + size_t(len + 2);
-									end = line.end();
-									break;
+                                    replacement = tag;
 								}
 							}
 
 							_replaceResult = true;
 
-							iter = line.erase(iter - size_t(1), iter2 + size_t(1));
-							size_t pos = iter - line.begin();
-							line.insert(pos, replacement);
-							iter = line.begin() + pos + replacement.length();
+							iter = line.erase(begin_replace, end_replace);
+							iter = line.insert(iter, replacement);
 							end = line.end();
 							if (iter == end)
 								return line;

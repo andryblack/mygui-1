@@ -7,10 +7,6 @@
 #include "MyGUI_Precompiled.h"
 #include "MyGUI_ClipboardManager.h"
 #include "MyGUI_Gui.h"
-#include "MyGUI_TextIterator.h"
-#if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
-#include "MyGUI_WindowsClipboardHandler.h"
-#endif
 
 namespace MyGUI
 {
@@ -19,9 +15,6 @@ namespace MyGUI
 	template <> const char* Singleton<ClipboardManager>::mClassTypeName = "ClipboardManager";
 
 	ClipboardManager::ClipboardManager() :
-#if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
-		mWindowsClipboardHandler(nullptr),
-#endif
 		mIsInitialise(false)
 	{
 	}
@@ -31,11 +24,6 @@ namespace MyGUI
 		MYGUI_ASSERT(!mIsInitialise, getClassTypeName() << " initialised twice");
 		MYGUI_LOG(Info, "* Initialise: " << getClassTypeName());
 
-#if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
-		mWindowsClipboardHandler = new WindowsClipboardHandler();
-		mWindowsClipboardHandler->initialise();
-#endif
-
 		MYGUI_LOG(Info, getClassTypeName() << " successfully initialized");
 		mIsInitialise = true;
 	}
@@ -44,12 +32,6 @@ namespace MyGUI
 	{
 		MYGUI_ASSERT(mIsInitialise, getClassTypeName() << " is not initialised");
 		MYGUI_LOG(Info, "* Shutdown: " << getClassTypeName());
-
-#if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
-		mWindowsClipboardHandler->shutdown();
-		delete mWindowsClipboardHandler;
-		mWindowsClipboardHandler = nullptr;
-#endif
 
 		MYGUI_LOG(Info, getClassTypeName() << " successfully shutdown");
 		mIsInitialise = false;

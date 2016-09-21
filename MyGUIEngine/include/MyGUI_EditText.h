@@ -49,7 +49,7 @@ namespace MyGUI
 		float getAlpha() const;
 
 		virtual void setFontName(const std::string& _value);
-		virtual const std::string& getFontName() const;
+		virtual IFont* getFont() const;
 
 		virtual void setFontHeight(int _value);
 		virtual int getFontHeight() const;
@@ -60,22 +60,8 @@ namespace MyGUI
 		virtual void setTextAlign(Align _value);
 		virtual Align getTextAlign() const;
 
-		virtual size_t getTextSelectionStart() const;
-		virtual size_t getTextSelectionEnd() const;
-		virtual void setTextSelection(size_t _start, size_t _end);
-
-		virtual bool getSelectBackground() const;
-		virtual void setSelectBackground(bool _normal);
-
 		virtual bool isVisibleCursor() const;
 		virtual void setVisibleCursor(bool _value);
-
-		/** Get invert selected text color property. */
-		virtual bool getInvertSelected() const;
-		/** Enable or disable inverting color of selected text.\n
-			Enabled (true) by default.
-		*/
-		virtual void setInvertSelected(bool _value);
 
 		virtual size_t getCursorPosition() const;
 		virtual void setCursorPosition(size_t _index);
@@ -143,8 +129,6 @@ namespace MyGUI
 		int mFontHeight;
 
 		bool mBackgroundNormal;
-		size_t mStartSelect;
-		size_t mEndSelect;
 		size_t mCursorPosition;
 		bool mVisibleCursor;
 		bool mInvertSelect;

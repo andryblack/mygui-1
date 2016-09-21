@@ -289,9 +289,6 @@ namespace MyGUI
 			// открывает обычным файлом, имя файла в utf8
 			bool open(const std::string& _filename);
 
-			// открывает обычным файлом, имя файла в utf16 или utf32
-			bool open(const std::wstring& _filename);
-
 			// открывает обычным потоком
 			bool open(std::istream& _stream);
 
@@ -302,10 +299,7 @@ namespace MyGUI
 			// сохраняет файл
 			bool save(const std::string& _filename);
 
-			// сохраняет файл
-			bool save(const std::wstring& _filename);
-
-			bool save(std::ostream& _stream);
+            bool save(std::ostream& _stream);
 
 			bool save(const UString& _filename);
 
@@ -333,9 +327,8 @@ namespace MyGUI
 
 		private:
 			void setLastFileError(const std::string& _filename);
-			void setLastFileError(const std::wstring& _filename);
-
-			bool parseTag(ElementPtr& _currentNode, std::string _content);
+		
+            bool parseTag(ElementPtr& _currentNode, std::string _content);
 
 			bool checkPair(std::string& _key, std::string& _value);
 

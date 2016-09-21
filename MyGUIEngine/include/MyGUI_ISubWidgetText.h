@@ -14,6 +14,8 @@
 
 namespace MyGUI
 {
+    
+    class IFont;
 
 	class MYGUI_EXPORT ISubWidgetText :
 		public ISubWidget
@@ -23,37 +25,7 @@ namespace MyGUI
 	public:
 		virtual ~ISubWidgetText()  { }
 
-		/** Get index of start of selection */
-		virtual size_t getTextSelectionStart() const
-		{
-			return 0;
-		}
-
-		/** Get index of end of selection */
-		virtual size_t getTextSelectionEnd() const
-		{
-			return 0;
-		}
-
-		/** Set text selection */
-		virtual void setTextSelection(size_t _start, size_t _end) { }
-
-		// интенсивность выделенного текста
-		virtual bool getSelectBackground() const
-		{
-			return true;
-		}
-
-		virtual void setSelectBackground(bool _normal) { }
-
-		// нужно ли инвертировать выделение
-		virtual bool getInvertSelected() const
-		{
-			return true;
-		}
-
-		virtual void setInvertSelected(bool _value) { }
-
+		
 		// управление видимостью курсора
 		virtual bool isVisibleCursor() const
 		{
@@ -126,9 +98,9 @@ namespace MyGUI
 		}
 
 		virtual void setFontName(const std::string& _value) { }
-		virtual const std::string& getFontName() const
+		virtual IFont* getFont() const
 		{
-			return Constants::getEmptyString();
+			return NULL;
 		}
 
 		virtual void setFontHeight(int _value) { }

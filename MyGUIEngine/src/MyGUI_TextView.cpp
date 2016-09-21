@@ -40,7 +40,7 @@ namespace MyGUI
 		{
 		}
 
-		void set(size_t _position, UString::const_iterator& _space_point, size_t _count, float _width)
+		void set(size_t _position, UString::iterator& _space_point, size_t _count, float _width)
 		{
 			position = _position;
 			space_point = _space_point;
@@ -77,7 +77,7 @@ namespace MyGUI
 			return position;
 		}
 
-		UString::const_iterator getTextIter() const
+		UString::iterator getTextIter() const
 		{
 			MYGUI_DEBUG_ASSERT(rollback, "rollback point not valid");
 			return space_point;
@@ -85,7 +85,7 @@ namespace MyGUI
 
 	private:
 		size_t position;
-		UString::const_iterator space_point;
+		UString::iterator space_point;
 		size_t count;
 		float width;
 		bool rollback;
@@ -125,17 +125,17 @@ namespace MyGUI
             mLineInfo.scale = (float)_height / font_height;
         }
 
-		UString::const_iterator end = _text.end();
-		UString::const_iterator index = _text.begin();
+		UString::iterator end = _text.end();
+		UString::iterator index = _text.begin();
 
 		/*if (index == end)
 			return;*/
 
 		result.height += _height;
 
-		for (; index != end; index.moveNext())
+		for (; index != end; ++index)
 		{
-            Char character = index.getCharacter();
+            Char character = *index;
 
 			// новая строка
 			if (character == FontCodeType::CR
@@ -144,7 +144,7 @@ namespace MyGUI
 			{
 				if (character == FontCodeType::CR)
 				{
-					UString::const_iterator peeki = index;
+					UString::iterator peeki = index;
 					++peeki;
 					if ((peeki != end) && (*peeki == FontCodeType::LF))
 						index = peeki; // skip both as one newline
@@ -165,7 +165,7 @@ namespace MyGUI
 				// отменяем откат
 				roll_back.clear();
 
-				continue;
+              	continue;
 			}
 			// тег
 			else if (character == L'#')
@@ -174,8 +174,7 @@ namespace MyGUI
 				++ index;
 				if (index == end)
 				{
-					--index;    // это защита
-					continue;
+                    break;
 				}
 
 				character = *index;
@@ -191,8 +190,7 @@ namespace MyGUI
 						++ index;
 						if (index == end)
 						{
-							--index;    // это защита
-							continue;
+                            break;
 						}
 						colour <<= 4;
 						colour += convert_colour[ ((*index) - 48) & 0x3F ];
@@ -201,7 +199,8 @@ namespace MyGUI
                              ((colour & 0x000000ff) << 16) |
                              ((colour & 0xff00ff00));
 					line_info.simbols.push_back( CharInfo(colour) );
-
+                    if (index==end)
+                        break;
 					continue;
 				}
 			}

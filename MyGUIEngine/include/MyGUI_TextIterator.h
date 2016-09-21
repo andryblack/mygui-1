@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Colour.h"
-#include "MyGUI_TextChangeHistory.h"
 #include "MyGUI_IFont.h"
 
 namespace MyGUI
@@ -21,49 +20,6 @@ namespace MyGUI
 		TextIterator();
 
 	public:
-		TextIterator(const UString& _text, VectorChangeInfo* _history = nullptr);
-
-		bool moveNext();
-
-		// возвращает цвет
-		bool getTagColour(UString& _colour) const;
-
-		// удаляет цвет
-		void clearTagColour();
-
-		bool setTagColour(const Colour& _colour);
-
-		bool setTagColour(UString _colour);
-
-		// сохраняет текущий итератор
-		bool saveStartPoint();
-
-		// возвращает строку от сохраненного итератора до текущего
-		UString getFromStart();
-
-		// удаляет от запомненной точки до текущей
-		bool eraseFromStart();
-
-		// возвращает текущую псевдо позицию
-		size_t getPosition() const;
-
-		const UString& getText() const;
-
-		void insertText(const UString& _insert, bool _multiLine);
-
-		void clearNewLine(UString& _text);
-
-		//очищает весь текст
-		void clearText();
-
-		// возвращает размер строки
-		size_t getSize() const;
-
-		void setText(const UString& _text, bool _multiLine);
-
-		void cutMaxLength(size_t _max);
-
-		void cutMaxLengthFromBeginning(size_t _max);
 
 		// возвращает текст без тегов
 		static UString getOnlyText(const UString& _text);
@@ -77,28 +33,10 @@ namespace MyGUI
 
 		static UString toTagsString(const UString& _text);
 
-	private:
-		// возвращает цвет
-		bool getTagColour(UString& _colour, UString::iterator& _iter) const;
-
-		void insert(UString::iterator& _start, UString& _insert);
-
-		UString::iterator erase(UString::iterator _start, UString::iterator _end);
-
-		void clear();
-
-		void normaliseNewLine(UString& _colour);
-
-	private:
-		UString mText;
-		UString::iterator mCurrent, mEnd, mSave;
-
-		// позиция и размер
-		size_t mPosition;
-		mutable size_t mSize;
-		bool mFirst;
-
-		VectorChangeInfo* mHistory;
+        static void cutMaxLengthFromBeginning(UString& _text,size_t length);
+        static void cutMaxLength(UString& _text,size_t length);
+        static void normaliseNewLine(UString& _text,bool _remove);
+        
 	};
 
 } // namespace MyGUI

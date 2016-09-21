@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_TextBox.h"
-#include "MyGUI_TextChangeHistory.h"
 #include "MyGUI_TextIterator.h"
 #include "MyGUI_EventPair.h"
 #include "MyGUI_ScrollViewBase.h"
@@ -31,41 +30,7 @@ namespace MyGUI
 
 	public:
 		EditBox();
-
-		/** Colour interval */
-		void setTextIntervalColour(size_t _start, size_t _count, const Colour& _colour);
-
-		/** Get index of first selected character or ITEM_NONE if nothing selected */
-		size_t getTextSelectionStart() const;
-
-		/** Get index of last selected character or ITEM_NONE if nothing selected */
-		size_t getTextSelectionEnd() const;
-
-		/** Get length of selected text */
-		size_t getTextSelectionLength() const;
-
-		// возвращает текст с тегами
-		/** Get _count characters with tags from _start position */
-		UString getTextInterval(size_t _start, size_t _count);
-
-		/** Set selected text interval
-			@param _start of interval
-			@param _end of interval
-		*/
-		void setTextSelection(size_t _start, size_t _end);
-
-		/** Delete selected text */
-		void deleteTextSelection();
-
-		/** Get selected text */
-		UString getTextSelection();
-
-		/** Is any text selected */
-		bool isTextSelection() const;
-
-		/** Colour selected text */
-		void setTextSelectionColour(const Colour& _value);
-
+		
 		/** Set text cursor position */
 		void setTextCursor(size_t _index);
 		/** Get text cursor position */
@@ -162,13 +127,6 @@ namespace MyGUI
 		void setTabPrinting(bool _value);
 		/** Get edit tab printing wrap mode flag */
 		bool getTabPrinting() const;
-
-		/** Get invert selected text color property */
-		bool getInvertSelected();
-		/** Enable or disable inverting color of selected text\n
-			Enabled (true) by default
-		*/
-		void setInvertSelected(bool _value);
 
 		//! @copydoc Widget::setPosition(const IntPoint& _value)
 		virtual void setPosition(const IntPoint& _value);
@@ -281,39 +239,17 @@ namespace MyGUI
 	private:
 		// устанавливает текст
 		void setText(const UString& _text, bool _history);
-		// удаляет все что выделенно
-		bool deleteTextSelect(bool _history);
 		// вставляет текст в указанную позицию
 		void insertText(const UString& _text, size_t _index, bool _history);
 		// удаляет текст
 		void eraseText(size_t _start, size_t _count, bool _history);
-		// выделяет цветом выделение
-		void setTextSelectColour(const Colour& _colour, bool _history);
-		// выделяет цветом диапазон
-		void _setTextColour(size_t _start, size_t _count, const Colour& _colour, bool _history);
-
+		
+        bool checkCharInFont(Char _symb) const;
+        
 		void frameEntered(float _frame);
 
-		// обновляет курсор по координате
-		void updateSelectText();
-
-		void resetSelect();
-
-		// запись в историю данных о позиции
-		void commandPosition(size_t _undo, size_t _redo, size_t _length, VectorChangeInfo* _info = nullptr);
-
-		// команнды отмена и повтор
-		bool commandRedo();
-		bool commandUndo();
-		// объединяет последние две комманды
-		void commandMerge();
-		// очистка
-		void commandResetRedo();
-		void commandResetHistory();
-		void saveInHistory(VectorChangeInfo* _info = nullptr);
-
+	
 		// работа с буфером обмена
-		void commandCut();
 		void commandCopy();
 		void commandPast();
 
@@ -351,14 +287,7 @@ namespace MyGUI
 		// максимальное колличество
 		size_t mTextLength;
 
-		// выделение
-		size_t mStartSelect;
-		size_t mEndSelect;
-
-		// списоки изменений для отмены и повтора
-		DequeUndoRedoInfo mVectorUndoChangeInfo;
-		DequeUndoRedoInfo mVectorRedoChangeInfo;
-
+		
 		bool mMouseLeftPressed;
 
 		bool mModeReadOnly;

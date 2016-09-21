@@ -15,8 +15,6 @@
 namespace MyGUI
 {
 
-	class WindowsClipboardHandler;
-
 	class MYGUI_EXPORT ClipboardManager :
 		public Singleton<ClipboardManager>
 	{
@@ -60,10 +58,6 @@ namespace MyGUI
 
 	private:
 		MapString mClipboardData;
-
-#if MYGUI_PLATFORM == MYGUI_PLATFORM_WIN32
-		WindowsClipboardHandler* mWindowsClipboardHandler;
-#endif
 
 		bool mIsInitialise;
 	};

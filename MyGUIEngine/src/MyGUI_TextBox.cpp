@@ -8,6 +8,7 @@
 #include "MyGUI_TextBox.h"
 #include "MyGUI_LanguageManager.h"
 #include "MyGUI_Constants.h"
+#include "MyGUI_IFont.h"
 
 namespace MyGUI
 {
@@ -58,9 +59,11 @@ namespace MyGUI
 
 	const std::string& TextBox::getFontName() const
 	{
-		if (nullptr == getSubWidgetText())
-			return Constants::getEmptyString();
-		return getSubWidgetText()->getFontName();
+        IFont* fnt = 0;
+        if (getSubWidgetText()) getSubWidgetText()->getFont();
+        if (fnt)
+            return fnt->getResourceName();
+		return Constants::getEmptyString();
 	}
 
 	void TextBox::setFontHeight(int _height)
