@@ -178,7 +178,7 @@ namespace MyGUI
 
 		
 		typedef _fwd_iterator iterator;                     //!< iterator
-		
+        
 
 		//!\name Constructors/Destructor
 		//@{
@@ -286,8 +286,6 @@ namespace MyGUI
 		UString& append( iterator start, iterator end );
 		//! appends \a num characters of \a str on to the end of the current string  (UTF-8 encoding)
 		UString& append( const char* c_str, size_type num );
-		//! appends \a num repetitions of \a ch on to the end of the current string (Unicode values less than 128)
-		UString& append( size_type num, char ch );
 		//! appends \a num repetitions of \a ch on to the end of the current string (Full Unicode spectrum)
 		UString& append( size_type num, unicode_char ch );
 		//@}
@@ -387,10 +385,12 @@ namespace MyGUI
         unicode_char _readUTF32(dstring::const_iterator& it) const;
 	private:
 		//template<class ITER_TYPE> friend class _iterator;
-		dstring mData;
+        dstring mData;
 
 		//! common constructor operations
 		void _init();
+        
+        bool check_iterator( const _base_iterator& it ) const;
 	};
 
 	//! string addition operator \relates UString

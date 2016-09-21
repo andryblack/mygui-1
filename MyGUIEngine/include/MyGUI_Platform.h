@@ -108,22 +108,24 @@
 #		define MYGUI_EXPORT_DLL
 #	endif
 #
-// Unlike the Win32 compilers, Linux compilers seem to use DEBUG for when
-// specifying a debug build.
-// (??? this is wrong, on Linux debug builds aren't marked in any way unless
-// you mark it yourself any way you like it -- zap ???)
-#	ifdef DEBUG
-#		define MYGUI_DEBUG_MODE 1
-#	else
-#		define MYGUI_DEBUG_MODE 0
-#	endif
-
 #	if MYGUI_PLATFORM == MYGUI_PLATFORM_APPLE
 #		define MYGUI_PLATFORM_LIB "MYGUIPlatform.bundle"
 #	else // if MYGUI_PLATFORM_LINUX
 #		define MYGUI_PLATFORM_LIB "libMYGUIPlatform.so"
 #	endif
 # endif
+#endif
+
+// Unlike the Win32 compilers, Linux compilers seem to use DEBUG for when
+// specifying a debug build.
+// (??? this is wrong, on Linux debug builds aren't marked in any way unless
+// you mark it yourself any way you like it -- zap ???)
+#ifndef MYGUI_DEBUG_MODE
+#  ifdef DEBUG
+#	 define MYGUI_DEBUG_MODE 1
+#  else
+#	 define MYGUI_DEBUG_MODE 0
+#  endif
 #endif
 
 

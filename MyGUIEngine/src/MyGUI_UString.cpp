@@ -10,7 +10,8 @@
 namespace MyGUI
 {
 
-	//--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
 	UString::_base_iterator::_base_iterator()
 	{
 		mString = 0;
@@ -292,6 +293,7 @@ namespace MyGUI
 
 	UString& UString::append( iterator start, iterator end )
 	{
+        MYGUI_DEBUG_ASSERT(start.mString==end.mString, "invalid iterators pair");
 		mData.append( start.mIter, end.mIter );
 		return *this;
 	}
@@ -312,36 +314,48 @@ namespace MyGUI
         }
 		return *this;
 	}
-
+    
     UString::iterator UString::insert( iterator i, const UString& str )
     {
+        MYGUI_DEBUG_ASSERT(i.mString==this, "invalid iterator i");
         iterator res;
         res.mString = this;
-        res.mIter = mData.insert(i.mIter, str.mData.begin(),str.mData.end());
+        size_type pos = i.mIter - static_cast<const dstring&>(mData).begin();
+        mData.insert(mData.begin()+pos, str.mData.begin(),str.mData.end());
+        res.mIter = mData.begin() + pos + str.mData.length();
         return res;
     }
     UString::iterator UString::insert( iterator i, unicode_char ch )
     {
+        MYGUI_DEBUG_ASSERT(check_iterator(i), "invalid iterator i");
         char_type cp[16];
         size_t c = _utf32_to_utf8(ch, cp);
+        size_type pos = i.mIter - static_cast<const dstring&>(mData).begin();
         iterator res;
         res.mString = this;
-        res.mIter = mData.insert(i.mIter, cp, cp+c);
+        mData.insert(mData.begin()+pos, cp, cp+c);
+        res.mIter = mData.begin() + pos + c;
         return res;
     }
     
 	UString::iterator UString::erase( iterator loc )
 	{
+        MYGUI_DEBUG_ASSERT(check_iterator(loc), "invalid iterator loc");
 		iterator ret;
-		ret.mIter = mData.erase( loc.mIter );
+        size_type pos = loc.mIter - static_cast<const dstring&>(mData).begin();
+		ret.mIter = mData.erase( mData.begin() + pos );
 		ret.mString = this;
 		return ret;
 	}
 
 	UString::iterator UString::erase( iterator start, iterator end )
 	{
+        MYGUI_DEBUG_ASSERT(check_iterator(start), "invalid iterator start");
+        MYGUI_DEBUG_ASSERT(check_iterator(end), "invalid iterator end");
 		iterator ret;
-		ret.mIter = mData.erase( start.mIter, end.mIter );
+        size_type pos_start = start.mIter - static_cast<const dstring&>(mData).begin();
+        size_type pos_end = end.mIter - static_cast<const dstring&>(mData).begin();
+		ret.mIter = mData.erase( mData.begin()+pos_start, mData.begin()+pos_end );
 		ret.mString = this;
 		return ret;
 	}
@@ -664,6 +678,15 @@ namespace MyGUI
 		}
 		return length;
 	}
+    
+    bool UString::check_iterator( const _base_iterator& i ) const {
+        MYGUI_ASSERT(i.mString == this, "not my iterator");
+        for (dstring::const_iterator it = mData.begin();it!=mData.end();++it) {
+            if (it == i.mIter)
+                return true;
+        }
+        return i.mIter==mData.end();
+    }
 
 	void UString::_init()
 	{
