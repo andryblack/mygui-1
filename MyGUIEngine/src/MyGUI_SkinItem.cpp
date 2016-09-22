@@ -16,8 +16,7 @@ namespace MyGUI
 	SkinItem::SkinItem() :
 		mText(nullptr),
 		mMainSkin(nullptr),
-		mTexture(nullptr),
-		mSubSkinsVisible(true)
+		mTexture(nullptr)
 	{
 	}
 
@@ -143,14 +142,6 @@ namespace MyGUI
 		return mTextureName;
 	}
 
-	void SkinItem::_setSubSkinVisible(bool _visible)
-	{
-		if (mSubSkinsVisible == _visible)
-			return;
-		mSubSkinsVisible = _visible;
-
-		_updateSkinItemView();
-	}
 
 	ISubWidgetText* SkinItem::getSubWidgetText()
 	{

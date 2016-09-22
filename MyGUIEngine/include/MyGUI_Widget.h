@@ -177,7 +177,7 @@ namespace MyGUI
 		/** Get inherits alpha mode flag */
 		bool getInheritsAlpha() const;
         
-        void setInheristsState(bool _value);
+        void setInheritsState(bool _value);
         bool getInheritsState() const;
 
 		void setColour(const Colour& _value);
@@ -301,7 +301,7 @@ namespace MyGUI
 		// сброс всех данных контейнера, тултипы и все остальное
 		virtual void _resetContainer(bool _update);
 
-		bool _setWidgetState(const std::string& _value);
+		virtual bool _setWidgetState(const std::string& _value);
 
 		// перерисовывает детей
 		void _updateChilds();

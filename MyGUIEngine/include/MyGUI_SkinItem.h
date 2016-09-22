@@ -43,8 +43,7 @@ namespace MyGUI
 		void _updateSkinItemView();
 
 		bool _setSkinItemState(const std::string& _state);
-		void _setSubSkinVisible(bool _visible);
-
+		
 	private:
 		// вектор всех детей сабскинов
 		VectorSubWidget mSubSkinChild;
@@ -57,9 +56,7 @@ namespace MyGUI
 
 		std::string mTextureName;
 		ITexture* mTexture;
-
-		bool mSubSkinsVisible;
-	};
+    };
 
 } // namespace MyGUI
 

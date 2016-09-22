@@ -332,9 +332,6 @@ namespace MyGUI
 				// запоминаем текущее состояние
 				mIsMargin = margin;
 
-				// скрываем
-				_setSubSkinVisible(false);
-
 				// вся иерархия должна быть проверенна
 				for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
 					(*widget)->_updateView();
@@ -353,9 +350,6 @@ namespace MyGUI
 
 		// запоминаем текущее состояние
 		mIsMargin = margin;
-
-		// если скин был скрыт, то покажем
-		_setSubSkinVisible(true);
 
 		// обновляем наших детей, а они уже решат обновлять ли своих детей
 		for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
@@ -463,10 +457,10 @@ namespace MyGUI
 		_updateAlpha();
 	}
     
-    void Widget::setInheristsState(bool _value) {
+    void Widget::setInheritsState(bool _value) {
         mInheritsState = _value;
     }
-    
+        
     bool Widget::getInheritsState() const {
         return mInheritsState;
     }
@@ -709,8 +703,6 @@ namespace MyGUI
 			}
 		}
 
-		_setSubSkinVisible(visible);
-
 		// передаем старую координату , до вызова, текущая координата отца должна быть новой
 		for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
 			(*widget)->_setAlign(old, getSize());
@@ -753,8 +745,6 @@ namespace MyGUI
 				visible = false;
 			}
 		}
-
-		_setSubSkinVisible(visible);
 
 		// передаем старую координату , до вызова, текущая координата отца должна быть новой
 		for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
@@ -1212,7 +1202,7 @@ namespace MyGUI
 			setInheritsAlpha(utility::parseValue<bool>(_value));
         
         else if (_key == "InheritsState")
-            setInheristsState(utility::parseValue<bool>(_value));
+            setInheritsState(utility::parseValue<bool>(_value));
 
 		/// @wproperty{Widget, InheritsPick, bool} Режим наследования доступности мышью.
 		else if (_key == "InheritsPick")
