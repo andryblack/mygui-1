@@ -36,8 +36,8 @@ namespace MyGUI
 		virtual void addChildItem(LayerItem* _item);
 		virtual void removeChildItem(LayerItem* _item);
 
-		void addChildNode(LayerItem* _item);
-		void removeChildNode(LayerItem* _item);
+		virtual void addChildNode(LayerItem* _item);
+		virtual void removeChildNode(LayerItem* _item);
 
 		void addRenderItem(ISubWidget* _item);
 		void removeAllRenderItems();
