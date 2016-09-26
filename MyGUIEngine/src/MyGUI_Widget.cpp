@@ -263,9 +263,8 @@ namespace MyGUI
 
 	void Widget::shutdownWidgetSkinBase()
 	{
-		setMaskPick("");
-
-		_deleteSkinItem();
+	
+        _deleteSkinItem();
 
 		// удаляем виджеты чтобы ли в скине
 		for (VectorWidgetPtr::iterator iter = mWidgetChildSkin.begin(); iter != mWidgetChildSkin.end(); ++iter)
@@ -472,8 +471,6 @@ namespace MyGUI
 			|| !mVisible
 			|| (!getNeedMouseFocus() && !getInheritsPick())
 			|| !_checkPoint(_left, _top)
-			// если есть маска, проверяем еще и по маске
-			|| !isMaskPickInside(IntPoint(_left - mCoord.left, _top - mCoord.top), mCoord)
 			)
 			return nullptr;
 
@@ -1207,10 +1204,6 @@ namespace MyGUI
 		/// @wproperty{Widget, InheritsPick, bool} Режим наследования доступности мышью.
 		else if (_key == "InheritsPick")
 			setInheritsPick(utility::parseValue<bool>(_value));
-
-		/// @wproperty{Widget, MaskPick, string} Имя файла текстуры по которому генерится маска для доступности мышью.
-		else if (_key == "MaskPick")
-			setMaskPick(_value);
 
 		/// @wproperty{Widget, NeedKey, bool} Режим доступности виджета для ввода с клавиатуры.
 		else if (_key == "NeedKey")

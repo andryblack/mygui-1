@@ -43,13 +43,12 @@ namespace MyGUI
 				}
 				else
 				{
-					texture = render.createTexture(_texture);
+					texture = render.loadTexture(_texture);
 					if (texture == nullptr)
 					{
 						MYGUI_LOG(Error, "Texture '" + _texture + "' not found");
 						return Constants::getZeroIntSize();
 					}
-					texture->loadFromFile(_texture);
 				}
 			}
 

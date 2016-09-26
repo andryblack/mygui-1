@@ -15,11 +15,6 @@ namespace MyGUI
 	template <> RenderManager* Singleton<RenderManager>::msInstance = nullptr;
 	template <> const char* Singleton<RenderManager>::mClassTypeName = "RenderManager";
 
-	bool RenderManager::isFormatSupported(PixelFormat _format, TextureUsage _usage)
-	{
-		return true;
-	}
-
 #if MYGUI_DEBUG_MODE == 1
 	bool RenderManager::checkTexture(ITexture* _texture)
 	{

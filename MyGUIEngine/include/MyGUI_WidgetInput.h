@@ -13,7 +13,6 @@
 #include "MyGUI_WidgetToolTip.h"
 #include "MyGUI_MouseButton.h"
 #include "MyGUI_KeyCode.h"
-#include "MyGUI_MaskPickInfo.h"
 #include "MyGUI_Delegate.h"
 #include "MyGUI_EventPair.h"
 
@@ -96,13 +95,6 @@ namespace MyGUI
 		void setInheritsPick(bool _value);
 		/** Get inherits mode flag */
 		bool getInheritsPick() const;
-
-		/** Set picking mask for widget */
-		void setMaskPick(const std::string& _filename);
-		/** Set picking mask for widget */
-		void setMaskPick(const MaskPickInfo& _info);
-
-		bool isMaskPickInside(const IntPoint& _point, const IntCoord& _coord) const;
 
 		bool getRootMouseFocus() const;
 		bool getRootKeyFocus() const;
@@ -265,8 +257,7 @@ namespace MyGUI
 
 	private:
 		std::string mPointer;
-		MaskPickInfo mOwnMaskPickInfo;
-
+		
 		bool mNeedToolTip;
 		bool mInheritsPick;
 		bool mNeedKeyFocus;

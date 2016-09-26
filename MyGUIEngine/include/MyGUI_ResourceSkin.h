@@ -10,7 +10,6 @@
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_SubWidgetBinding.h"
 #include "MyGUI_ChildSkinInfo.h"
-#include "MyGUI_MaskPickInfo.h"
 #include "MyGUI_IResource.h"
 #include "MyGUI_SubWidgetInfo.h"
 

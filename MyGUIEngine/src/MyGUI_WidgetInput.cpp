@@ -25,24 +25,6 @@ namespace MyGUI
 	{
 	}
 
-	void WidgetInput::setMaskPick(const std::string& _filename)
-	{
-		if (_filename.empty())
-			mOwnMaskPickInfo = MaskPickInfo();
-		else if (!mOwnMaskPickInfo.load(_filename))
-			MYGUI_LOG(Error, "mask not load '" << _filename << "'");
-	}
-
-	void WidgetInput::setMaskPick(const MaskPickInfo& _info)
-	{
-		mOwnMaskPickInfo = _info;
-	}
-
-	bool WidgetInput::isMaskPickInside(const IntPoint& _point, const IntCoord& _coord) const
-	{
-		return mOwnMaskPickInfo.empty() || mOwnMaskPickInfo.pick(_point, _coord);
-	}
-
 	void WidgetInput::_riseMouseLostFocus(Widget* _new)
 	{
 		onMouseLostFocus(_new);

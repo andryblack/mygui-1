@@ -12,7 +12,6 @@
 #include "MyGUI_XmlDocument.h"
 #include "MyGUI_ISubWidgetRect.h"
 #include "MyGUI_ResourceSkin.h"
-#include "MyGUI_RenderFormat.h"
 #include "MyGUI_IStateInfo.h"
 
 namespace MyGUI

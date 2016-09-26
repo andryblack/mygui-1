@@ -10,7 +10,6 @@
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Types.h"
 #include "MyGUI_ISubWidgetRect.h"
-#include "MyGUI_RenderFormat.h"
 
 namespace MyGUI
 {

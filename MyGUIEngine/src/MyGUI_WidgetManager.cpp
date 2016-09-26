@@ -11,7 +11,6 @@
 #include "MyGUI_FactoryManager.h"
 
 #include "MyGUI_Button.h"
-#include "MyGUI_Canvas.h"
 #include "MyGUI_ComboBox.h"
 #include "MyGUI_DDContainer.h"
 #include "MyGUI_EditBox.h"
@@ -54,7 +53,6 @@ namespace MyGUI
 		FactoryManager& factory = FactoryManager::getInstance();
 
 		factory.registerFactory<Button>(mCategoryName);
-		factory.registerFactory<Canvas>(mCategoryName);
 		factory.registerFactory<ComboBox>(mCategoryName);
 		factory.registerFactory<DDContainer>(mCategoryName);
 		factory.registerFactory<EditBox>(mCategoryName);

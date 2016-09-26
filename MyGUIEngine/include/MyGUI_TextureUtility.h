@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Colour.h"
-#include "MyGUI_RenderFormat.h"
 
 namespace MyGUI
 {

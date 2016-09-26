@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Singleton.h"
-#include "MyGUI_RenderFormat.h"
 #include "MyGUI_ITexture.h"
 #include "MyGUI_IRenderTarget.h"
 #include "MyGUI_Types.h"
@@ -22,19 +21,15 @@ namespace MyGUI
 	{
 	public:
 
-		
-		/** Create empty texture instance */
-		virtual ITexture* createTexture(const std::string& _name) = 0;
 		/** Destroy texture */
 		virtual void destroyTexture(ITexture* _texture) = 0;
 		/** Get texture by name */
 		virtual ITexture* getTexture(const std::string& _name) = 0;
+        /** Load texture from file */
+        virtual ITexture* loadTexture(const std::string& _file_name) = 0;
 
 		//FIXME возможно перенести в структуру о рендер таргете
 		virtual const IntSize& getViewSize() const = 0;
-
-		/** Check if texture format supported by hardware */
-		virtual bool isFormatSupported(PixelFormat _format, TextureUsage _usage);
 
         /** display scale for hdpi support */
         virtual float getDisplayScale() const { return 1.0f; }

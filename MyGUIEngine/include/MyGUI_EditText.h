@@ -13,7 +13,6 @@
 #include "MyGUI_ISubWidgetText.h"
 #include "MyGUI_IFont.h"
 #include "MyGUI_ResourceSkin.h"
-#include "MyGUI_RenderFormat.h"
 #include "MyGUI_TextView.h"
 #include "MyGUI_VertexData.h"
 
