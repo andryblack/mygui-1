@@ -173,7 +173,6 @@ namespace MyGUI
 		LayerManager* mLayerManager;
 		SkinManager* mSkinManager;
 		WidgetManager* mWidgetManager;
-		FontManager* mFontManager;
 		ControllerManager* mControllerManager;
 		ClipboardManager* mClipboardManager;
 		LayoutManager* mLayoutManager;

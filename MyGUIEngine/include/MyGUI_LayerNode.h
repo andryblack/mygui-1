@@ -55,7 +55,7 @@ namespace MyGUI
 		virtual void detachLayerItem(ILayerItem* _item);
 
 		// добавляет саб айтем и возвращает рендер айтем
-		virtual RenderItem* addToRenderItem(IObject* _grouping, bool _firstQueue, bool _manualRender);
+		virtual RenderItem* addToRenderItem(const void* _grouping, bool _firstQueue, bool _manualRender);
 		// необходимо обновление нода
 		virtual void outOfDate(RenderItem* _item);
 
@@ -72,8 +72,8 @@ namespace MyGUI
 		bool isOutOfDate() const;
 
 	protected:
-		RenderItem* addToRenderItemFirstQueue(IObject* _grouping, bool _manualRender);
-		RenderItem* addToRenderItemSecondQueue(IObject* _grouping, bool _manualRender);
+		RenderItem* addToRenderItemFirstQueue(const void* _grouping, bool _manualRender);
+		RenderItem* addToRenderItemSecondQueue(const void* _grouping, bool _manualRender);
 	protected:
 		// two render queues, for subskins and text
 		// first queue keep render order based on order of creation

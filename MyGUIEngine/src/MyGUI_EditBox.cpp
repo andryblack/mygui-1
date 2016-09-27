@@ -858,10 +858,7 @@ namespace MyGUI
     
     bool EditBox::checkCharInFont(Char _symb) const {
         if (mClientText) {
-            IFont* font = mClientText->getFont();
-            if (font) {
-                return font->hasGlyph(_symb);
-            }
+            return mClientText->fontHasSymbol(_symb);
         }
         return true;
     }

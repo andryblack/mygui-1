@@ -15,9 +15,7 @@
 namespace MyGUI
 {
     
-    class IFont;
-
-	class MYGUI_EXPORT ISubWidgetText :
+    class MYGUI_EXPORT ISubWidgetText :
 		public ISubWidget
 	{
 		MYGUI_RTTI_DERIVED( ISubWidgetText )
@@ -98,11 +96,10 @@ namespace MyGUI
 		}
 
 		virtual void setFontName(const std::string& _value) { }
-		virtual IFont* getFont() const
-		{
-			return NULL;
-		}
+        virtual const std::string& getFontName() const { return Constants::getEmptyString(); }
 
+        virtual bool fontHasSymbol(Char s) const { return false; }
+        
 		virtual void setFontHeight(int _value) { }
 		virtual int getFontHeight() const
 		{

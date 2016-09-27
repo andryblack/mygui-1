@@ -13,8 +13,6 @@
 #include "MyGUI_MainSkin.h"
 #include "MyGUI_PolygonalSkin.h"
 #include "MyGUI_RotatingSkin.h"
-#include "MyGUI_SimpleText.h"
-#include "MyGUI_EditText.h"
 #include "MyGUI_TileRect.h"
 
 namespace MyGUI
@@ -42,16 +40,13 @@ namespace MyGUI
 		factory.registerFactory<SubSkinStateInfo>(mStateCategoryName, "PolygonalSkin");
 		factory.registerFactory<RotatingSkinStateInfo>(mStateCategoryName, "RotatingSkin");
 		factory.registerFactory<TileRectStateInfo>(mStateCategoryName, "TileRect");
-		factory.registerFactory<EditTextStateInfo>(mStateCategoryName, "EditText");
-		factory.registerFactory<EditTextStateInfo>(mStateCategoryName, "SimpleText");
-
+		
 		factory.registerFactory<SubSkin>(mCategoryName);
 		factory.registerFactory<MainSkin>(mCategoryName);
 		factory.registerFactory<PolygonalSkin>(mCategoryName);
 		factory.registerFactory<RotatingSkin>(mCategoryName);
 		factory.registerFactory<TileRect>(mCategoryName);
-		factory.registerFactory<EditText>(mCategoryName);
-		factory.registerFactory<SimpleText>(mCategoryName);
+		
 
 		MYGUI_LOG(Info, getClassTypeName() << " successfully initialized");
 		mIsInitialise = true;
@@ -69,17 +64,13 @@ namespace MyGUI
 		factory.unregisterFactory(mStateCategoryName, "PolygonalSkin");
 		factory.unregisterFactory(mStateCategoryName, "RotatingSkin");
 		factory.unregisterFactory(mStateCategoryName, "TileRect");
-		factory.unregisterFactory(mStateCategoryName, "EditText");
-		factory.unregisterFactory(mStateCategoryName, "SimpleText");
-
+		
 		factory.unregisterFactory<SubSkin>(mCategoryName);
 		factory.unregisterFactory<MainSkin>(mCategoryName);
 		factory.unregisterFactory<PolygonalSkin>(mCategoryName);
 		factory.unregisterFactory<RotatingSkin>(mCategoryName);
 		factory.unregisterFactory<TileRect>(mCategoryName);
-		factory.unregisterFactory<EditText>(mCategoryName);
-		factory.unregisterFactory<SimpleText>(mCategoryName);
-
+		
 		MYGUI_LOG(Info, getClassTypeName() << " successfully shutdown");
 		mIsInitialise = false;
 	}

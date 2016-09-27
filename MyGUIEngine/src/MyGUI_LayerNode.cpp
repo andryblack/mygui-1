@@ -127,7 +127,7 @@ namespace MyGUI
 		return nullptr;
 	}
 
-	RenderItem* LayerNode::addToRenderItem(IObject* _grouping, bool _firstQueue, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItem(const void* _grouping, bool _firstQueue, bool _manualRender)
 	{
 		RenderItem* item = nullptr;
 		if (_firstQueue)
@@ -139,7 +139,7 @@ namespace MyGUI
 		return item;
 	}
 
-	RenderItem* LayerNode::addToRenderItemFirstQueue(IObject* _grouping, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItemFirstQueue(const void* _grouping, bool _manualRender)
 	{
 		if (mFirstRenderItems.empty() || _manualRender)
 		{
@@ -183,7 +183,7 @@ namespace MyGUI
 		return item;
 	}
 
-	RenderItem* LayerNode::addToRenderItemSecondQueue(IObject* _grouping, bool _manualRender)
+	RenderItem* LayerNode::addToRenderItemSecondQueue(const void* _grouping, bool _manualRender)
 	{
 		// order is not important in second queue
 		// use first buffer with same texture or empty buffer

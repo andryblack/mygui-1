@@ -37,40 +37,6 @@ namespace MyGUI
 
 	}
 
-	// информация об одном символе
-	struct GlyphInfo
-	{
-		GlyphInfo(
-			Char _codePoint = 0U,
-			float _width = 0.0f,
-			float _height = 0.0f,
-			float _advance = 0.0f,
-			float _bearingX = 0.0f,
-			float _bearingY = 0.0f,
-			const FloatRect& _uvRect = FloatRect()) :
-			codePoint(_codePoint),
-			width(_width),
-			height(_height),
-			advance(_advance),
-			bearingX(_bearingX),
-			bearingY(_bearingY),
-			uvRect(_uvRect),
-            texture(0)
-		{
-		}
-
-		Char codePoint;
-		float width;
-		float height;
-		float advance;
-		float bearingX;
-		float bearingY;
-        FloatRect uvRect;
-        ITexture* texture;
-    };
-
-	typedef std::vector<GlyphInfo> VectorGlyphInfo;
-
 } // namespace MyGUI
 
 #endif // MYGUI_FONT_DATA_H_

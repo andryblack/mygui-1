@@ -91,14 +91,14 @@ namespace MyGUI
 
 	
 
-	void RenderItem::setGrouping(IObject* _grouping)
+	void RenderItem::setGrouping(const void* _grouping)
 	{
 		if (mGrouping == _grouping)
 			return;
         mGrouping = _grouping;
     }
 
-	IObject* RenderItem::getGrouping()
+	const void* RenderItem::getGrouping()
 	{
 		return mGrouping;
 	}

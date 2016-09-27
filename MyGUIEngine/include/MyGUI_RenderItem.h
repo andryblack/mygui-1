@@ -25,8 +25,8 @@ namespace MyGUI
 
 		void renderToTarget(IRenderTarget* _target, bool _update);
 
-		void setGrouping(IObject* _value);
-		IObject* getGrouping();
+		void setGrouping(const void* _value);
+		const void* getGrouping();
 
 
 		void addDrawItem(ISubWidget* _item);
@@ -42,7 +42,7 @@ namespace MyGUI
 		std::string mTextureName;
 #endif
 
-		IObject* mGrouping;
+		const void* mGrouping;
 
 		bool mOutOfDate;
 		VectorDrawItem mDrawItems;

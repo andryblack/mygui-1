@@ -6,6 +6,7 @@
 
 #include "MyGUI_Precompiled.h"
 #include "MyGUI_TextIterator.h"
+#include "MyGUI_FontData.h"
 
 namespace MyGUI
 {

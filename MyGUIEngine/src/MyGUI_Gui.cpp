@@ -14,7 +14,6 @@
 #include "MyGUI_SkinManager.h"
 #include "MyGUI_WidgetManager.h"
 #include "MyGUI_LayerManager.h"
-#include "MyGUI_FontManager.h"
 #include "MyGUI_ControllerManager.h"
 #include "MyGUI_ClipboardManager.h"
 #include "MyGUI_LayoutManager.h"
@@ -37,7 +36,6 @@ namespace MyGUI
 		mLayerManager(nullptr),
 		mSkinManager(nullptr),
 		mWidgetManager(nullptr),
-		mFontManager(nullptr),
 		mControllerManager(nullptr),
 		mClipboardManager(nullptr),
 		mLayoutManager(nullptr),
@@ -66,7 +64,6 @@ namespace MyGUI
 		mInputManager = new InputManager();
 		mSubWidgetManager = new SubWidgetManager();
 		mSkinManager = new SkinManager();
-		mFontManager = new FontManager();
 		mControllerManager = new ControllerManager();
 		mClipboardManager = new ClipboardManager();
 		mLayoutManager = new LayoutManager();
@@ -80,7 +77,6 @@ namespace MyGUI
 		mInputManager->initialise();
 		mSubWidgetManager->initialise();
 		mSkinManager->initialise();
-		mFontManager->initialise();
 		mControllerManager->initialise();
 		mClipboardManager->initialise();
 		mLayoutManager->initialise();
@@ -117,7 +113,6 @@ namespace MyGUI
 		mSkinManager->shutdown();
 		mSubWidgetManager->shutdown();
 		mLayerManager->shutdown();
-		mFontManager->shutdown();
 		mControllerManager->shutdown();
 		mClipboardManager->shutdown();
 		mLayoutManager->shutdown();
@@ -134,7 +129,6 @@ namespace MyGUI
 		delete mSkinManager;
 		delete mSubWidgetManager;
 		delete mLayerManager;
-		delete mFontManager;
 		delete mControllerManager;
 		delete mClipboardManager;
 		delete mLayoutManager;

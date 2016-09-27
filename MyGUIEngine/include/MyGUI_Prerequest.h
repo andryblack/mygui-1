@@ -43,7 +43,6 @@ namespace MyGUI
 	class LayerManager;
 	class SkinManager;
 	class WidgetManager;
-	class FontManager;
 	class ControllerManager;
 	class ClipboardManager;
 	class LayoutManager;
@@ -77,8 +76,7 @@ namespace MyGUI
 	class ScrollBar;
 	class ScrollView;
 	class DDContainer;
-	class Canvas;
-
+	
 	// Define version
 #define MYGUI_VERSION_MAJOR 3
 #define MYGUI_VERSION_MINOR 2

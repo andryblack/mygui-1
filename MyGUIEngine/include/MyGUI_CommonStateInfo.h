@@ -178,49 +178,7 @@ namespace MyGUI
 	};
 
 
-	class MYGUI_EXPORT EditTextStateInfo :
-		public IStateInfo
-	{
-		MYGUI_RTTI_DERIVED( EditTextStateInfo )
-
-	public:
-		EditTextStateInfo() :
-			mColour(Colour::White),
-			mShift(false)
-		{
-		}
-
-		virtual ~EditTextStateInfo() { }
-
-		const Colour& getColour() const
-		{
-			return mColour;
-		}
-
-		bool getShift() const
-		{
-			return mShift;
-		}
-
-	private:
-		virtual void deserialization(xml::ElementPtr _node, Version _version)
-		{
-			mShift = utility::parseBool(_node->findAttribute("shift"));
-
-			std::string colour = _node->findAttribute("colour");
-			if (_version >= Version(1, 1))
-			{
-				colour = LanguageManager::getInstance().replaceTags(colour);
-			}
-
-			mColour = Colour::parse(colour);
-		}
-
-	private:
-		Colour mColour;
-		bool mShift;
-	};
-
+	
 } // namespace MyGUI
 
 #endif // MYGUI_COMMON_STATE_INFO_H_
