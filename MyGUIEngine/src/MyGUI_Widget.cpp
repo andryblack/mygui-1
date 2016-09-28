@@ -336,7 +336,8 @@ namespace MyGUI
 					(*widget)->_updateView();
 				for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
 					(*widget)->_updateView();
-
+                
+                _updateSkinItemView();
 				return;
 			}
 		}
