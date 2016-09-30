@@ -33,7 +33,7 @@ namespace MyGUI
 		size_t getProgressRange() const;
 
 		/** Set progress position */
-		void setProgressPosition(size_t _value);
+        void setProgressPosition(size_t _value);
 		/** Get progress position */
 		size_t getProgressPosition() const;
 
@@ -66,16 +66,16 @@ namespace MyGUI
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
-	private:
+	protected:
 		void frameEntered(float _time);
-		void updateTrack();
+		virtual void updateTrack();
 
 		int getClientWidth();
 		int getClientHeight();
 
 		void setTrackPosition(Widget* _widget, int _left, int _top, int _width, int _height);
 
-	private:
+	protected:
 		std::string mTrackSkin;
 		int mTrackWidth;
 		int mTrackStep;
