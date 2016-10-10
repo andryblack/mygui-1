@@ -126,6 +126,25 @@ namespace MyGUI
 
 		return nullptr;
 	}
+    
+    ILayerItem* LayerNode::checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const {
+        // сначала пикаем детей
+        for (VectorILayerNode::const_iterator iter = mChildItems.begin(); iter != mChildItems.end(); ++iter)
+        {
+            ILayerItem* item = (*iter)->checkLayerItemByPoint(_target, _left, _top);
+            if (nullptr != item)
+                return item;
+        }
+        
+        for (VectorLayerItem::const_iterator iter = mLayerItems.begin(); iter != mLayerItems.end(); ++iter)
+        {
+            ILayerItem* item = (*iter)->checkLayerItemByPoint(_target, _left, _top);
+            if (nullptr != item)
+                return item;
+        }
+        
+        return nullptr;
+    }
 
 	RenderItem* LayerNode::addToRenderItem(const void* _grouping, bool _firstQueue, bool _manualRender)
 	{

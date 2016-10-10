@@ -61,6 +61,7 @@ namespace MyGUI
 
 		// возвращает виджет по позиции
 		virtual ILayerItem* getLayerItemByPoint(int _left, int _top) const;
+        virtual ILayerItem* checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const;
 
 		// рисует леер
 		virtual void renderToTarget(IRenderTarget* _target, bool _update);

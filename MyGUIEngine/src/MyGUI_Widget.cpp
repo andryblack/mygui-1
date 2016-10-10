@@ -498,6 +498,39 @@ namespace MyGUI
 		return getInheritsPick() ? nullptr : const_cast<Widget*>(this);
 	}
 
+    ILayerItem* Widget::checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const {
+        // проверяем попадание
+        if (!mEnabled
+            || !mVisible
+            || (!getNeedMouseFocus() && !getInheritsPick())
+            || !_checkPoint(_left, _top)
+            )
+            return nullptr;
+        
+        if (_target != this) {
+            // спрашиваем у детишек
+            for (VectorWidgetPtr::const_reverse_iterator widget = mWidgetChild.rbegin(); widget != mWidgetChild.rend(); ++widget)
+            {
+                // общаемся только с послушными детьми
+                if ((*widget)->mWidgetStyle == WidgetStyle::Popup)
+                    continue;
+                
+                ILayerItem* item = (*widget)->checkLayerItemByPoint(_target, _left - mCoord.left, _top - mCoord.top);
+                if (item != nullptr)
+                    return item;
+            }
+            // спрашиваем у детишек скина
+            for (VectorWidgetPtr::const_reverse_iterator widget = mWidgetChildSkin.rbegin(); widget != mWidgetChildSkin.rend(); ++widget)
+            {
+                ILayerItem* item = (*widget)->checkLayerItemByPoint(_target, _left - mCoord.left, _top - mCoord.top);
+                if (item != nullptr)
+                    return item;
+            }
+        }
+        // непослушные дети
+        return getInheritsPick() ? nullptr : const_cast<Widget*>(this);
+    }
+    
 	void Widget::_updateAbsolutePoint()
 	{
 		// мы рут, нам не надо

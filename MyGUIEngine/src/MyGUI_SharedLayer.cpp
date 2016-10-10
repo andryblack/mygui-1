@@ -110,6 +110,19 @@ namespace MyGUI
 		return nullptr;
 	}
 
+    ILayerItem* SharedLayer::checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const {
+        if (!mIsPick)
+        return nullptr;
+        
+        if (mChildItem != nullptr)
+        {
+            ILayerItem* item = mChildItem->checkLayerItemByPoint(_target, _left, _top);
+            if (item != nullptr)
+                return item;
+        }
+        return nullptr;
+    }
+    
 	IntPoint SharedLayer::getPosition(int _left, int _top) const
 	{
 		return IntPoint(_left, _top);

@@ -68,6 +68,8 @@ namespace MyGUI
 
 		/** Get top visible and enabled widget at specified position */
 		Widget* getWidgetFromPoint(int _left, int _top);
+        
+        bool checkItemAccessibleAtPoint(const ILayerItem* _widget, int _left, int _top );
 
 		/** Render all layers to specified target */
 		void renderToTarget(IRenderTarget* _target, bool _update);

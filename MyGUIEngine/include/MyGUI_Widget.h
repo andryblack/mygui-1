@@ -328,6 +328,7 @@ namespace MyGUI
 
 		// наследуемся он LayerInfo
 		virtual ILayerItem* getLayerItemByPoint(int _left, int _top) const;
+        virtual ILayerItem* checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const;
 		virtual const IntCoord& getLayerItemCoord() const;
 
 		template <typename T>

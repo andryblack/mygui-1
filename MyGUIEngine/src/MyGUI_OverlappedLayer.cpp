@@ -142,6 +142,21 @@ namespace MyGUI
 		}
 		return nullptr;
 	}
+    
+    ILayerItem* OverlappedLayer::checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const {
+        if (!mIsPick)
+            return nullptr;
+        
+        VectorILayerNode::const_reverse_iterator iter = mChildItems.rbegin();
+        while (iter != mChildItems.rend())
+        {
+            ILayerItem* item = (*iter)->checkLayerItemByPoint(_target, _left, _top);
+            if (item != nullptr)
+                return item;
+            ++iter;
+        }
+        return nullptr;
+    }
 
 	IntPoint OverlappedLayer::getPosition(int _left, int _top) const
 	{

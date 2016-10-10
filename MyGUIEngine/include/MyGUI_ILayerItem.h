@@ -22,6 +22,7 @@ namespace MyGUI
 		virtual ~ILayerItem() { }
 
 		virtual ILayerItem* getLayerItemByPoint(int _left, int _top) const = 0;
+        virtual ILayerItem* checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const = 0;
 		virtual const IntCoord& getLayerItemCoord() const = 0;
 
 		virtual void resizeLayerItemView(const IntSize& _oldView, const IntSize& _newView) = 0;

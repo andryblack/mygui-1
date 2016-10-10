@@ -220,6 +220,18 @@ namespace MyGUI
 		}
 		return nullptr;
 	}
+    
+    bool LayerManager::checkItemAccessibleAtPoint(const ILayerItem* _item, int _left, int _top ) {
+        VectorLayer::reverse_iterator iter = mLayerNodes.rbegin();
+        while (iter != mLayerNodes.rend())
+        {
+            ILayerItem* item = (*iter)->checkLayerItemByPoint(_item, _left, _top);
+            if (item == _item) return true;
+            if (item) return false;
+            ++iter;
+        }
+        return false;
+    }
 
 	void LayerManager::renderToTarget(IRenderTarget* _target, bool _update)
 	{

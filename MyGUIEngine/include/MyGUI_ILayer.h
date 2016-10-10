@@ -52,6 +52,8 @@ namespace MyGUI
 
 		// return widget at position
 		virtual ILayerItem* getLayerItemByPoint(int _left, int _top) const = 0;
+        virtual ILayerItem* checkLayerItemByPoint(const ILayerItem* _target, int _left, int _top) const = 0;
+        
 
 		// return position in layer coordinates
 		virtual IntPoint getPosition(int _left, int _top) const = 0;
