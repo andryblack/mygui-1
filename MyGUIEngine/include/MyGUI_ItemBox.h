@@ -241,7 +241,7 @@ namespace MyGUI
 		// просто обновляет все виджеты что видны
 		void _updateAllVisible(bool _redraw);
 
-		void updateFromResize();
+		virtual void updateFromResize();
 
 		// возвращает следующий айтем, если нет его, то создается
 		// запросы только последовательно

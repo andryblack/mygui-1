@@ -86,7 +86,7 @@ namespace MyGUI
 		virtual void notifyScrollChangePosition(ScrollBar* _sender, size_t _position);
 		void notifyMouseWheel(Widget* _sender, int _rel);
 
-		void updateView();
+		virtual void updateView();
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
