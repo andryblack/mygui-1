@@ -119,6 +119,8 @@ namespace MyGUI
 	void Button::_setMouseFocus(bool _focus)
 	{
 		mIsMouseFocus = _focus;
+        if (!_focus)
+            mIsMousePressed = false;
 		updateButtonState();
 	}
 
