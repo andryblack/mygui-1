@@ -45,6 +45,9 @@ namespace MyGUI
 		static std::ostream& operatorShiftLeft(std::ostream& _stream, const Colour&  _value);
 		static std::istream& operatorShiftRight(std::istream& _stream, Colour&  _value);
 
+        Colour operator * (const Colour& c) const {
+            return Colour( red * c.red, green * c.green, blue * c.blue, alpha * c.alpha );
+        }
 	public:
 		float red;
 		float green;

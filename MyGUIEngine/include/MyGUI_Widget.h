@@ -180,7 +180,7 @@ namespace MyGUI
         void setInheritsState(bool _value);
         bool getInheritsState() const;
 
-		void setColour(const Colour& _value);
+		virtual void setColour(const Colour& _value);
 
 		// являемся ли мы рутовым виджетом
 		/** Is this widget is root widget (root == without parents) */
@@ -305,6 +305,7 @@ namespace MyGUI
 
 		// перерисовывает детей
 		void _updateChilds();
+        void _updateSkinChilds();
 
 	protected:
 		// все создание только через фабрику

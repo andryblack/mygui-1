@@ -1450,5 +1450,26 @@ namespace MyGUI
 			}
 		}
 	}
+    
+    void Widget::_updateSkinChilds()
+    {
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
+        {
+            if ((*widget)->getWidgetStyle() == WidgetStyle::Child)
+            {
+                (*widget)->detachFromLayerItemNode(true);
+                removeChildItem((*widget));
+            }
+        }
+        
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
+        {
+            if ((*widget)->getWidgetStyle() == WidgetStyle::Child)
+            {
+                addChildItem((*widget));
+                (*widget)->_updateView();
+            }
+        }
+    }
 
 } // namespace MyGUI

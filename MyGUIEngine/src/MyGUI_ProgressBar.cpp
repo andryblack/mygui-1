@@ -374,11 +374,17 @@ namespace MyGUI
 		setCoord(IntCoord(_left, _top, _width, _height));
 	}
 
+    void ProgressBar::setColour(const Colour &_value) {
+        mWidgetColour = _value;
+        Base::setColour(_value);
+        setTrackColour(mTrackColour);
+    }
     void ProgressBar::setTrackColour(const Colour& _colour) {
         mTrackColour = _colour;
+        Colour trackColour = mWidgetColour * _colour;
         for (VectorWidgetPtr::iterator iter = mVectorTrack.begin(); iter != mVectorTrack.end(); ++iter)
         {
-            (*iter)->setColour(_colour);
+            (*iter)->setColour(trackColour);
         }
     }
 
