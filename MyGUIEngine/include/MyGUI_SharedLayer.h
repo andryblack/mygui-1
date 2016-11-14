@@ -47,7 +47,7 @@ namespace MyGUI
         
 
 		// return position in layer coordinates
-		virtual IntPoint getPosition(int _left, int _top) const;
+		virtual FloatPoint getPosition(float _left, float _top) const;
 
 		// return layer size
 		virtual const IntSize& getSize() const;

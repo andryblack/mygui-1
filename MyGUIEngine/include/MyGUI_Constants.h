@@ -33,12 +33,17 @@ namespace MyGUI
 		{
 			return mIntPoint;
 		}
+        static const FloatPoint& getZeroFloatPoint()
+        {
+            return mFloatPoint;
+        }
 
 	private:
 		static UString mUString;
 		static std::string mString;
 		static IntSize mIntSize;
 		static IntPoint mIntPoint;
+        static FloatPoint mFloatPoint;
 	};
 
 } // namespace MyGUI

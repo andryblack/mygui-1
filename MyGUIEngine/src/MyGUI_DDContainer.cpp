@@ -117,7 +117,7 @@ namespace MyGUI
 		}
 
 		// делаем запрос, над кем наша мыша
-		const IntPoint& point = InputManager::getInstance().getMousePosition();
+		const FloatPoint& point = InputManager::getInstance().getMousePosition();
 		Widget* item = LayerManager::getInstance().getWidgetFromPoint(point.left, point.top);
 
 		updateDropItems();
@@ -233,7 +233,7 @@ namespace MyGUI
 			requestDragWidgetInfo(this, mDropItem, mDropDimension);
 		}
 
-		const IntPoint& point = InputManager::getInstance().getMousePositionByLayer();
+		const FloatPoint& point = InputManager::getInstance().getMousePositionByLayer();
 
 		if (mDropItem)
 		{

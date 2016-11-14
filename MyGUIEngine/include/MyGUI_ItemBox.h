@@ -226,9 +226,9 @@ namespace MyGUI
 		void notifyRootMouseChangeFocus(Widget* _sender, bool _focus);
 		void notifyMouseButtonDoubleClick(Widget* _sender);
 		virtual size_t _getItemIndex(Widget* _item);
-		void notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id);
-		virtual void notifyMouseButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id);
-		virtual void notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMouseDrag(Widget* _sender, float _left, float _top, MouseButton _id);
+		virtual void notifyMouseButtonPressed(Widget* _sender, float _left, float _top, MouseButton _id);
+		virtual void notifyMouseButtonReleased(Widget* _sender, float _left, float _top, MouseButton _id);
 
 
 		virtual void removeDropItems();

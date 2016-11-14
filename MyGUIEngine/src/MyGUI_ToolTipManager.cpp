@@ -92,7 +92,7 @@ namespace MyGUI
 			}
 			else
 			{
-				IntPoint point = InputManager::getInstance().getMousePositionByLayer();
+				IntPoint point = IntPoint(InputManager::getInstance().getMousePositionByLayer());
 				if (!mToolTipVisible && point != mOldMousePoint)
 				{
 					if (mToolTipVisible)

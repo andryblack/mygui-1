@@ -38,6 +38,13 @@ namespace MyGUI
 			{
 			}
 
+            template <class U>
+            explicit TPoint(const TPoint<U>& _obj) :
+                left(_obj.left),
+                top(_obj.top)
+            {
+            }
+            
 			TPoint& operator -= (TPoint const& _obj)
 			{
 				left -= _obj.left;
@@ -52,7 +59,8 @@ namespace MyGUI
 				return *this;
 			}
 
-			TPoint operator - (TPoint const& _obj) const
+            template <class U>
+			TPoint operator - (TPoint<U> const& _obj) const
 			{
 				return TPoint(left - _obj.left, top - _obj.top);
 			}
@@ -62,14 +70,7 @@ namespace MyGUI
 				return TPoint(left + _obj.left, top + _obj.top);
 			}
 
-			TPoint& operator = (TPoint const& _obj)
-			{
-				left = _obj.left;
-				top = _obj.top;
-				return *this;
-			}
-
-			template<typename U>
+            template <class U>
 			TPoint& operator = (TPoint<U> const& _obj)
 			{
 				left = _obj.left;

@@ -37,13 +37,13 @@ namespace MyGUI
 		eventMouseSetFocus(static_cast<Widget*>(this), _old);
 	}
 
-	void WidgetInput::_riseMouseDrag(int _left, int _top, MouseButton _id)
+	void WidgetInput::_riseMouseDrag(float _left, float _top, MouseButton _id)
 	{
 		onMouseDrag(_left, _top, _id);
 		eventMouseDrag(static_cast<Widget*>(this), _left, _top, _id);
 	}
 
-	void WidgetInput::_riseMouseMove(int _left, int _top)
+	void WidgetInput::_riseMouseMove(float _left, float _top)
 	{
 		onMouseMove(_left, _top);
 		eventMouseMove(static_cast<Widget*>(this), _left, _top);
@@ -55,13 +55,13 @@ namespace MyGUI
 		eventMouseWheel(static_cast<Widget*>(this), _rel);
 	}
 
-	void WidgetInput::_riseMouseButtonPressed(int _left, int _top, MouseButton _id)
+	void WidgetInput::_riseMouseButtonPressed(float _left, float _top, MouseButton _id)
 	{
 		onMouseButtonPressed(_left, _top, _id);
 		eventMouseButtonPressed(static_cast<Widget*>(this), _left, _top, _id);
 	}
 
-	void WidgetInput::_riseMouseButtonReleased(int _left, int _top, MouseButton _id)
+	void WidgetInput::_riseMouseButtonReleased(float _left, float _top, MouseButton _id)
 	{
 		onMouseButtonReleased(_left, _top, _id);
 		eventMouseButtonReleased(static_cast<Widget*>(this), _left, _top, _id);

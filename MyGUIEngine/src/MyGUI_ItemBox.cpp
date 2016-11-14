@@ -255,7 +255,7 @@ namespace MyGUI
 	{
 		MYGUI_DEBUG_ASSERT(mIndexActive == ITEM_NONE, "use : resetCurrentActiveItem() before findCurrentActiveItem()");
 
-		const IntPoint& point = InputManager::getInstance().getMousePositionByLayer();
+		const FloatPoint& point = InputManager::getInstance().getMousePositionByLayer();
 
 		// сначала проверяем клиентскую зону
 		const IntRect& rect = _getClientAbsoluteRect();
@@ -583,7 +583,7 @@ namespace MyGUI
 			requestCreateWidgetItem(this, mItemDrag);
 		}
 
-		const IntPoint& point = InputManager::getInstance().getMousePosition();
+		const FloatPoint& point = InputManager::getInstance().getMousePosition();
 
 		mItemDrag->setPosition(point.left - mClickInWidget.left + mPointDragOffset.left, point.top - mClickInWidget.top + mPointDragOffset.top);
 		mItemDrag->setVisible(true);
@@ -605,12 +605,12 @@ namespace MyGUI
 		requestDrawItem(this, mItemDrag, data);
 	}
 
-	void ItemBox::notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ItemBox::notifyMouseDrag(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		mouseDrag(_id);
 	}
 
-	void ItemBox::notifyMouseButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ItemBox::notifyMouseButtonPressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		mouseButtonPressed(_id);
 
@@ -644,7 +644,7 @@ namespace MyGUI
 		eventNotifyItem(this, IBNotifyItemData(getIndexByWidget(_sender), IBNotifyItemData::MousePressed, _left, _top, _id));
 	}
 
-	void ItemBox::notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ItemBox::notifyMouseButtonReleased(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		bool needEvent = !mStartDrop;
 		mouseButtonReleased(_id);

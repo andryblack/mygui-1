@@ -173,13 +173,13 @@ namespace MyGUI
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
 	private:
-		void notifyButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyButtonPressed(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyListLostFocus(Widget* _sender, MyGUI::Widget* _new);
 		void notifyListSelectAccept(ListBox* _widget, size_t _position);
 		void notifyListMouseItemActivate(ListBox* _widget, size_t _position);
 		void notifyListChangePosition(ListBox* _widget, size_t _position);
 		void notifyMouseWheel(Widget* _sender, int _rel);
-		void notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyEditTextChange(EditBox* _sender);
 		void notifyToolTip(Widget* _sender, const ToolTipInfo& _info);
 

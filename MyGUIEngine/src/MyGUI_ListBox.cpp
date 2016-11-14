@@ -238,7 +238,7 @@ namespace MyGUI
 		_sendEventChangeScroll(_position);
 	}
 
-	void ListBox::notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ListBox::notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (MouseButton::Left == _id && !mActivateOnClick)
 			_activateItem(_sender);
@@ -1103,7 +1103,7 @@ namespace MyGUI
 		eventNotifyItem(this, IBNotifyItemData(getIndexByWidget(_sender), IBNotifyItemData::KeyReleased, _key));
 	}
 
-	void ListBox::notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ListBox::notifyMouseButtonReleased(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		eventNotifyItem(this, IBNotifyItemData(getIndexByWidget(_sender), IBNotifyItemData::MouseReleased, _left, _top, _id));
 	}

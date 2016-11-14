@@ -94,7 +94,7 @@ namespace MyGUI
 		Base::shutdownOverride();
 	}
 
-	void ComboBox::notifyButtonPressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ComboBox::notifyButtonPressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (MouseButton::Left != _id)
 			return;
@@ -236,7 +236,7 @@ namespace MyGUI
 		}
 	}
 
-	void ComboBox::notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ComboBox::notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		// обязательно отдаем отцу, а то мы у него в наглую отняли
 		Base::notifyMousePressed(_sender, _left, _top, _id);

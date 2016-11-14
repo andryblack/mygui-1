@@ -49,6 +49,9 @@ namespace MyGUI
 		{
 			return 0;
 		}
+        size_t getCursorPosition(const FloatPoint& _point) {
+            return getCursorPosition(IntPoint(_point.left,_point.top));
+        }
 
 		// возвращает положение курсора в обсолютных координатах
 		virtual IntCoord getCursorCoord(size_t _position) /*const*/

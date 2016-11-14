@@ -49,8 +49,8 @@ namespace MyGUI
 	typedef delegates::CMultiDelegate2<Widget*, bool> EventHandle_WidgetBool;
 	typedef delegates::CMultiDelegate2<Widget*, int> EventHandle_WidgetInt;
 	typedef delegates::CMultiDelegate2<Widget*, size_t> EventHandle_WidgetSizeT;
-	typedef delegates::CMultiDelegate3<Widget*, int, int> EventHandle_WidgetIntInt;
-	typedef delegates::CMultiDelegate4<Widget*, int, int, MouseButton> EventHandle_WidgetIntIntButton;
+	typedef delegates::CMultiDelegate3<Widget*, float, float> EventHandle_WidgetFloatFloat;
+	typedef delegates::CMultiDelegate4<Widget*, float, float, MouseButton> EventHandle_WidgetFloatFloatButton;
 	typedef delegates::CMultiDelegate2<Widget*, KeyCode> EventHandle_WidgetKeyCode;
 	typedef delegates::CMultiDelegate3<Widget*, KeyCode, Char> EventHandle_WidgetKeyCodeChar;
 	typedef delegates::CMultiDelegate2<Widget*, const ToolTipInfo& > EventHandle_WidgetToolTip;
@@ -119,7 +119,7 @@ namespace MyGUI
 			@param _left - pointer position
 			@param _top - pointer position
 		*/
-		EventHandle_WidgetIntIntButton eventMouseDrag;
+		EventHandle_WidgetFloatFloatButton eventMouseDrag;
 
 		/** Event : Mouse move over widget.\n
 			signature : void method(MyGUI::Widget* _sender, int _left, int _top)\n
@@ -127,7 +127,7 @@ namespace MyGUI
 			@param _left - pointer position
 			@param _top - pointer position
 		*/
-		EventHandle_WidgetIntInt eventMouseMove;
+		EventHandle_WidgetFloatFloat eventMouseMove;
 
 		/** Event : Mouse wheel over widget.\n
 			signature : void method(MyGUI::Widget* _sender, int _rel)\n
@@ -143,7 +143,7 @@ namespace MyGUI
 			@param _top - pointer position
 			@param _id Mouse button id
 		*/
-		EventHandle_WidgetIntIntButton eventMouseButtonPressed;
+		EventHandle_WidgetFloatFloatButton eventMouseButtonPressed;
 
 		/** Event : Mouse button released.\n
 			signature : void method(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)\n
@@ -152,7 +152,7 @@ namespace MyGUI
 			@param _top - pointer position
 			@param _id Mouse button id
 		*/
-		EventHandle_WidgetIntIntButton eventMouseButtonReleased;
+		EventHandle_WidgetFloatFloatButton eventMouseButtonReleased;
 
 		/** Event : Mouse button pressed and released.\n
 			signature : void method(MyGUI::Widget* _sender)
@@ -221,11 +221,11 @@ namespace MyGUI
 		/*internal:*/
 		void _riseMouseLostFocus(Widget* _new);
 		void _riseMouseSetFocus(Widget* _old);
-		void _riseMouseDrag(int _left, int _top, MouseButton _id);
-		void _riseMouseMove(int _left, int _top);
+		void _riseMouseDrag(float _left, float _top, MouseButton _id);
+		void _riseMouseMove(float _left, float _top);
 		void _riseMouseWheel(int _rel);
-		void _riseMouseButtonPressed(int _left, int _top, MouseButton _id);
-		void _riseMouseButtonReleased(int _left, int _top, MouseButton _id);
+		void _riseMouseButtonPressed(float _left, float _top, MouseButton _id);
+		void _riseMouseButtonReleased(float _left, float _top, MouseButton _id);
 		void _riseMouseButtonClick();
 		void _riseMouseButtonDoubleClick();
 		void _riseKeyLostFocus(Widget* _new);

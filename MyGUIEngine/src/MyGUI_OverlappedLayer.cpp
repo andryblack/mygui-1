@@ -158,9 +158,9 @@ namespace MyGUI
         return nullptr;
     }
 
-	IntPoint OverlappedLayer::getPosition(int _left, int _top) const
+	FloatPoint OverlappedLayer::getPosition(float _left, float _top) const
 	{
-		return IntPoint(_left, _top);
+		return FloatPoint(_left, _top);
 	}
 
 	void OverlappedLayer::renderToTarget(IRenderTarget* _target, bool _update)

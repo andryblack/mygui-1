@@ -123,9 +123,9 @@ namespace MyGUI
         return nullptr;
     }
     
-	IntPoint SharedLayer::getPosition(int _left, int _top) const
+	FloatPoint SharedLayer::getPosition(float _left, float _top) const
 	{
-		return IntPoint(_left, _top);
+		return FloatPoint(_left, _top);
 	}
 
 	void SharedLayer::renderToTarget(IRenderTarget* _target, bool _update)

@@ -135,7 +135,7 @@ namespace MyGUI
 		updateEditState();
 	}
 
-	void EditBox::notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void EditBox::notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (mClientText == nullptr)
 			return;
@@ -144,7 +144,7 @@ namespace MyGUI
 		if (mModeStatic)
 			return;
 
-		IntPoint point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
+		FloatPoint point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 		mCursorPosition = mClientText->getCursorPosition(point);
 		mClientText->setCursorPosition(mCursorPosition);
 		mClientText->setVisibleCursor(true);
@@ -155,13 +155,13 @@ namespace MyGUI
 			mMouseLeftPressed = true;
 	}
 
-	void EditBox::notifyMouseReleased(Widget* _sender, int _left, int _top, MouseButton _id)
+	void EditBox::notifyMouseReleased(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		// сбрасываем всегда
 		mMouseLeftPressed = false;
 	}
 
-	void EditBox::notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id)
+	void EditBox::notifyMouseDrag(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (_id != MouseButton::Left)
 			return;
@@ -199,7 +199,7 @@ namespace MyGUI
 		if (mModeStatic)
 			return;
 
-		const IntPoint& lastPressed = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
+		const FloatPoint& lastPressed = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 
 		size_t cursorPosition = mClientText->getCursorPosition(lastPressed);
 		mClientText->setCursorPosition(cursorPosition);
@@ -569,7 +569,7 @@ namespace MyGUI
 
 			if (mActionMouseTimer > EDIT_ACTION_MOUSE_TIMER)
 			{
-				IntPoint mouse = InputManager::getInstance().getMousePositionByLayer();
+				FloatPoint mouse = InputManager::getInstance().getMousePositionByLayer();
 				const IntRect& view = mClient->getAbsoluteRect();
 				mouse.left -= view.left;
 				mouse.top -= view.top;

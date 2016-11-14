@@ -218,9 +218,9 @@ namespace MyGUI
 		// потом убрать все нотифи в сраку
 		void notifyMouseSetFocus(Widget* _sender, Widget* _old);
 		void notifyMouseLostFocus(Widget* _sender, Widget* _new);
-		void notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id);
-		void notifyMouseReleased(Widget* _sender, int _left, int _top, MouseButton _id);
-		void notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id);
+		void notifyMouseReleased(Widget* _sender, float _left, float _top, MouseButton _id);
+		void notifyMouseDrag(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyMouseButtonDoubleClick(Widget* _sender);
 
 		void notifyScrollChangePosition(ScrollBar* _sender, size_t _position);

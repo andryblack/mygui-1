@@ -265,7 +265,7 @@ namespace MyGUI
 		void onKeyButtonReleased(KeyCode _key);
 
 		void notifyScrollChangePosition(ScrollBar* _sender, size_t _rel);
-		void notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyMouseClick(Widget* _sender);
 		void notifyMouseDoubleClick(Widget* _sender);
 		void notifyMouseWheel(Widget* _sender, int _rel);
@@ -273,7 +273,7 @@ namespace MyGUI
 		void notifyMouseLostFocus(Widget* _sender, Widget* _new);
 		void notifyKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);
 		void notifyKeyButtonReleased(Widget* _sender, KeyCode _key);
-		void notifyMouseButtonReleased(Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMouseButtonReleased(Widget* _sender, float _left, float _top, MouseButton _id);
 
 		void updateScroll();
 		void updateLine(bool _reset = false);

@@ -119,10 +119,10 @@ namespace MyGUI
 		void onMouseButtonPressed(int _left, int _top, MouseButton _id);
 		void onMouseButtonReleased(int _left, int _top, MouseButton _id);
 
-		void notifyMousePressed(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id);
-		void notifyMouseReleased(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMousePressed(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id);
+		void notifyMouseReleased(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyPressedButtonEvent(MyGUI::Widget* _sender);
-		void notifyMouseDrag(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id);
+		void notifyMouseDrag(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyMouseWheel(MyGUI::Widget* _sender, int _rel);
 
 		// просто обновляет альфу взависимости от флагов

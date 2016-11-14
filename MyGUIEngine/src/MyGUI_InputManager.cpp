@@ -79,7 +79,7 @@ namespace MyGUI
 		mIsInitialise = false;
 	}
 
-	bool InputManager::injectMouseMove(int _absx, int _absy, int _absz)
+	bool InputManager::injectMouseMove(float _absx, float _absy, int _absz)
 	{
         eventMouseMoved(_absx,_absy);
         
@@ -105,7 +105,7 @@ namespace MyGUI
 			{
 				if (mLayerMouseFocus != nullptr)
 				{
-					IntPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
+					FloatPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
 					for (int i = MouseButton::Button0; i < MouseButton::MAX; ++i)
 					{
 						if (mMouseCapture[i])
@@ -132,7 +132,7 @@ namespace MyGUI
 			{
 				if (mLayerMouseFocus != nullptr)
 				{
-					IntPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
+					FloatPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
 					mWidgetMouseFocus->_riseMouseMove(point.left, point.top);
 				}
 			}
@@ -145,7 +145,7 @@ namespace MyGUI
 		return isFocusMouse();
 	}
 
-	bool InputManager::injectMousePress(int _absx, int _absy, MouseButton _id)
+	bool InputManager::injectMousePress(float _absx, float _absy, MouseButton _id)
 	{
 		injectMouseMove(_absx, _absy, mOldAbsZ);
 
@@ -172,7 +172,7 @@ namespace MyGUI
 			// remember last pressed position
 			if (mLayerMouseFocus != nullptr)
 			{
-				IntPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
+				FloatPoint point = mLayerMouseFocus->getPosition(_absx, _absy);
 				mLastPressed[_id.getValue()] = point;
 			}
 		}
@@ -214,7 +214,7 @@ namespace MyGUI
 		return true;
 	}
 
-	bool InputManager::injectMouseRelease(int _absx, int _absy, MouseButton _id)
+	bool InputManager::injectMouseRelease(float _absx, float _absy, MouseButton _id)
 	{
         eventMouseReleased(_absx,_absy,_id);
         
@@ -430,7 +430,7 @@ namespace MyGUI
         
         if ((_widget != nullptr) && (_widget->getInheritedEnabled()))
         {
-            IntPoint last_pos = getMousePosition();
+            FloatPoint last_pos = getMousePosition();
             _widget->_riseMouseMove(last_pos.left, last_pos.top);
             _widget->_riseMouseSetFocus(mWidgetMouseFocus);
         }
@@ -607,11 +607,11 @@ namespace MyGUI
 			setKeyFocusWidget(nullptr);
 	}
 
-	IntPoint InputManager::getMousePositionByLayer()
+	FloatPoint InputManager::getMousePositionByLayer()
 	{
 		if (mLayerMouseFocus != nullptr)
 			return mLayerMouseFocus->getPosition(mMousePosition.left, mMousePosition.top);
-		return mMousePosition;
+		return FloatPoint(mMousePosition);
 	}
 
 	bool InputManager::isFocusMouse() const
@@ -649,16 +649,16 @@ namespace MyGUI
 		return mWidgetKeyFocus;
 	}
 
-	const IntPoint& InputManager::getLastPressedPosition(MouseButton _id) const
+	const FloatPoint& InputManager::getLastPressedPosition(MouseButton _id) const
 	{
 		if (_id != MouseButton::None && _id != MouseButton::MAX)
 		{
 			return mLastPressed[_id.getValue()];
 		}
-		return Constants::getZeroIntPoint();
+		return Constants::getZeroFloatPoint();
 	}
 
-	const IntPoint& InputManager::getMousePosition() const
+	const FloatPoint& InputManager::getMousePosition() const
 	{
 		return mMousePosition;
 	}

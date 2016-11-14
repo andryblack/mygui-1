@@ -23,8 +23,8 @@
 namespace MyGUI
 {
 
-  	typedef delegates::CMultiDelegate3<int, int, MouseButton> EventHandle_IntIntMouseButton;
-	typedef delegates::CMultiDelegate2<int, int> EventHandle_IntInt;
+  	typedef delegates::CMultiDelegate3<float, float, MouseButton> EventHandle_FloatFloatMouseButton;
+	typedef delegates::CMultiDelegate2<float, float> EventHandle_FloatFloat;
 	
 	class MYGUI_EXPORT InputManager :
 		public Singleton<InputManager>,
@@ -39,15 +39,15 @@ namespace MyGUI
 		/** Inject MouseMove event
 			@return true if event has been processed by GUI
 		*/
-		bool injectMouseMove(int _absx, int _absy, int _absz);
+		bool injectMouseMove(float _absx, float _absy, int _absz);
 		/** Inject MousePress event
 			@return true if event has been processed by GUI
 		*/
-		bool injectMousePress(int _absx, int _absy, MouseButton _id);
+		bool injectMousePress(float _absx, float _absy, MouseButton _id);
 		/** Inject MouseRelease event
 			@return true if event has been processed by GUI
 		*/
-		bool injectMouseRelease(int _absx, int _absy, MouseButton _id);
+		bool injectMouseRelease(float _absx, float _absy, MouseButton _id);
 
 		/** Inject KeyPress event
 			@return true if event has been processed by GUI
@@ -82,15 +82,15 @@ namespace MyGUI
 		/** Get position of last mouse button press.
 			Position calculated on specific layer where mouse was pressed.
 		*/
-		const IntPoint& getLastPressedPosition(MouseButton _id) const;
+		const FloatPoint& getLastPressedPosition(MouseButton _id) const;
 
 		/** Get current mouse position on screen */
-		const IntPoint& getMousePosition() const;
+		const FloatPoint& getMousePosition() const;
 
 		/** Get mouse position on current layer.
 			This position might different from getMousePosition() if mouse is over non-2d layer.
 		*/
-		IntPoint getMousePositionByLayer();
+		FloatPoint getMousePositionByLayer();
 
 		// работа с модальными окнами
 		/** Add modal widget - all other widgets inaccessible while modal widget exist */
@@ -131,17 +131,17 @@ namespace MyGUI
         /** Event: MultiDelegate. Mouse button pressed.\n
             signature: void method(int _absx, int _absy, MouseButton _button)
         */
-        EventHandle_IntIntMouseButton   eventMousePressed;
+        EventHandle_FloatFloatMouseButton   eventMousePressed;
         
         /** Event: MultiDelegate. Mouse button released.\n
          signature: void method(int _absx, int _absy, MouseButton _button)
          */
-        EventHandle_IntIntMouseButton   eventMouseReleased;
+        EventHandle_FloatFloatMouseButton   eventMouseReleased;
         
         /** Event: MultiDelegate. Mouse moved.\n
          signature: void method(int _absx, int _absy)
          */
-        EventHandle_IntInt   eventMouseMoved;
+        EventHandle_FloatFloat   eventMouseMoved;
         
 		/*internal:*/
 		void _resetMouseFocusWidget();
@@ -174,10 +174,10 @@ namespace MyGUI
 		// нажат ли контрол
 		bool mIsControlPressed;
 
-		IntPoint mMousePosition;
+		FloatPoint mMousePosition;
 
 		// last mouse press position
-		IntPoint mLastPressed[MouseButton::MAX];
+		FloatPoint mLastPressed[MouseButton::MAX];
 
 		// is mouse button captured by active widget
 		bool mMouseCapture[MouseButton::MAX];

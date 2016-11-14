@@ -162,7 +162,7 @@ namespace MyGUI
 		Base::onMouseButtonReleased(_left, _top, _id);
 	}
 
-	void Window::notifyMousePressed(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id)
+	void Window::notifyMousePressed(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (MouseButton::Left == _id)
 		{
@@ -176,12 +176,12 @@ namespace MyGUI
 		eventWindowButtonPressed(this, _sender->getUserString("Event"));
 	}
 
-	void Window::notifyMouseDrag(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id)
+	void Window::notifyMouseDrag(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (_id != MouseButton::Left)
 			return;
 
-		const IntPoint& point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
+		const FloatPoint& point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 
 		IntCoord coord = mCurrentActionScale;
 		coord.left *= (_left - point.left);
@@ -536,7 +536,7 @@ namespace MyGUI
 		mSnap = _value;
 	}
 
-	void Window::notifyMouseReleased(MyGUI::Widget* _sender, int _left, int _top, MouseButton _id)
+	void Window::notifyMouseReleased(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (MouseButton::Left == _id)
 		{

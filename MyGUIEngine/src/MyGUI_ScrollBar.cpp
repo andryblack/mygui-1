@@ -211,7 +211,7 @@ namespace MyGUI
 		if (mWidgetTrack == nullptr)
 			return;
 
-		const IntPoint& point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
+		const FloatPoint& point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 
 		if (mVerticalAlignment)
 		{
@@ -274,7 +274,7 @@ namespace MyGUI
 		eventScrollChangePosition(this, (int)mScrollPosition);
 	}
 
-	void ScrollBar::notifyMousePressed(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ScrollBar::notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		// диспечерезируем нажатие своих детей как свое
 		eventMouseButtonPressed(this, _left, _top, _id);
@@ -299,7 +299,7 @@ namespace MyGUI
 			if (mWidgetTrack != nullptr)
 			{
 				mPreActionOffset = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
-				const IntPoint& point = InputManager::getInstance().getMousePositionByLayer() - mWidgetTrack->getParent()->getAbsolutePosition();
+				const FloatPoint& point = InputManager::getInstance().getMousePositionByLayer() - mWidgetTrack->getParent()->getAbsolutePosition();
 
 				mPreActionOffset.left -= getTrackSize() / 2;
 				mPreActionOffset.top -= getTrackSize() / 2;
@@ -330,13 +330,13 @@ namespace MyGUI
 		}
 	}
 
-	void ScrollBar::notifyMouseReleased(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ScrollBar::notifyMouseReleased(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		updateTrack();
 		MyGUI::ControllerManager::getInstance().removeItem(_sender);
 	}
 
-	void ScrollBar::notifyMouseDrag(Widget* _sender, int _left, int _top, MouseButton _id)
+	void ScrollBar::notifyMouseDrag(Widget* _sender, float _left, float _top, MouseButton _id)
 	{
 		if (mScrollRange < 2)
 			return;

@@ -14,5 +14,6 @@ namespace MyGUI
 	std::string Constants::mString;
 	IntSize Constants::mIntSize;
 	IntPoint Constants::mIntPoint;
+    FloatPoint Constants::mFloatPoint;
 
 } // namespace MyGUI
