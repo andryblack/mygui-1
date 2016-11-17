@@ -46,7 +46,7 @@ namespace MyGUI
 		void restoreLayerItem();
 
 	protected:
-		void attachToLayerItemNode(ILayerNode* _node, bool _deep);
+		virtual void attachToLayerItemNode(ILayerNode* _node, bool _deep);
 		void detachFromLayerItemNode(bool _deep);
 
 	private:
