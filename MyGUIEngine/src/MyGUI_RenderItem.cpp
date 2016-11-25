@@ -33,22 +33,15 @@ namespace MyGUI
 			return;
 
 		mCurrentUpdate = _update;
-
-		if (mOutOfDate || _update)
-		{
-			
-			{
-				for (VectorDrawItem::iterator iter = mDrawItems.begin(); iter != mDrawItems.end(); ++iter)
-				{
-				
-					(*iter)->doRender(_target);
-
-				}
-
-			}
-
-			mOutOfDate = false;
-		}
+        
+        for (VectorDrawItem::iterator iter = mDrawItems.begin(); iter != mDrawItems.end(); ++iter)
+        {
+            
+            (*iter)->doRender(_target);
+            
+        }
+        
+        mOutOfDate = false;
 
 	}
 
