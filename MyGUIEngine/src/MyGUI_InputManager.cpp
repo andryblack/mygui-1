@@ -194,20 +194,6 @@ namespace MyGUI
 			{
 				// поднимаем виджет, надо подумать что делать если поменялся фокус клавы
 				LayerManager::getInstance().upLayerItem(mWidgetMouseFocus);
-
-				// поднимаем пикинг Overlapped окон
-				Widget* pick = mWidgetMouseFocus;
-				do
-				{
-					// если оверлаппед, то поднимаем пикинг
-					if (pick->getWidgetStyle() == WidgetStyle::Overlapped)
-					{
-						if (pick->getParent()) pick->getParent()->_forcePick(pick);
-					}
-
-					pick = pick->getParent();
-				}
-				while (pick);
 			}
 		}
 
@@ -224,19 +210,22 @@ namespace MyGUI
 			if (!mWidgetMouseFocus->getInheritedEnabled())
 				return true;
 
+            bool is_captured = false;
+            
 			if (_id != MouseButton::None && _id != MouseButton::MAX)
 			{
 				if (mMouseCapture[_id.getValue()])
 				{
 					// drop capture
 					mMouseCapture[_id.getValue()] = false;
+                    is_captured = true;
 				}
 			}
 
 			mWidgetMouseFocus->_riseMouseButtonReleased(_absx, _absy, _id);
 
 			// после вызова, виджет может быть сброшен
-			if (nullptr != mWidgetMouseFocus)
+			if (nullptr != mWidgetMouseFocus && is_captured)
 			{
 				if (MouseButton::Left == _id)
 				{

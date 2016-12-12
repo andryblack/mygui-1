@@ -547,29 +547,7 @@ namespace MyGUI
 		_correctSkinItemView();
 	}
 
-	void Widget::_forcePick(Widget* _widget)
-	{
-		MYGUI_ASSERT(mWidgetClient != this, "mWidgetClient can not be this widget");
-		if (mWidgetClient != nullptr)
-		{
-			mWidgetClient->_forcePick(_widget);
-			return;
-		}
-
-		VectorWidgetPtr::iterator iter = std::find(mWidgetChild.begin(), mWidgetChild.end(), _widget);
-		if (iter == mWidgetChild.end())
-			return;
-
-		VectorWidgetPtr copy = mWidgetChild;
-		for (VectorWidgetPtr::iterator widget = copy.begin(); widget != copy.end(); ++widget)
-		{
-			if ((*widget) == _widget)
-				(*widget)->setDepth(-1);
-			else if ((*widget)->getDepth() == -1)
-				(*widget)->setDepth(0);
-		}
-	}
-
+	
 	Widget* Widget::findWidget(const std::string& _name)
 	{
 		if (_name == mName)

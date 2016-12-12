@@ -263,8 +263,7 @@ namespace MyGUI
 		beginToItemSelected();
 
 		// поднимаем страницу для пикинга
-		_forcePick(mItemsInfo[mIndexSelect].item);
-
+	
 		_showItem(mItemsInfo[mIndexSelect].item, true, mSmoothShow);
 		_showItem(mItemsInfo[old].item, false, mSmoothShow);
 
@@ -379,10 +378,7 @@ namespace MyGUI
 		mIndexSelect = _index;
 		updateBar();
 
-		// поднимаем страницу для пикинга
-		if (mSmoothShow)
-			_forcePick(mItemsInfo[mIndexSelect].item);
-
+	
 		_showItem(mItemsInfo[mIndexSelect].item, true, mSmoothShow);
 		_showItem(mItemsInfo[old].item, false, mSmoothShow);
 
