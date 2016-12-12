@@ -18,8 +18,7 @@ namespace MyGUI
 {
 
 	class MYGUI_EXPORT ResourceManager :
-		public Singleton<ResourceManager>,
-		public MemberObsolete<ResourceManager>
+		public Singleton<ResourceManager>
 	{
 	public:
 		ResourceManager();

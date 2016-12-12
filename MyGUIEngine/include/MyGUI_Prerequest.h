@@ -97,6 +97,5 @@ namespace MyGUI
 
 } // namespace MyGUI
 
-#include "MyGUI_DeprecatedTypes.h"
 
 #endif // MYGUI_PREREQUEST_H_

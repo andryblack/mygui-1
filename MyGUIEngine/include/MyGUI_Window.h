@@ -25,8 +25,7 @@ namespace MyGUI
 		Window widget description should be here.
 	*/
 	class MYGUI_EXPORT Window :
-		public TextBox, // FIXME пока для кэпшена вместо виджета текст (Bug #190)
-		public MemberObsolete<Window>
+		public TextBox // FIXME пока для кэпшена вместо виджета текст (Bug #190)
 	{
 		MYGUI_RTTI_DERIVED( Window )
 

@@ -28,8 +28,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT ItemBox :
 		public DDContainer,
-		protected ScrollViewBase,
-		public MemberObsolete<ItemBox>
+		protected ScrollViewBase
 	{
 		MYGUI_RTTI_DERIVED( ItemBox )
 

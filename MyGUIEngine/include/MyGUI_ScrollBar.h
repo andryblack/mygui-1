@@ -21,8 +21,7 @@ namespace MyGUI
 		ScrollBar widget description should be here.
 	*/
 	class MYGUI_EXPORT ScrollBar :
-		public Widget,
-		public MemberObsolete<ScrollBar>
+		public Widget
 	{
 		MYGUI_RTTI_DERIVED( ScrollBar )
 

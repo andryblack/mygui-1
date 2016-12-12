@@ -20,8 +20,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT MenuItem :
 		public Button,
-		public IItem,
-		public MemberObsolete<MenuItem>
+		public IItem
 	{
 		MYGUI_RTTI_DERIVED( MenuItem )
 

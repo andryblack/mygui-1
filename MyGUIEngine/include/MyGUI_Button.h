@@ -17,8 +17,7 @@ namespace MyGUI
 		Button widget description should be here.
 	*/
 	class MYGUI_EXPORT Button :
-		public TextBox,
-		public MemberObsolete<Button>
+		public TextBox
 	{
 		MYGUI_RTTI_DERIVED( Button )
 

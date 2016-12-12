@@ -27,8 +27,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT ComboBox :
 		public EditBox,
-		public IItemContainer,
-		public MemberObsolete<ComboBox>
+		public IItemContainer
 	{
 		MYGUI_RTTI_DERIVED( ComboBox )
 

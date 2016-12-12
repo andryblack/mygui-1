@@ -29,8 +29,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT MenuControl :
 		public Widget,
-		public IItemContainer,
-		public MemberObsolete<MenuControl>
+		public IItemContainer
 	{
 		MYGUI_RTTI_DERIVED( MenuControl )
 

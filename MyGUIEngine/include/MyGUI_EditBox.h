@@ -23,8 +23,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT EditBox :
 		public TextBox,
-		public ScrollViewBase,
-		public MemberObsolete<EditBox>
+		public ScrollViewBase
 	{
 		MYGUI_RTTI_DERIVED( EditBox )
 

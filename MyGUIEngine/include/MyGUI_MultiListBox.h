@@ -32,8 +32,7 @@ namespace MyGUI
 	class MYGUI_EXPORT MultiListBox :
 		public Widget,
 		public BiIndexBase,
-		public IItemContainer,
-		public MemberObsolete<MultiListBox>
+		public IItemContainer
 	{
 		MYGUI_RTTI_DERIVED( MultiListBox )
 

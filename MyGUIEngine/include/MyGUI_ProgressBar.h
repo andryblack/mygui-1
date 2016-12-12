@@ -19,8 +19,7 @@ namespace MyGUI
 		ProgressBar widget description should be here.
 	*/
 	class MYGUI_EXPORT ProgressBar :
-		public Widget,
-		public MemberObsolete<ProgressBar>
+		public Widget
 	{
 		MYGUI_RTTI_DERIVED( ProgressBar )
 

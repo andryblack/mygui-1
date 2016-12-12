@@ -26,8 +26,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT ListBox :
 		public Widget,
-		public IItemContainer,
-		public MemberObsolete<ListBox>
+		public IItemContainer
 	{
 		MYGUI_RTTI_DERIVED( ListBox )
 

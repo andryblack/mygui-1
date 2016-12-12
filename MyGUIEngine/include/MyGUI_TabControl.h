@@ -25,8 +25,7 @@ namespace MyGUI
 	*/
 	class MYGUI_EXPORT TabControl :
 		public Widget,
-		public IItemContainer,
-		public MemberObsolete<TabControl>
+		public IItemContainer
 	{
 		// для уведобления об удалении
 		//FIXME
