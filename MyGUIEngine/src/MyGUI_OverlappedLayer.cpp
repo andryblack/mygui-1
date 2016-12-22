@@ -54,7 +54,7 @@ namespace MyGUI
 		mIsPick = _pick;
 	}
 
-	ILayerNode* OverlappedLayer::createChildItemNode()
+	ILayerNode* OverlappedLayer::createRootItemNode(Widget* _widget)
 	{
 		// создаем рутовый айтем
 		ILayerNode* node = new LayerNode(this);
@@ -65,7 +65,7 @@ namespace MyGUI
 		return node;
 	}
 
-	void OverlappedLayer::destroyChildItemNode(ILayerNode* _item)
+	void OverlappedLayer::destroyRootItemNode(ILayerNode* _item)
 	{
 		// если есть отец, то русть сам и удаляет
 		ILayerNode* parent = _item->getParent();
@@ -95,7 +95,7 @@ namespace MyGUI
 		MYGUI_EXCEPT("item node not found");
 	}
 
-	void OverlappedLayer::upChildItemNode(ILayerNode* _item)
+	void OverlappedLayer::upRootItemNode(ILayerNode* _item)
 	{
 		// если есть отец, то пусть сам рулит
 		ILayerNode* parent = _item->getParent();

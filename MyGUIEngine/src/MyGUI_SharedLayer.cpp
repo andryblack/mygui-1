@@ -55,7 +55,7 @@ namespace MyGUI
 		mIsPick = _pick;
 	}
 
-	ILayerNode* SharedLayer::createChildItemNode()
+	ILayerNode* SharedLayer::createRootItemNode(Widget* widget)
 	{
 		if (mChildItem == nullptr)
 			mChildItem = new SharedLayerNode(this);
@@ -67,7 +67,7 @@ namespace MyGUI
 		return mChildItem;
 	}
 
-	void SharedLayer::destroyChildItemNode(ILayerNode* _item)
+	void SharedLayer::destroyRootItemNode(ILayerNode* _item)
 	{
 		// айтем рутовый, мы удаляем
 		if (mChildItem == _item)
@@ -86,7 +86,7 @@ namespace MyGUI
 		//MYGUI_EXCEPT("item node not found");
 	}
 
-	void SharedLayer::upChildItemNode(ILayerNode* _item)
+	void SharedLayer::upRootItemNode(ILayerNode* _item)
 	{
 		// если есть отец, то пусть сам рулит
 		ILayerNode* parent = _item->getParent();

@@ -27,11 +27,11 @@ namespace MyGUI
 
 		void setPick(bool _pick);
 
-		virtual ILayerNode* createChildItemNode();
-		virtual void destroyChildItemNode(ILayerNode* _node);
+		virtual ILayerNode* createRootItemNode(Widget* widget);
+		virtual void destroyRootItemNode(ILayerNode* _node);
 
 		// up child item (make it draw and pick above other)
-		virtual void upChildItemNode(ILayerNode* _node);
+		virtual void upRootItemNode(ILayerNode* _node);
 
 		// child items list
 		virtual EnumeratorILayerNode getEnumerator() const;

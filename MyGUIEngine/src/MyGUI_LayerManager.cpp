@@ -134,7 +134,7 @@ namespace MyGUI
 		{
 			if (_name == (*iter)->getName())
 			{
-				ILayerNode* node = (*iter)->createChildItemNode();
+				ILayerNode* node = (*iter)->createRootItemNode(_item);
 				node->attachLayerItem(_item);
 
 				return;

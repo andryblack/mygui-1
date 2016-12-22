@@ -7,6 +7,7 @@
 #include "MyGUI_Precompiled.h"
 #include "MyGUI_LayerItem.h"
 #include "MyGUI_ITexture.h"
+#include "MyGUI_LayerNode.h"
 #include <algorithm>
 
 namespace MyGUI
@@ -46,7 +47,7 @@ namespace MyGUI
 		if (mLayerNode != nullptr)
 		{
 			// создаем оверлаппеду новый айтем
-			ILayerNode* child_node = mLayerNode->createChildItemNode();
+			ILayerNode* child_node = _item->createChildItemNode(mLayerNode);
 			_item->attachToLayerItemNode(child_node, true);
 		}
 	}
@@ -125,7 +126,7 @@ namespace MyGUI
 		detachFromLayerItemNode(true);
 
 		// отсоединяем леер и обнуляем у рутового виджета
-		mLayer->destroyChildItemNode(save);
+		mLayer->destroyRootItemNode(save);
 		mLayerNode = nullptr;
 		mLayer = nullptr;
 	}
@@ -136,7 +137,7 @@ namespace MyGUI
 		while (node)
 		{
 			if (node->getLayer())
-                node->getLayer()->upChildItemNode(node);
+                node->getLayer()->upRootItemNode(node);
 			node = node->getParent();
 		}
 	}
@@ -163,7 +164,7 @@ namespace MyGUI
 			// создаем оверлаппеду новый айтем
 			if (_deep)
 			{
-				ILayerNode* child_node = _item->createChildItemNode();
+				ILayerNode* child_node = (*item)->createChildItemNode(_item);
 				(*item)->attachToLayerItemNode(child_node, _deep);
 			}
 		}
@@ -184,7 +185,7 @@ namespace MyGUI
 				(*item)->detachFromLayerItemNode(_deep);
 				if (node)
 				{
-					node->getLayer()->destroyChildItemNode(node);
+					node->getLayer()->destroyRootItemNode(node);
 				}
 			}
 		}
@@ -208,6 +209,12 @@ namespace MyGUI
 			mLayerNode = nullptr;
 		}
 	}
+    
+    ILayerNode* LayerItem::createChildItemNode(ILayerNode* _node) {
+        LayerNode* layer = new LayerNode(_node->getLayer(), _node);
+        _node->addChildItemNode(layer);
+        return layer;
+    }
 
 	ILayer* LayerItem::getLayer() const
 	{

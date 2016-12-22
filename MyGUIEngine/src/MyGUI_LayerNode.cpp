@@ -37,15 +37,12 @@ namespace MyGUI
 		mChildItems.clear();
 	}
 
-	ILayerNode* LayerNode::createChildItemNode()
+	void LayerNode::addChildItemNode(ILayerNode* layer)
 	{
-		LayerNode* layer = new LayerNode(mLayer, this);
 		mChildItems.push_back(layer);
 
 		mOutOfDate = true;
-
-		return layer;
-	}
+    }
 
 	void LayerNode::destroyChildItemNode(ILayerNode* _node)
 	{

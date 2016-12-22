@@ -17,7 +17,8 @@ namespace MyGUI
 {
 
 	class ILayerItem;
-
+    class Widget;
+    
 	class MYGUI_EXPORT ILayer :
 		public ISerializable
 	{
@@ -37,11 +38,11 @@ namespace MyGUI
 			mName = _name;
 		}
 
-		virtual ILayerNode* createChildItemNode() = 0;
-		virtual void destroyChildItemNode(ILayerNode* _node) = 0;
+		virtual ILayerNode* createRootItemNode(Widget* _item) = 0;
+		virtual void destroyRootItemNode(ILayerNode* _node) = 0;
 
 		// up child item (make it draw and pick above other)
-		virtual void upChildItemNode(ILayerNode* _node) = 0;
+		virtual void upRootItemNode(ILayerNode* _node) = 0;
 
 		// child items list
 		virtual EnumeratorILayerNode getEnumerator() const = 0;

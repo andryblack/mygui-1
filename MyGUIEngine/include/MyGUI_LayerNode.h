@@ -34,8 +34,8 @@ namespace MyGUI
 		// возвращает отца или nullptr
 		virtual ILayerNode* getParent() const;
 
-		// создаем дочерний нод
-		virtual ILayerNode* createChildItemNode();
+		// add child node
+		virtual void addChildItemNode(ILayerNode*);
 		// удаляем дочерний нод
 		virtual void destroyChildItemNode(ILayerNode* _node);
 
