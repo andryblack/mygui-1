@@ -24,6 +24,7 @@
 #include "MyGUI_RenderManager.h"
 #include "MyGUI_ToolTipManager.h"
 #include "MyGUI_LayoutManager.h"
+#include "MyGUI_LayerNode.h"
 
 namespace MyGUI
 {
@@ -1448,6 +1449,10 @@ namespace MyGUI
                 (*widget)->_updateView();
             }
         }
+    }
+    
+    void Widget::renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update) {
+        node->renderToTarget(rt,update);
     }
 
 } // namespace MyGUI
