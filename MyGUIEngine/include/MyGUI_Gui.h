@@ -163,7 +163,7 @@ namespace MyGUI
 
 		virtual void _unlinkWidget(Widget* _widget);
 
-	private:
+	protected:
 		// вектор всех детей виджетов
 		VectorWidgetPtr mWidgetChild;
 
