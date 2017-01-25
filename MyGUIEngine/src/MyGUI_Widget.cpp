@@ -38,6 +38,7 @@ namespace MyGUI
 		mRealAlpha(ALPHA_MAX),
 		mInheritsAlpha(true),
         mInheritsState(false),
+        mInheritsColour(true),
 		mParent(nullptr),
 		mWidgetStyle(WidgetStyle::Child),
 		mContainer(nullptr),
@@ -464,6 +465,14 @@ namespace MyGUI
         
     bool Widget::getInheritsState() const {
         return mInheritsState;
+    }
+    
+    void Widget::setInheritsColour(bool _value) {
+        mInheritsColour = _value;
+    }
+    
+    bool Widget::getInheritsColour() const {
+        return mInheritsColour;
     }
 
 	ILayerItem* Widget::getLayerItemByPoint(int _left, int _top) const
@@ -1058,8 +1067,10 @@ namespace MyGUI
 	{
 		_setSkinItemColour(_value);
 
-		for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
-			(*widget)->setColour(_value);
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget) {
+            if ((*widget)->getInheritsColour())
+                (*widget)->setColour(_value);
+        }
 	}
 
 	IntSize Widget::getParentSize() const
@@ -1213,6 +1224,9 @@ namespace MyGUI
         
         else if (_key == "InheritsState")
             setInheritsState(utility::parseValue<bool>(_value));
+        
+        else if (_key == "InheritsColour")
+            setInheritsColour(utility::parseValue<bool>(_value));
 
 		/// @wproperty{Widget, InheritsPick, bool} Режим наследования доступности мышью.
 		else if (_key == "InheritsPick")

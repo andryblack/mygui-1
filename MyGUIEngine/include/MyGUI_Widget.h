@@ -180,6 +180,9 @@ namespace MyGUI
         
         void setInheritsState(bool _value);
         bool getInheritsState() const;
+        
+        void setInheritsColour(bool _value);
+        bool getInheritsColour() const;
 
 		virtual void setColour(const Colour& _value);
 
@@ -411,6 +414,7 @@ namespace MyGUI
 		float mRealAlpha;
 		bool mInheritsAlpha;
         bool mInheritsState;
+        bool mInheritsColour;
 		// имя виджета
 		std::string mName;
 

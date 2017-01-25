@@ -172,7 +172,7 @@ namespace MyGUI
 			if (mVectorTrack.empty())
 			{
 				Widget* widget = mClient->createWidget<Widget>(mTrackSkin, IntCoord(), Align::Left | Align::VStretch);
-                widget->setColour(mTrackColour);
+                widget->setColour(mWidgetColour*mTrackColour);
 				mVectorTrack.push_back(widget);
 			}
 			else
@@ -221,7 +221,7 @@ namespace MyGUI
 		{
 			Widget* widget = mClient->createWidget<Widget>(mTrackSkin, IntCoord(/*(int)mVectorTrack.size() * mTrackStep, 0, mTrackWidth, getClientHeight()*/), Align::Left | Align::VStretch);
 			widget->setVisible(false);
-            widget->setColour(mTrackColour);
+            widget->setColour(mWidgetColour*mTrackColour);
 			mVectorTrack.push_back(widget);
 		}
 
