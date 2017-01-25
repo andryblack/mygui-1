@@ -144,24 +144,6 @@ namespace MyGUI
 		mViewSize = _viewSize;
 	}
 
-	EnumeratorILayerNode SharedLayer::getEnumerator() const
-	{
-		static VectorILayerNode nodes;
-		if (mChildItem == nullptr)
-		{
-			nodes.clear();
-		}
-		else
-		{
-			if (nodes.empty())
-				nodes.push_back(mChildItem);
-			else
-				nodes[0] = mChildItem;
-		}
-
-		return EnumeratorILayerNode(nodes);
-	}
-
 	size_t SharedLayer::getLayerNodeCount() const
 	{
 		return mChildItem == nullptr ? 0 : 1;

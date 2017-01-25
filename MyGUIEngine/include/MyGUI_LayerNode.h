@@ -42,10 +42,7 @@ namespace MyGUI
 		// поднимаем дочерний нод
 		virtual void upChildItemNode(ILayerNode* _node);
 
-		// список детей
-		virtual EnumeratorILayerNode getEnumerator() const;
-
-		virtual size_t getLayerNodeCount() const;
+        virtual size_t getLayerNodeCount() const;
 
 		virtual ILayerNode* getLayerNodeAt(size_t _index) const;
 

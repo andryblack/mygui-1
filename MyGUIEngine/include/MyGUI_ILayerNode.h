@@ -23,8 +23,6 @@ namespace MyGUI
 	class RenderItem;
 
 	typedef std::vector<ILayerNode*> VectorILayerNode;
-	typedef Enumerator<VectorILayerNode> EnumeratorILayerNode;
-
 	class MYGUI_EXPORT ILayerNode :
 		public IObject
 	{
@@ -46,9 +44,6 @@ namespace MyGUI
 
 		// поднимаем дочерний нод
 		virtual void upChildItemNode(ILayerNode* _node) = 0;
-
-		// список детей
-		virtual EnumeratorILayerNode getEnumerator() const = 0;
 
 		virtual size_t getLayerNodeCount() const = 0;
 

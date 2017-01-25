@@ -250,11 +250,6 @@ namespace MyGUI
 			_item->outOfDate();
 	}
 
-	EnumeratorILayerNode LayerNode::getEnumerator() const
-	{
-		return EnumeratorILayerNode(mChildItems);
-	}
-
 	size_t LayerNode::getLayerNodeCount() const
 	{
 		return mChildItems.size();

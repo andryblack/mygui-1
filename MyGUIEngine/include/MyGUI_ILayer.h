@@ -44,9 +44,6 @@ namespace MyGUI
 		// up child item (make it draw and pick above other)
 		virtual void upRootItemNode(ILayerNode* _node) = 0;
 
-		// child items list
-		virtual EnumeratorILayerNode getEnumerator() const = 0;
-
 		virtual size_t getLayerNodeCount() const = 0;
 
 		virtual ILayerNode* getLayerNodeAt(size_t _index) const = 0;
