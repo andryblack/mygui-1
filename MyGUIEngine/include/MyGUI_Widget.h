@@ -308,7 +308,7 @@ namespace MyGUI
 		void _updateChilds();
         void _updateSkinChilds();
 
-        virtual void renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update);
+        virtual bool renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update);
 	protected:
 		// все создание только через фабрику
 		virtual ~Widget();
