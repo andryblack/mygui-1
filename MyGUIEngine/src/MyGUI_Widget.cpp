@@ -1465,8 +1465,8 @@ namespace MyGUI
         }
     }
     
-    bool Widget::renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update) {
-        return false;
+    void Widget::renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update) {
+        node->renderToTarget(rt,update);
     }
 
 } // namespace MyGUI
