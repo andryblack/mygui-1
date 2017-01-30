@@ -21,8 +21,7 @@ namespace MyGUI
 {
 
 	typedef delegates::CMultiDelegate3<Widget*, const std::string&, const std::string&> EventHandle_WidgetStringString;
-    class LayerNode;
-    
+
 	/** \brief @wpage{Widget}
 		Widget widget description should be here.
 	*/
@@ -308,7 +307,6 @@ namespace MyGUI
 		void _updateChilds();
         void _updateSkinChilds();
 
-        virtual void renderNodeToTarget(MyGUI::IRenderTarget* rt,LayerNode* node,bool update);
 	protected:
 		// все создание только через фабрику
 		virtual ~Widget();
@@ -360,7 +358,6 @@ namespace MyGUI
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
-        
 	private:
 		void frameEntered(float _frame);
 
