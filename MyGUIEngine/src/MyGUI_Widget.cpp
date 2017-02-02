@@ -909,7 +909,13 @@ namespace MyGUI
 				(*widget)->_updateAbsolutePoint();
 
 			mParent->addChildItem(this);
-
+            for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget) {
+                if ((*widget)->getWidgetStyle() == WidgetStyle::Overlapped) {
+                    addChildNode(*widget);
+                }
+                (*widget)->_updateAbsolutePoint();
+            }
+        
             _updateChilds();
 			_updateView();
 		}
