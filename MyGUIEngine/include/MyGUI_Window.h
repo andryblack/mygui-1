@@ -106,7 +106,7 @@ namespace MyGUI
 			signature : void method(MyGUI::Window* _sender)
 			@param _sender widget that called this event
 		*/
-		EventPair<EventHandle_WidgetVoid, EventHandle_WindowPtr> eventWindowChangeCoord;
+		EventHandle_WindowPtr eventWindowChangeCoord;
 
 	protected:
 		virtual void initialiseOverride();

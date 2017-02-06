@@ -144,14 +144,14 @@ namespace MyGUI
 			@param _sender widget that called this event
 			@param _index item
 		*/
-		EventPair<EventHandle_WidgetVoid, EventHandle_ComboBoxPtrSizeT> eventComboAccept;
+		EventHandle_ComboBoxPtrSizeT eventComboAccept;
 
 		/** Event : Position changed.\n
 			signature : void method(MyGUI::ComboBox* _sender, size_t _index)
 			@param _sender widget that called this event
 			@param _index of new position
 		*/
-		EventPair<EventHandle_WidgetSizeT, EventHandle_ComboBoxPtrSizeT> eventComboChangePosition;
+		EventHandle_ComboBoxPtrSizeT eventComboChangePosition;
 
 		/*internal:*/
 		// IItemContainer impl
