@@ -62,6 +62,8 @@ namespace MyGUI
 
 	bool SkinItem::_setSkinItemState(const std::string& _state)
 	{
+        if (mSubSkinChild.empty())
+            return true;
 		MapWidgetStateInfo::const_iterator iter = mStateInfo.find(_state);
 		if (iter == mStateInfo.end())
 			return false;

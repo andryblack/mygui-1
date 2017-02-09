@@ -363,12 +363,16 @@ namespace MyGUI
 
 	bool Widget::_setWidgetState(const std::string& _state)
 	{
-        for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget)
-            if ((*widget)->getInheritsState())
+         for (VectorWidgetPtr::iterator widget = mWidgetChild.begin(); widget != mWidgetChild.end(); ++widget) {
+            if ((*widget)->getInheritsState()) {
                 (*widget)->_setWidgetState(_state);
-        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget)
-            if ((*widget)->getInheritsState())
+            }
+        }
+        for (VectorWidgetPtr::iterator widget = mWidgetChildSkin.begin(); widget != mWidgetChildSkin.end(); ++widget) {
+            if ((*widget)->getInheritsState()) {
                 (*widget)->_setWidgetState(_state);
+            }
+        }
 		return _setSkinItemState(_state);
 	}
 
@@ -1130,16 +1134,7 @@ namespace MyGUI
 
 	void Widget::setProperty(const std::string& _key, const std::string& _value)
 	{
-		std::string key = _key;
-		std::string value = _value;
-        size_t index = key.find("_");
-        if (index != std::string::npos)
-        {
-            MYGUI_LOG(Warning, "Widget property '" << key << "' have type prefix - use '" << key.substr(index + 1) << "' instead [" << LayoutManager::getInstance().getCurrentLayout() << "]");
-            key = key.substr(index + 1);
-        }
-        
-        setPropertyOverride(key, value);
+		setPropertyOverride(_key, _value);
 	}
 
 	VectorWidgetPtr Widget::getSkinWidgetsByName(const std::string& _name)
