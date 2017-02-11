@@ -36,9 +36,10 @@ namespace MyGUI
 		mIsInitialise = false;
 	}
 
-	void FactoryManager::registerFactory(const std::string& _category, const std::string& _type, Delegate::IDelegate* _delegate)
+	void FactoryManager::registerFactory(const std::string& _category, const std::string& _type, FactoryFunc* _delegate)
 	{
 		//FIXME
+        MYGUI_LOG(Info, getClassTypeName() << " register factory " << _category << ":" << _type << " -> " << _delegate);
 		mRegisterFactoryItems[_category][_type] = _delegate;
 	}
 
@@ -73,21 +74,24 @@ namespace MyGUI
 		MapRegisterFactoryItem::iterator category = mRegisterFactoryItems.find(_category);
 		if (category == mRegisterFactoryItems.end())
 		{
+            MYGUI_LOG(Warning, getClassTypeName() << " not found category " << _category);
 			return nullptr;
 		}
 
 		MapFactoryItem::iterator type = category->second.find(_type);
 		if (type == category->second.end())
 		{
+            MYGUI_LOG(Warning, getClassTypeName() << " not found type " << _type << " for category " << _category);
 			return nullptr;
 		}
-		if (type->second.empty())
+		if (!type->second)
 		{
+            MYGUI_LOG(Warning, getClassTypeName() << " factory " << _category << ":" << _type << " is empty");
 			return nullptr;
 		}
 
 		IObject* result = nullptr;
-		type->second(result);
+		(type->second)(result);
 		return result;
 	}
 

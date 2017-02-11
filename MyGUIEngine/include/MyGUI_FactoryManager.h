@@ -24,9 +24,9 @@ namespace MyGUI
 		void initialise();
 		void shutdown();
 
-		typedef delegates::CDelegate1<IObject*&> Delegate;
+		typedef void (FactoryFunc)(IObject* &);
 		/** Register delegate function that creates object for specified _category and _type. */
-		void registerFactory(const std::string& _category, const std::string& _type, Delegate::IDelegate* _delegate);
+		void registerFactory(const std::string& _category, const std::string& _type, FactoryFunc* _delegate);
 		/** Unregister delegate function that creates object for specified _category and _type. */
 		void unregisterFactory(const std::string& _category, const std::string& _type);
 		/** Unregister all delegate functions that creates object for specified _category. */
@@ -72,7 +72,7 @@ namespace MyGUI
 		void destroyObject(IObject* _object);
 
 	private:
-		typedef std::map<std::string, Delegate> MapFactoryItem;
+		typedef std::map<std::string, FactoryFunc*> MapFactoryItem;
 		typedef std::map<std::string, MapFactoryItem> MapRegisterFactoryItem;
 		MapRegisterFactoryItem mRegisterFactoryItems;
 

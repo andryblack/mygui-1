@@ -13,7 +13,9 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(RotatingSkin)
+    MYGUI_IMPL_TYPE_NAME(RotatingSkinStateInfo)
+    
 	RotatingSkin::RotatingSkin() :
 		mGeometryOutdated(false),
 		mAngle(0.0f),

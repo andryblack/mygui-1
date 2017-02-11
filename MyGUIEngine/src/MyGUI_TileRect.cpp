@@ -16,6 +16,8 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(TileRect)
+    MYGUI_IMPL_TYPE_NAME(TileRectStateInfo)
 
 	const size_t TILERECT_COUNT_VERTEX = 16 * VertexQuad::VertexCount;
 

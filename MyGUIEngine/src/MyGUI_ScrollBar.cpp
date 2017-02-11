@@ -14,6 +14,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ScrollBar)
 
 	ScrollBar::ScrollBar() :
 		mWidgetStart(nullptr),

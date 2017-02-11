@@ -14,6 +14,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(TabControl)
 
 	const float TAB_SPEED_FADE_COEF = 5.0f;
 

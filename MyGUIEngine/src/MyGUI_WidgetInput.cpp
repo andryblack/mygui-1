@@ -10,8 +10,7 @@
 
 namespace MyGUI
 {
-
-	WidgetInput::WidgetInput() :
+    WidgetInput::WidgetInput() :
 		mNeedToolTip(false),
 		mInheritsPick(false),
 		mNeedKeyFocus(false),

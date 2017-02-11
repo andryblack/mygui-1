@@ -17,6 +17,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ControllerItem)
 
 	template <> ControllerManager* Singleton<ControllerManager>::msInstance = nullptr;
 	template <> const char* Singleton<ControllerManager>::mClassTypeName = "ControllerManager";

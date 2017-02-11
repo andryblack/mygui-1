@@ -14,6 +14,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ControllerPosition)
 
 	ControllerPosition::ControllerPosition() :
 		mTime(1),

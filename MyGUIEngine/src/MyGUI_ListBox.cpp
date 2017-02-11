@@ -14,7 +14,8 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(ListBox)
+    
 	ListBox::ListBox() :
 		mWidgetScroll(nullptr),
 		mActivateOnClick(false),

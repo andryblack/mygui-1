@@ -18,12 +18,12 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(EditBox)
 
 	const float EDIT_CURSOR_TIMER  = 0.7f;
 	const float EDIT_ACTION_MOUSE_TIMER  = 0.05f;
 	const int EDIT_CURSOR_MAX_POSITION = 100000;
 	const int EDIT_CURSOR_MIN_POSITION = -100000;
-	const size_t EDIT_MAX_UNDO = 128;
 	const size_t EDIT_DEFAULT_MAX_TEXT_LENGTH = 2048;
 	const float EDIT_OFFSET_HORZ_CURSOR = 10.0f; // дополнительное смещение для курсора
 	const int EDIT_ACTION_MOUSE_ZONE = 1500; // область для восприятия мыши за пределом эдита

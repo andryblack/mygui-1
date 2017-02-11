@@ -14,6 +14,8 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ISerializable)
+    MYGUI_IMPL_TYPE_NAME(IResource)
 
 	template <> ResourceManager* Singleton<ResourceManager>::msInstance = nullptr;
 	template <> const char* Singleton<ResourceManager>::mClassTypeName = "ResourceManager";

@@ -15,6 +15,8 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(Window)
+    
 	const float WINDOW_ALPHA_ACTIVE = ALPHA_MAX;
 	const float WINDOW_ALPHA_FOCUS = 0.7f;
 	const float WINDOW_ALPHA_DEACTIVE = 0.3f;

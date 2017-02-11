@@ -15,7 +15,8 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(ImageBox)
+    
 	const size_t IMAGE_MAX_INDEX = 256;
 
 	ImageBox::ImageBox() :

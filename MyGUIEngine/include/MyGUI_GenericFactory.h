@@ -9,7 +9,6 @@
 
 #include "MyGUI_Prerequest.h"
 #include "MyGUI_Types.h"
-#include "MyGUI_Delegate.h"
 #include "MyGUI_IObject.h"
 
 namespace MyGUI
@@ -19,10 +18,10 @@ namespace MyGUI
 	class GenericFactory
 	{
 	public:
-		typedef delegates::CDelegate1<IObject*&> Delegate;
-		static typename Delegate::IDelegate* getFactory()
+		typedef void (FactoryFunc)(IObject* &);
+		static FactoryFunc* getFactory()
 		{
-			return newDelegate(createFromFactory);
+			return &createFromFactory;
 		}
 
 	private:

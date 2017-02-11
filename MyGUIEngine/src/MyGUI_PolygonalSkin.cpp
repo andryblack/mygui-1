@@ -13,6 +13,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(PolygonalSkin)
 
 	PolygonalSkin::PolygonalSkin() :
 		mGeometryOutdated(false),

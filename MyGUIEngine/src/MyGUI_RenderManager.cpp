@@ -11,7 +11,8 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(ITexture)
+    
 	template <> RenderManager* Singleton<RenderManager>::msInstance = nullptr;
 	template <> const char* Singleton<RenderManager>::mClassTypeName = "RenderManager";
 

@@ -11,8 +11,11 @@
 #include "MyGUI_WidgetManager.h"
 #include "MyGUI_Widget.h"
 
+
 namespace MyGUI
 {
+
+    MYGUI_IMPL_TYPE_NAME(ControllerFadeAlpha)
 
 	ControllerFadeAlpha::ControllerFadeAlpha() :
 		mAlpha(1),

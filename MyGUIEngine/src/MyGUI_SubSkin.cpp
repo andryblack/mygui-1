@@ -16,6 +16,9 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(SubSkin)
+    MYGUI_IMPL_TYPE_NAME(IStateInfo)
+    MYGUI_IMPL_TYPE_NAME(SubSkinStateInfo)
 
 	SubSkin::SubSkin() :
 		ISubWidgetRect(),

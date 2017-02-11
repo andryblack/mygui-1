@@ -17,6 +17,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ILayer)
 
 	template <> LayerManager* Singleton<LayerManager>::msInstance = nullptr;
 	template <> const char* Singleton<LayerManager>::mClassTypeName = "LayerManager";

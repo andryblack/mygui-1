@@ -9,6 +9,8 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ControllerRepeatClick)
+    
 	ControllerRepeatClick::ControllerRepeatClick() :
 		mInit(0.5f),
 		mStep(0.1f),

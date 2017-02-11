@@ -13,6 +13,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ProgressBar)
 
 	const size_t PROGRESS_AUTO_WIDTH = 200;
 	const size_t PROGRESS_AUTO_RANGE = 1000;

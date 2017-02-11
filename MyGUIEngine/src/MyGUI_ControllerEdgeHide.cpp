@@ -11,8 +11,10 @@
 #include "MyGUI_WidgetManager.h"
 #include "MyGUI_Widget.h"
 
+
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ControllerEdgeHide)
 
 #ifndef M_PI
 	const float M_PI = 3.141593f;

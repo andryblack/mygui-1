@@ -18,7 +18,7 @@ namespace MyGUI
     class MYGUI_EXPORT ITexture :
         public IObject
 	{
-        MYGUI_RTTI_DERIVED( IObject )
+        MYGUI_RTTI_DERIVED( ITexture )
 	public:
 		virtual ~ITexture() { }
 

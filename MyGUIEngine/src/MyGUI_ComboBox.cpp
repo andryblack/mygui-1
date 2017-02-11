@@ -15,8 +15,11 @@
 #include "MyGUI_ResourceSkin.h"
 #include "MyGUI_LayerManager.h"
 
+
 namespace MyGUI
 {
+
+    MYGUI_IMPL_TYPE_NAME(ComboBox)
 
 	const float COMBO_ALPHA_MAX  = ALPHA_MAX;
 	const float COMBO_ALPHA_MIN  = ALPHA_MIN;

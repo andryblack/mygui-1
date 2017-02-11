@@ -17,7 +17,9 @@
 
 namespace MyGUI
 {
-
+    
+    MYGUI_IMPL_TYPE_NAME(ISubWidget)
+    
 	template <> SubWidgetManager* Singleton<SubWidgetManager>::msInstance = nullptr;
 	template <> const char* Singleton<SubWidgetManager>::mClassTypeName = "SubWidgetManager";
 

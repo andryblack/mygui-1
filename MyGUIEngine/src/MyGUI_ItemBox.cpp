@@ -15,7 +15,8 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(ItemBox)
+    
 	ItemBox::ItemBox() :
 		mCountItemInLine(0),
 		mCountLines(0),

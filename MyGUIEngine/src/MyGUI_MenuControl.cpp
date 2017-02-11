@@ -19,6 +19,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(MenuControl)
 
 	const float POPUP_MENU_SPEED_COEF = 3.0f;
 

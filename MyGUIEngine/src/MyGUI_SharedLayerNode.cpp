@@ -9,6 +9,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(SharedLayerNode)
 
 	SharedLayerNode::SharedLayerNode(ILayer* _layer, ILayerNode* _parent) :
 		LayerNode(_layer, _parent),

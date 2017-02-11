@@ -10,8 +10,11 @@
 #include "MyGUI_ImageBox.h"
 #include "MyGUI_InputManager.h"
 
+
 namespace MyGUI
 {
+
+    MYGUI_IMPL_TYPE_NAME(Button)
 
 	Button::Button() :
 		mIsMousePressed(false),

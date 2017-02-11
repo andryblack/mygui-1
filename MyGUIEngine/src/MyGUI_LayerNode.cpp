@@ -9,10 +9,11 @@
 #include "MyGUI_ILayerItem.h"
 #include "MyGUI_ITexture.h"
 #include "MyGUI_ISubWidget.h"
-#include "MyGUI_ISubWidgetText.h"
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ILayerNode)
+    MYGUI_IMPL_TYPE_NAME(LayerNode)
 
 	LayerNode::LayerNode(ILayer* _layer, ILayerNode* _parent) :
 		mParent(_parent),

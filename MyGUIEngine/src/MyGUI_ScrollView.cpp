@@ -12,6 +12,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ScrollView)
 
 	const int SCROLL_VIEW_MOUSE_WHEEL = 50; // колличество пикселей для колеса мыши
 	const int SCROLL_VIEW_SCROLL_PAGE = 16; // колличество пикселей для кнопок скрола

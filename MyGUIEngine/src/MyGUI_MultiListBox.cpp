@@ -16,7 +16,8 @@
 
 namespace MyGUI
 {
-
+    MYGUI_IMPL_TYPE_NAME(MultiListBox)
+    
 	MultiListBox::MultiListBox() :
 		mHeightButton(0),
 		mWidthBar(0),

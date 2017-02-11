@@ -13,6 +13,9 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(ISubWidgetRect)
+    MYGUI_IMPL_TYPE_NAME(ISubWidgetText)
+    
 	SkinItem::SkinItem() :
 		mText(nullptr),
 		mMainSkin(nullptr),

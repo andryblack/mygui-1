@@ -12,6 +12,7 @@
 
 namespace MyGUI
 {
+    MYGUI_IMPL_TYPE_NAME(OverlappedLayer)
 
 	OverlappedLayer::OverlappedLayer() :
 		mIsPick(false),
