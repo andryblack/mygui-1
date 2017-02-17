@@ -188,13 +188,6 @@ namespace MyGUI
 		if (isFocusMouse())
 		{
 			mWidgetMouseFocus->_riseMouseButtonPressed(_absx, _absy, _id);
-
-			// после пресса может сброситься
-			if (mWidgetMouseFocus)
-			{
-				// поднимаем виджет, надо подумать что делать если поменялся фокус клавы
-				LayerManager::getInstance().upLayerItem(mWidgetMouseFocus);
-			}
 		}
 
 		return true;
