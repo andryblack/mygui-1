@@ -88,7 +88,7 @@ namespace MyGUI
 				stream >> std::hex >> result;
 				if (!stream.fail())
 				{
-					return Colour( (unsigned char)( result >> 16 ) / 256.0f, (unsigned char)( result >> 8 ) / 256.0f, (unsigned char)( result ) / 256.0f );
+					return Colour( (unsigned char)( result >> 16 ) / 255.0f, (unsigned char)( result >> 8 ) / 255.0f, (unsigned char)( result ) / 255.0f );
 				}
 			}
 			else
