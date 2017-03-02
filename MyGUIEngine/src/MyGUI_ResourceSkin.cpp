@@ -206,7 +206,7 @@ namespace MyGUI
 		// и увеличиваем размер смещений по колличеству сабвиджетов
 		for (MapWidgetStateInfo::iterator iter = mStates.begin(); iter != mStates.end(); ++iter)
 		{
-			iter->second.resize(mBasis.size());
+			iter->second.resize(mBasis.size(),0);
 		}
 	}
 
