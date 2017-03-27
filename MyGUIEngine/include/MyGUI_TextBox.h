@@ -29,6 +29,7 @@ namespace MyGUI
 
 		/** Get text region size */
 		virtual IntSize getTextSize() const;
+        virtual IntCoord getTextCoord() const;
 
 		/** Set widget caption */
 		virtual void setCaption(const UString& _value);

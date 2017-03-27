@@ -27,6 +27,13 @@ namespace MyGUI
 		return (nullptr == getSubWidgetText()) ? IntSize() : getSubWidgetText()->getTextSize();
 	}
 
+    IntCoord TextBox::getTextCoord() const
+    {
+        const ISubWidgetText* text = getSubWidgetText();
+        if (!text) return IntCoord();
+        return IntCoord(text->getPosition()-text->getViewOffset(), text->getTextSize());
+    }
+    
 	void TextBox::setTextAlign(Align _value)
 	{
 		if (getSubWidgetText() != nullptr)
