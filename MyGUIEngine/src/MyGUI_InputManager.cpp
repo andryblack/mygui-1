@@ -353,19 +353,22 @@ namespace MyGUI
         
         if (_widget)
         {
-            // поднимаемся до рута
             Widget* root = _widget;
-            while (root->getParent()) root = root->getParent();
+            // поднимаемся до рута
+            if (_widget->getWidgetStyle() != WidgetStyle::Popup) {
+                
+                while (root->getParent()) root = root->getParent();
             
-            // проверяем на модальность
-            if (!mVectorModalRootWidget.empty())
-            {
-                if (root != mVectorModalRootWidget.back())
+                // проверяем на модальность
+                if (!mVectorModalRootWidget.empty())
                 {
-                    _widget = nullptr;
+                    if (root != mVectorModalRootWidget.back())
+                    {
+                        _widget = nullptr;
+                    }
                 }
-            }
             
+            }
             if (_widget != nullptr)
             {
                 mLayerMouseFocus = root->getLayer();
