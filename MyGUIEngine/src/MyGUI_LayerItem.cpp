@@ -30,7 +30,7 @@ namespace MyGUI
 		mLayerItems.push_back(_item);
 		if (mLayerNode != nullptr)
 		{
-			_item->attachToLayerItemNode(mLayerNode, false);
+			_item->_attachToLayerItemNode(mLayerNode, false);
 		}
 	}
 
@@ -48,7 +48,7 @@ namespace MyGUI
 		{
 			// создаем оверлаппеду новый айтем
 			ILayerNode* child_node = _item->createChildItemNode(mLayerNode);
-			_item->attachToLayerItemNode(child_node, true);
+			_item->_attachToLayerItemNode(child_node, true);
 		}
 	}
 
@@ -81,7 +81,7 @@ namespace MyGUI
 			ILayerNode* node = mLayerNode;
 			// позже сделать детач без текста
 			detachFromLayerItemNode(false);
-			attachToLayerItemNode(node, false);
+			_attachToLayerItemNode(node, false);
 		}
 	}
 
@@ -95,7 +95,7 @@ namespace MyGUI
 		mLayerNode = mSaveLayerNode;
 		if (mLayerNode)
 		{
-			attachToLayerItemNode(mLayerNode, false);
+			_attachToLayerItemNode(mLayerNode, false);
 		}
 	}
 
@@ -104,7 +104,7 @@ namespace MyGUI
 		mLayer = _layer;
 		mLayerNode = _node;
 
-		attachToLayerItemNode(_node, true);
+		_attachToLayerItemNode(_node, true);
 	}
 
 	void LayerItem::detachFromLayer()
@@ -142,7 +142,7 @@ namespace MyGUI
 		}
 	}
 
-	void LayerItem::attachToLayerItemNode(ILayerNode* _item, bool _deep)
+	void LayerItem::_attachToLayerItemNode(ILayerNode* _item, bool _deep)
 	{
 		MYGUI_DEBUG_ASSERT(nullptr != _item, "attached item must be valid");
 
@@ -156,7 +156,7 @@ namespace MyGUI
 
 		for (VectorLayerItem::iterator item = mLayerItems.begin(); item != mLayerItems.end(); ++item)
 		{
-			(*item)->attachToLayerItemNode(_item, _deep);
+			(*item)->_attachToLayerItemNode(_item, _deep);
 		}
 
 		for (VectorLayerItem::iterator item = mLayerNodes.begin(); item != mLayerNodes.end(); ++item)
@@ -165,7 +165,7 @@ namespace MyGUI
 			if (_deep)
 			{
 				ILayerNode* child_node = (*item)->createChildItemNode(_item);
-				(*item)->attachToLayerItemNode(child_node, _deep);
+				(*item)->_attachToLayerItemNode(child_node, _deep);
 			}
 		}
 	}
