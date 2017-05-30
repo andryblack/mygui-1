@@ -451,7 +451,8 @@ namespace MyGUI
 			if (mMouseCapture[i])
 			{
 				mMouseCapture[i] = false;
-				mouseFocus->_riseMouseButtonReleased(mLastPressed[i].left, mLastPressed[i].top, MouseButton::Enum(i));
+                if (mouseFocus)
+                    mouseFocus->_riseMouseButtonReleased(mLastPressed[i].left, mLastPressed[i].top, MouseButton::Enum(i));
 			}
 		}
 
