@@ -995,6 +995,12 @@ namespace MyGUI
 			return mWidgetClient->getEnumerator();
 		return Enumerator<VectorWidgetPtr>(mWidgetChild.begin(), mWidgetChild.end());
 	}
+    
+    /** Get child skin widgets Enumerator */
+    EnumeratorWidgetPtr Widget::getSkinEnumerator() const
+    {
+        return Enumerator<VectorWidgetPtr>(mWidgetChildSkin.begin(), mWidgetChildSkin.end());
+    }
 
 	size_t Widget::getChildCount()
 	{

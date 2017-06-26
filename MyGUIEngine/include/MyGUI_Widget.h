@@ -197,6 +197,9 @@ namespace MyGUI
 		/** Get child widgets Enumerator */
 		EnumeratorWidgetPtr getEnumerator() const;
 
+        /** Get child skin widgets Enumerator */
+        EnumeratorWidgetPtr getSkinEnumerator() const;
+
 		/** Get child count */
 		size_t getChildCount();
 
