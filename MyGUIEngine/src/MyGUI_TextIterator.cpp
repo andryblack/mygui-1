@@ -88,7 +88,7 @@ namespace MyGUI
 			// проверяем и обрезаем
 			if (pos == _max)
 			{
-                _text.erase(_text.begin(),iter);
+                _text.erase(iter,_text.end());
 				return;
 			}
             ++pos;
