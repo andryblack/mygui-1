@@ -221,17 +221,17 @@ namespace MyGUI
 		for (int y = 0; y < mCoord.height; y += mTileSize.height)
 		{
 			top = bottom;
-			bottom -= mRealTileHeight;
+			bottom += mRealTileHeight;
 			right = window_left;
 
 			float vertex_top = top;
 			float vertex_bottom = bottom;
 			bool texture_crop_height  = false;
 
-			if (vertex_top > real_top)
+			if (vertex_top < real_top)
 			{
 				// проверка на полный выход
-				if (vertex_bottom > real_top)
+				if (vertex_bottom < real_top)
 				{
 					continue;
 				}
@@ -239,10 +239,10 @@ namespace MyGUI
 				vertex_top = real_top;
 				texture_crop_height = true;
 			}
-			if (vertex_bottom < real_bottom)
+			if (vertex_bottom > real_bottom)
 			{
 				// вообще вниз ушли
-				if (vertex_top < real_bottom)
+				if (vertex_top > real_bottom)
 				{
 					continue;
 				}
@@ -295,9 +295,9 @@ namespace MyGUI
 				if (texture_crop_height)
 				{
 					// прибавляем размер смещения в текстурных координатах
-					texture_top += (top - vertex_top) * mTextureHeightOne;
+					texture_top += (vertex_top - top) * mTextureHeightOne;
 					// отнимаем размер смещения в текстурных координатах
-					texture_bottom -= (vertex_bottom - bottom) * mTextureHeightOne;
+					texture_bottom -= (bottom - vertex_bottom) * mTextureHeightOne;
 				}
 
 				// смещение текстуры по горизонтали
