@@ -26,6 +26,7 @@ namespace MyGUI
 		mCurrentColour(0xFFFFFFFF),
 		mNode(nullptr),
 		mRenderItem(nullptr),
+		mTexture(nullptr),
 		mCountVertex(TILERECT_COUNT_VERTEX),
 		mRealTileWidth(0),
 		mRealTileHeight(0),
@@ -192,6 +193,8 @@ namespace MyGUI
 
 		VertexQuad quad;
 
+		_target->setTexture(getTexture());
+
         // размер одного тайла
 		mRealTileWidth = (float)(mTileSize.width);
 		mRealTileHeight = (float)(mTileSize.height);
@@ -332,8 +335,9 @@ namespace MyGUI
 	{
 		MYGUI_ASSERT(!mRenderItem, "mRenderItem must be nullptr");
 
+		mTexture = _texture;
 		mNode = _node;
-		mRenderItem = mNode->addToRenderItem(_texture, true, false);
+		mRenderItem = mNode->addToRenderItem(mTexture, true, false);
 		mRenderItem->addDrawItem(this);
 	}
 
@@ -363,6 +367,10 @@ namespace MyGUI
 
 		if (nullptr != mNode)
 			mNode->outOfDate(mRenderItem);
+	}
+
+	ITexture* TileRect::getTexture() {
+		return mTexture;
 	}
 
 } // namespace MyGUI

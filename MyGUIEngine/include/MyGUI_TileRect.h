@@ -48,6 +48,7 @@ namespace MyGUI
 		virtual void _setUVSet(const FloatRect& _rect);
 		virtual void _setColour(const Colour& _value);
 
+		ITexture* getTexture();
 	protected:
 		bool mEmptyView;
 
@@ -58,6 +59,8 @@ namespace MyGUI
 
 		ILayerNode* mNode;
 		RenderItem* mRenderItem;
+
+		ITexture*   mTexture;
 
 		IntSize mTileSize;
 		size_t mCountVertex;
