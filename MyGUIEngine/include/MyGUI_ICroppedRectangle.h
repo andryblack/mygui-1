@@ -18,7 +18,8 @@ namespace MyGUI
 	public:
 		ICroppedRectangle() :
 			mIsMargin(false),
-			mCroppedParent(nullptr)
+			mCroppedParent(nullptr),
+            mCropChilds(true)
 		{ }
 
 		virtual ~ICroppedRectangle() { }
@@ -180,10 +181,21 @@ namespace MyGUI
 		{
 			return mMargin.bottom;
 		}
+        
+        bool getCropChilds() const {
+            return mCropChilds;
+        }
+        void setCropChilds(bool crop) {
+            mCropChilds = crop;
+        }
 
 	protected:
 		bool _checkMargin()
 		{
+            if (!mCroppedParent || !mCroppedParent->getCropChilds()) {
+                mMargin.left = mMargin.right = mMargin.top = mMargin.bottom = 0;
+                return false;
+            }
 			bool margin = false;
 			//вылезли ли налево
 			if (getLeft() < mCroppedParent->mMargin.left)
@@ -247,6 +259,7 @@ namespace MyGUI
 
 		bool mIsMargin;
 		ICroppedRectangle* mCroppedParent;
+        bool mCropChilds;
 	};
 
 } // namespace MyGUI

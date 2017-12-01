@@ -1259,6 +1259,9 @@ namespace MyGUI
 		else if (_key == "Pointer")
 			setPointer(_value);
 
+        else if (_key == "CropChilds")
+            setCropChilds(utility::parseValue<bool>(_value));
+        
 		else
 		{
 			MYGUI_LOG(Warning, "Widget property '" << _key << "' not found" << " [" << LayoutManager::getInstance().getCurrentLayout() << "]");
