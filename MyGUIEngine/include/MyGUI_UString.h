@@ -183,7 +183,7 @@ namespace MyGUI
 		//!\name Constructors/Destructor
 		//@{
 		//! default constructor, creates an empty string
-		UString();
+        UString() {}
 		//! copy constructor
 		UString( const UString& copy );
 		//! duplicate of nul-terminated sequence \a str
@@ -201,7 +201,7 @@ namespace MyGUI
         //! copy constructor
         UString( iterator begin, iterator end );
 		//! destructor
-		~UString();
+        ~UString() {}
 		//@}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -386,10 +386,7 @@ namespace MyGUI
 	private:
 		//template<class ITER_TYPE> friend class _iterator;
         dstring mData;
-
-		//! common constructor operations
-		void _init();
-        
+   
         bool check_iterator( const _base_iterator& it ) const;
 	};
 

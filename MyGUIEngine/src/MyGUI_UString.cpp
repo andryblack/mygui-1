@@ -65,61 +65,44 @@ namespace MyGUI
 	//--------------------------------------------------------------------------
 	//--------------------------------------------------------------------------
 	//--------------------------------------------------------------------------
-	UString::UString()
-	{
-		_init();
-	}
 	//--------------------------------------------------------------------------
 	UString::UString( const UString& copy )
 	{
-		_init();
 		mData = copy.mData;
 	}
     //--------------------------------------------------------------------------
     UString::UString( const unicode_char* str )
     {
-        _init();
         assign( str );
     }
 	//--------------------------------------------------------------------------
 	UString::UString( const UString& str, size_type index, size_type length )
 	{
-		_init();
 		assign( str, index, length );
 	}
 	//--------------------------------------------------------------------------
 	UString::UString( const char* c_str )
 	{
-		_init();
 		assign( c_str );
 	}
 	//--------------------------------------------------------------------------
 	UString::UString( const char* c_str, size_type length )
 	{
-		_init();
 		assign( c_str, length );
 	}
 	//--------------------------------------------------------------------------
 	UString::UString( const std::string& str )
 	{
-		_init();
 		assign( str );
 	}
     UString::UString( size_type length, unicode_char c )
     {
-        _init();
         assign(length,c);
     }
     UString::UString( UString::iterator begin, UString::iterator end )
     {
-        _init();
         assign( begin, end );
     }
-	//--------------------------------------------------------------------------
-	UString::~UString()
-	{
-		
-	}
 	//--------------------------------------------------------------------------
 	UString::size_type UString::length() const
 	{
@@ -688,9 +671,5 @@ namespace MyGUI
         return i.mIter==mData.end();
     }
 
-	void UString::_init()
-	{
-		
-	}
 
 } // namespace MyGUI
