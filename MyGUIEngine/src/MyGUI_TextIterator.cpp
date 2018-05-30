@@ -133,6 +133,8 @@ namespace MyGUI
                     } else {
                         it = prev = _text.erase(prev,it);
                     }
+                } else {
+                    ++it;
                 }
             } else {
                 ++it;

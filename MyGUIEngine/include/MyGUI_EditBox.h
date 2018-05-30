@@ -233,8 +233,10 @@ namespace MyGUI
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
         virtual void updateEditState();
+        virtual void updateCursorPosition();
         
-        
+        const UString& getRealString() const;
+        void setRealString(const UString& _caption);
 	private:
 		// устанавливает текст
 		void setText(const UString& _text, bool _history);
@@ -252,12 +254,6 @@ namespace MyGUI
 		void commandCopy();
 		void commandPast();
 
-		const UString& getRealString() const;
-
-		void setRealString(const UString& _caption);
-
-		void updateCursorPosition();
-
 		// размер данных
 		virtual IntSize getContentSize() const;
 		// смещение данных
@@ -270,6 +266,8 @@ namespace MyGUI
 		virtual size_t getHScrollPage();
 
 		virtual Align getContentAlign();
+        
+        void _updateCursorPosition();
 
 	protected:
 		// нажата ли кнопка

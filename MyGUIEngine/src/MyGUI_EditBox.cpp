@@ -101,8 +101,7 @@ namespace MyGUI
 		updateScrollSize();
 
 		// первоначальная инициализация курсора
-		if (mClientText != nullptr)
-			mClientText->setCursorPosition(mCursorPosition);
+        updateCursorPosition();
 
         updateViewWithCursor();
 	}
@@ -146,13 +145,14 @@ namespace MyGUI
 
 		FloatPoint point = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 		mCursorPosition = mClientText->getCursorPosition(point);
-		mClientText->setCursorPosition(mCursorPosition);
 		mClientText->setVisibleCursor(true);
 		mCursorTimer = 0;
 		updateViewWithCursor();
 
 		if (_id == MouseButton::Left)
 			mMouseLeftPressed = true;
+        
+        updateCursorPosition();
 	}
 
 	void EditBox::notifyMouseReleased(Widget* _sender, float _left, float _top, MouseButton _id)
@@ -186,8 +186,7 @@ namespace MyGUI
 		if (Old == mCursorPosition)
 			return;
 
-		mClientText->setCursorPosition(mCursorPosition);
-
+        updateCursorPosition();
 	}
 
 	void EditBox::notifyMouseButtonDoubleClick(Widget* _sender)
@@ -201,8 +200,8 @@ namespace MyGUI
 
 		const FloatPoint& lastPressed = InputManager::getInstance().getLastPressedPosition(MouseButton::Left);
 
-		size_t cursorPosition = mClientText->getCursorPosition(lastPressed);
-		mClientText->setCursorPosition(cursorPosition);
+		mCursorPosition = mClientText->getCursorPosition(lastPressed);
+        updateCursorPosition();
 	}
 
 	void EditBox::onMouseDrag(int _left, int _top, MouseButton _id)
@@ -343,8 +342,8 @@ namespace MyGUI
 			if ((mCursorPosition) < mTextLength)
 			{
 				mCursorPosition ++;
-				mClientText->setCursorPosition(mCursorPosition);
-                updateViewWithCursor();
+                updateCursorPosition();
+				updateViewWithCursor();
 			}
 
 		}
@@ -353,7 +352,7 @@ namespace MyGUI
 			if (mCursorPosition != 0)
 			{
 				mCursorPosition --;
-				mClientText->setCursorPosition(mCursorPosition);
+                updateCursorPosition();
 				updateViewWithCursor();
 			}
         }
@@ -369,13 +368,13 @@ namespace MyGUI
 				if (mCursorPosition != 0)
 				{
 					mCursorPosition = 0;
-					mClientText->setCursorPosition(mCursorPosition);
+                    updateCursorPosition();
                     updateViewWithCursor();
 				}
 			}
 			else
 			{
-				mClientText->setCursorPosition(mCursorPosition);
+				updateCursorPosition();
 				updateViewWithCursor();
 			}
 
@@ -392,13 +391,13 @@ namespace MyGUI
 				if (mCursorPosition != mTextLength)
 				{
 					mCursorPosition = mTextLength;
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
                     updateViewWithCursor();
 				}
 			}
 			else
 			{
-				mClientText->setCursorPosition(mCursorPosition);
+				updateCursorPosition();
 				updateViewWithCursor();
 			}
 
@@ -414,7 +413,7 @@ namespace MyGUI
 				mCursorPosition = mClientText->getCursorPosition(point);
 				if (old != mCursorPosition)
 				{
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
@@ -424,7 +423,7 @@ namespace MyGUI
 				if (0 != mCursorPosition)
 				{
 					mCursorPosition = 0;
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
@@ -441,7 +440,7 @@ namespace MyGUI
 				mCursorPosition = mClientText->getCursorPosition(point);
 				if (old != mCursorPosition)
 				{
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
@@ -451,7 +450,7 @@ namespace MyGUI
 				if (mTextLength != mCursorPosition)
 				{
 					mCursorPosition = mTextLength;
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
@@ -470,13 +469,13 @@ namespace MyGUI
 				if (mCursorPosition != 0)
 				{
 					mCursorPosition = 0;
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
 			else
 			{
-				mClientText->setCursorPosition(mCursorPosition);
+				updateCursorPosition();
 				updateViewWithCursor();
             }
 
@@ -494,13 +493,13 @@ namespace MyGUI
 				if (mCursorPosition != mTextLength)
 				{
 					mCursorPosition = mTextLength;
-					mClientText->setCursorPosition(mCursorPosition);
+					updateCursorPosition();
 					updateViewWithCursor();
 				}
 			}
 			else
 			{
-				mClientText->setCursorPosition(mCursorPosition);
+				updateCursorPosition();
 				updateViewWithCursor();
 			}
 
@@ -620,7 +619,7 @@ namespace MyGUI
 
 					if (old != mCursorPosition)
 					{
-						mClientText->setCursorPosition(mCursorPosition);
+						updateCursorPosition();
 						// пытаемся показать курсор
 						updateViewWithCursor();
 					}
@@ -651,8 +650,7 @@ namespace MyGUI
 		mCursorPosition = _index;
 
 		// обновляем по позиции
-		if (mClientText != nullptr)
-			mClientText->setCursorPosition(mCursorPosition);
+        updateCursorPosition();
 
         updateViewWithCursor();
 	}
@@ -707,8 +705,7 @@ namespace MyGUI
 		setRealString(text);
 
 		// обновляем по позиции
-		if (mClientText != nullptr)
-			mClientText->setCursorPosition(mCursorPosition);
+        updateCursorPosition();
         updateViewWithCursor();
 	}
 
@@ -758,8 +755,7 @@ namespace MyGUI
 		setRealString(text);
 
 		// обновляем по позиции
-		if (mClientText != nullptr)
-			mClientText->setCursorPosition(mCursorPosition);
+        updateCursorPosition();
         updateViewWithCursor();
 	}
 
@@ -805,8 +801,7 @@ namespace MyGUI
 		setRealString(text);
 
 		// обновляем по позиции
-		if (mClientText != nullptr)
-			mClientText->setCursorPosition(mCursorPosition);
+        updateCursorPosition();
         updateViewWithCursor();
 	}
 
@@ -1079,15 +1074,20 @@ namespace MyGUI
 	void EditBox::updateViewWithCursor()
 	{
 		updateScrollSize();
-		updateCursorPosition();
+        _updateCursorPosition();
 		updateScrollPosition();
 	}
-
-	void EditBox::updateCursorPosition()
+    
+    void EditBox::updateCursorPosition() {
+        if (mClientText) mClientText->setCursorPosition(mCursorPosition);
+    }
+    
+    
+	void EditBox::_updateCursorPosition()
 	{
 		if (mClientText == nullptr || mClient == nullptr)
 			return;
-
+       
 		// размер контекста текста
 		IntSize textSize = mClientText->getTextSize();
 
