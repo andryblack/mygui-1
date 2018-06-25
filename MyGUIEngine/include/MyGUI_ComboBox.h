@@ -177,7 +177,7 @@ namespace MyGUI
 		void notifyListSelectAccept(ListBox* _widget, size_t _position);
 		void notifyListMouseItemActivate(ListBox* _widget, size_t _position);
 		void notifyListChangePosition(ListBox* _widget, size_t _position);
-		void notifyMouseWheel(Widget* _sender, int _rel);
+		void notifyMouseWheel(Widget* _sender, float _rel);
 		void notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyEditTextChange(EditBox* _sender);
 		void notifyToolTip(Widget* _sender, const ToolTipInfo& _info);

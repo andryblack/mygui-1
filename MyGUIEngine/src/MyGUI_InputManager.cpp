@@ -78,26 +78,40 @@ namespace MyGUI
 		MYGUI_LOG(Info, getClassTypeName() << " successfully shutdown");
 		mIsInitialise = false;
 	}
+    
+    bool InputManager::injectWheel(float _delta) {
+        // вычисляем прирост по колеса
+        mOldAbsZ += _delta;
+        
+        // проверка на скролл
+        if (_delta != 0.0)
+        {
+            bool isFocus = isFocusMouse();
+            if (isFocus) {
+                isFocus = false;
+                Widget* focus = mWidgetMouseFocus;
+                while (focus && !focus->getNeedMouseWheel()) {
+                    focus = focus->getParent();
+                }
+                if (focus) {
+                    focus->_riseMouseWheel(_delta);
+                    isFocus = true;
+                }
+            }
+            injectMouseMove(mMousePosition.left,mMousePosition.top);
+            return isFocus;
+        }
+        return false;
+    }
 
-	bool InputManager::injectMouseMove(float _absx, float _absy, int _absz)
+	bool InputManager::injectMouseMove(float _absx, float _absy)
 	{
         eventMouseMoved(_absx,_absy);
         
 		// запоминаем позицию
 		mMousePosition.set(_absx, _absy);
 
-		// вычисляем прирост по колеса
-		int relz = _absz - mOldAbsZ;
-		mOldAbsZ = _absz;
-
-		// проверка на скролл
-		if (relz != 0)
-		{
-			bool isFocus = isFocusMouse();
-			if (isFocusMouse())
-				mWidgetMouseFocus->_riseMouseWheel(relz);
-			return isFocus;
-		}
+		
 
 		if (isCaptureMouse())
 		{
@@ -147,7 +161,7 @@ namespace MyGUI
 
 	bool InputManager::injectMousePress(float _absx, float _absy, MouseButton _id)
 	{
-		injectMouseMove(_absx, _absy, mOldAbsZ);
+		injectMouseMove(_absx, _absy);
 
         
         eventMousePressed(_absx,_absy,_id);
@@ -243,7 +257,7 @@ namespace MyGUI
 			}
 
 			// для корректного отображения
-			injectMouseMove(_absx, _absy, mOldAbsZ);
+			injectMouseMove(_absx, _absy);
 
 			return true;
 		}

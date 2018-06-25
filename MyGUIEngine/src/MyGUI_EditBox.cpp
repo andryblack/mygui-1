@@ -985,7 +985,7 @@ namespace MyGUI
 		}
 	}
 
-	void EditBox::notifyMouseWheel(Widget* _sender, int _rel)
+	void EditBox::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mClientText == nullptr)
 			return;

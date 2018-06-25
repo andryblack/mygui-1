@@ -223,7 +223,7 @@ namespace MyGUI
 		void notifyMouseButtonDoubleClick(Widget* _sender);
 
 		void notifyScrollChangePosition(ScrollBar* _sender, size_t _position);
-		void notifyMouseWheel(Widget* _sender, int _rel);
+		void notifyMouseWheel(Widget* _sender, float _rel);
 
 		// обновление представления
 		void updateView();

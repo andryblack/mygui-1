@@ -15,6 +15,7 @@ namespace MyGUI
 		mInheritsPick(false),
 		mNeedKeyFocus(false),
 		mNeedMouseFocus(true),
+        mNeedMouseWheel(false),
 		mRootMouseFocus(false),
 		mRootKeyFocus(false)
 	{
@@ -48,7 +49,7 @@ namespace MyGUI
 		eventMouseMove(static_cast<Widget*>(this), _left, _top);
 	}
 
-	void WidgetInput::_riseMouseWheel(int _rel)
+	void WidgetInput::_riseMouseWheel(float _rel)
 	{
 		onMouseWheel(_rel);
 		eventMouseWheel(static_cast<Widget*>(this), _rel);
@@ -163,6 +164,13 @@ namespace MyGUI
 	{
 		return mInheritsPick;
 	}
+    
+    bool WidgetInput::getNeedMouseWheel() const {
+        return mNeedMouseWheel;
+    }
+    void WidgetInput::setNeedMouseWheel(bool _value) {
+        mNeedMouseWheel = _value;
+    }
 
 	bool WidgetInput::getRootMouseFocus() const
 	{
@@ -200,7 +208,7 @@ namespace MyGUI
 	{
 	}
 
-	void WidgetInput::onMouseWheel(int _rel)
+	void WidgetInput::onMouseWheel(float _rel)
 	{
 	}
 

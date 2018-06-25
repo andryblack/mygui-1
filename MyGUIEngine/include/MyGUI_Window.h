@@ -122,7 +122,7 @@ namespace MyGUI
 		void notifyMouseReleased(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyPressedButtonEvent(MyGUI::Widget* _sender);
 		void notifyMouseDrag(MyGUI::Widget* _sender, float _left, float _top, MouseButton _id);
-		void notifyMouseWheel(MyGUI::Widget* _sender, int _rel);
+		void notifyMouseWheel(MyGUI::Widget* _sender, float _rel);
 
 		// просто обновляет альфу взависимости от флагов
 		void updateAlpha();

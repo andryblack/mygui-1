@@ -48,6 +48,7 @@ namespace MyGUI
 	typedef delegates::CMultiDelegate2<Widget*, Widget*> EventHandle_WidgetWidget;
 	typedef delegates::CMultiDelegate2<Widget*, bool> EventHandle_WidgetBool;
 	typedef delegates::CMultiDelegate2<Widget*, int> EventHandle_WidgetInt;
+    typedef delegates::CMultiDelegate2<Widget*, float> EventHandle_WidgetFloat;
 	typedef delegates::CMultiDelegate2<Widget*, size_t> EventHandle_WidgetSizeT;
 	typedef delegates::CMultiDelegate3<Widget*, float, float> EventHandle_WidgetFloatFloat;
 	typedef delegates::CMultiDelegate4<Widget*, float, float, MouseButton> EventHandle_WidgetFloatFloatButton;
@@ -95,6 +96,8 @@ namespace MyGUI
 		void setInheritsPick(bool _value);
 		/** Get inherits mode flag */
 		bool getInheritsPick() const;
+        bool getNeedMouseWheel() const;
+        void setNeedMouseWheel(bool _value);
 
 		bool getRootMouseFocus() const;
 		bool getRootKeyFocus() const;
@@ -134,7 +137,7 @@ namespace MyGUI
 			@param _sender widget that called this event
 			@param _rel relative wheel position
 		*/
-		EventHandle_WidgetInt eventMouseWheel;
+		EventHandle_WidgetFloat eventMouseWheel;
 
 		/** Event : Mouse button pressed.\n
 			signature : void method(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)\n
@@ -223,7 +226,7 @@ namespace MyGUI
 		void _riseMouseSetFocus(Widget* _old);
 		void _riseMouseDrag(float _left, float _top, MouseButton _id);
 		void _riseMouseMove(float _left, float _top);
-		void _riseMouseWheel(int _rel);
+		void _riseMouseWheel(float _rel);
 		void _riseMouseButtonPressed(float _left, float _top, MouseButton _id);
 		void _riseMouseButtonReleased(float _left, float _top, MouseButton _id);
 		void _riseMouseButtonClick();
@@ -237,13 +240,13 @@ namespace MyGUI
 
 		void _setRootMouseFocus(bool _value);
 		void _setRootKeyFocus(bool _value);
-
+        
 	protected:
 		virtual void onMouseLostFocus(Widget* _new);
 		virtual void onMouseSetFocus(Widget* _old);
 		virtual void onMouseDrag(int _left, int _top, MouseButton _id);
 		virtual void onMouseMove(int _left, int _top);
-		virtual void onMouseWheel(int _rel);
+		virtual void onMouseWheel(float _rel);
 		virtual void onMouseButtonPressed(int _left, int _top, MouseButton _id);
 		virtual void onMouseButtonReleased(int _left, int _top, MouseButton _id);
 		virtual void onMouseButtonClick();
@@ -262,7 +265,8 @@ namespace MyGUI
 		bool mInheritsPick;
 		bool mNeedKeyFocus;
 		bool mNeedMouseFocus;
-
+        bool mNeedMouseWheel;
+        
 		bool mRootMouseFocus;
 		bool mRootKeyFocus;
 	};

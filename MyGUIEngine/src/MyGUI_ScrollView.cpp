@@ -37,12 +37,14 @@ namespace MyGUI
 		if (mClient != nullptr)
 		{
 			mClient->eventMouseWheel += newDelegate(this, &ScrollView::notifyMouseWheel);
+            mClient->setNeedMouseWheel(true);
 			realClientOwner = mClient;
 		}
 
 		// создаем холcт, реальный владелец детей
 		mRealClient = realClientOwner->createWidget<Widget>("Default", IntCoord(), Align::Default);
 		mRealClient->eventMouseWheel += newDelegate(this, &ScrollView::notifyMouseWheel);
+        mRealClient->setNeedMouseWheel(true);
 		setWidgetClient(mRealClient);
 
 		///@wskin_child{ScrollView, ScrollBar, VScroll} Вертикальная полоса прокрутки.
@@ -110,7 +112,7 @@ namespace MyGUI
 		}
 	}
 
-	void ScrollView::notifyMouseWheel(Widget* _sender, int _rel)
+	void ScrollView::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mRealClient == nullptr)
 			return;

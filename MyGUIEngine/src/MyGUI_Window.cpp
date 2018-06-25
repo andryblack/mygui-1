@@ -607,7 +607,7 @@ namespace MyGUI
 		return mMovable;
 	}
 
-	void Window::notifyMouseWheel(MyGUI::Widget* _sender, int _rel)
+	void Window::notifyMouseWheel(MyGUI::Widget* _sender, float _rel)
 	{
 		onMouseWheel(_rel);
 		eventMouseWheel(_sender, _rel);

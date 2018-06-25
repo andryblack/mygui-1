@@ -214,14 +214,14 @@ namespace MyGUI
 		virtual void onKeyButtonReleased(KeyCode _key);
 		virtual void onMouseDrag(int _left, int _top, MouseButton _id);
 
-		virtual void onMouseWheel(int _rel);
+		virtual void onMouseWheel(float _rel);
 		virtual void onKeyLostFocus(Widget* _new);
 		virtual void onKeySetFocus(Widget* _old);
 
 		void notifyKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);
 		void notifyKeyButtonReleased(Widget* _sender, KeyCode _key);
 		void notifyScrollChangePosition(ScrollBar* _sender, size_t _index);
-		void notifyMouseWheel(Widget* _sender, int _rel);
+		void notifyMouseWheel(Widget* _sender, float _rel);
 		void notifyRootMouseChangeFocus(Widget* _sender, bool _focus);
 		void notifyMouseButtonDoubleClick(Widget* _sender);
 		virtual size_t _getItemIndex(Widget* _item);

@@ -212,7 +212,7 @@ namespace MyGUI
 		return mVectorItems[_index];
 	}
 
-	void ItemBox::onMouseWheel(int _rel)
+	void ItemBox::onMouseWheel(float _rel)
 	{
 		notifyMouseWheel(nullptr, _rel);
 
@@ -735,7 +735,7 @@ namespace MyGUI
 		setContentPosition(mContentPosition);
 	}
 
-	void ItemBox::notifyMouseWheel(Widget* _sender, int _rel)
+	void ItemBox::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mAlignVert)
 		{

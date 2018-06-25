@@ -191,7 +191,7 @@ namespace MyGUI
 		}
 	}
 
-	void ComboBox::notifyMouseWheel(Widget* _sender, int _rel)
+	void ComboBox::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mList->getItemCount() == 0)
 			return;

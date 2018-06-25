@@ -259,7 +259,7 @@ namespace MyGUI
 		virtual void initialiseOverride();
 		virtual void shutdownOverride();
 
-		void onMouseWheel(int _rel);
+		void onMouseWheel(float _rel);
 		void onKeyButtonPressed(KeyCode _key, Char _char);
 		void onKeyButtonReleased(KeyCode _key);
 
@@ -267,7 +267,7 @@ namespace MyGUI
 		void notifyMousePressed(Widget* _sender, float _left, float _top, MouseButton _id);
 		void notifyMouseClick(Widget* _sender);
 		void notifyMouseDoubleClick(Widget* _sender);
-		void notifyMouseWheel(Widget* _sender, int _rel);
+		void notifyMouseWheel(Widget* _sender, float _rel);
 		void notifyMouseSetFocus(Widget* _sender, Widget* _old);
 		void notifyMouseLostFocus(Widget* _sender, Widget* _new);
 		void notifyKeyButtonPressed(Widget* _sender, KeyCode _key, Char _char);

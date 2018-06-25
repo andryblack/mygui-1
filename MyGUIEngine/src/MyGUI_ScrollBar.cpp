@@ -445,14 +445,14 @@ namespace MyGUI
 		return getTrackPlaceLength() - (int)(mSkinRangeStart + mSkinRangeEnd);
 	}
 
-	void ScrollBar::onMouseWheel(int _rel)
+	void ScrollBar::onMouseWheel(float _rel)
 	{
 		notifyMouseWheel(nullptr, _rel);
 
 		Base::onMouseWheel(_rel);
 	}
 
-	void ScrollBar::notifyMouseWheel(Widget* _sender, int _rel)
+	void ScrollBar::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mScrollRange < 2)
 			return;

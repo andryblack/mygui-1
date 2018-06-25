@@ -80,7 +80,7 @@ namespace MyGUI
 		Base::shutdownOverride();
 	}
 
-	void ListBox::onMouseWheel(int _rel)
+	void ListBox::onMouseWheel(float _rel)
 	{
 		notifyMouseWheel(nullptr, _rel);
 
@@ -204,7 +204,7 @@ namespace MyGUI
 		eventNotifyItem(this, IBNotifyItemData(ITEM_NONE, IBNotifyItemData::KeyPressed, _key, _char));
 	}
 
-	void ListBox::notifyMouseWheel(Widget* _sender, int _rel)
+	void ListBox::notifyMouseWheel(Widget* _sender, float _rel)
 	{
 		if (mRangeIndex <= 0)
 			return;

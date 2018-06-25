@@ -39,7 +39,7 @@ namespace MyGUI
 		/** Inject MouseMove event
 			@return true if event has been processed by GUI
 		*/
-		bool injectMouseMove(float _absx, float _absy, int _absz);
+		bool injectMouseMove(float _absx, float _absy);
 		/** Inject MousePress event
 			@return true if event has been processed by GUI
 		*/
@@ -48,6 +48,11 @@ namespace MyGUI
 			@return true if event has been processed by GUI
 		*/
 		bool injectMouseRelease(float _absx, float _absy, MouseButton _id);
+        
+        /** Inject Wheel event
+         @return true if event has been processed by GUI
+         */
+        bool injectWheel(float _delta);
 
 		/** Inject KeyPress event
 			@return true if event has been processed by GUI
@@ -187,7 +192,7 @@ namespace MyGUI
 		Char mHoldChar;
 		bool mFirstPressKey;
 		float mTimerKey;
-		int mOldAbsZ;
+		float mOldAbsZ;
 
 		// список виджетов с модальным режимом
 		VectorWidgetPtr mVectorModalRootWidget;

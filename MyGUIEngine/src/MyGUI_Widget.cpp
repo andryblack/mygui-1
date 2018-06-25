@@ -1247,6 +1247,9 @@ namespace MyGUI
 		else if (_key == "NeedMouse")
 			setNeedMouseFocus(utility::parseValue<bool>(_value));
 
+        else if (_key == "NeedWheel")
+            setNeedMouseWheel(utility::parseValue<bool>(_value));
+
 		/// @wproperty{Widget, Enabled, bool} Режим доступности виджета.
 		else if (_key == "Enabled")
 			setEnabled(utility::parseValue<bool>(_value));
