@@ -165,31 +165,27 @@ namespace MyGUI
 		{
 			// максимум
 			size_t index = mIndexBack[pos];
-			if (index >= count)
-				throw new std::exception();
-
+            assert(index < count);
+            
 			// максимум
 			index = mIndexFace[pos];
-			if (index >= count)
-				throw new std::exception();
-
-			if (vec[index])
-				throw new std::exception();
+            assert(index < count);
+            
+            assert(!vec[index]);
+            
 			vec[index] = true;
 		}
 
 		for (size_t pos = 0; pos < count; ++pos)
 		{
-			if (!vec[pos])
-				throw new std::exception();
+            assert(vec[pos]);
 		}
 
 		// проверяем на взаимоссылаемость индексов
 		for (size_t pos = 0; pos < count; ++pos)
 		{
 			size_t index = mIndexFace[pos];
-			if (mIndexBack[index] != pos)
-				throw new std::exception();
+            assert(mIndexBack[index]==pos);
 		}
 	}
 

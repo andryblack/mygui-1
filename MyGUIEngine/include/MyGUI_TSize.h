@@ -128,13 +128,8 @@ namespace MyGUI
 				}
 				else
 				{
-					int item = stream.get();
-					while (item != -1)
-					{
-						if (item != ' ' && item != '\t')
-							return TSize<T>();
-						item = stream.get();
-					}
+                    if (!utility::skip_space(stream))
+                        return TSize<T>();
 				}
 				return result;
 			}

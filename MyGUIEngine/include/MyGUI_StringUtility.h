@@ -106,6 +106,15 @@ namespace MyGUI
 			return _value ? "true" : "false";
 		}
 
+        static inline bool skip_space(std::istringstream& stream) {
+            char item;
+            while (stream.get(item))
+            {
+                if (item != ' ' && item != '\t')
+                    return false;
+            }
+            return true;
+        }
 
 		// утилиты для парсинга
 		template<typename T>
@@ -118,13 +127,8 @@ namespace MyGUI
 				return T();
 			else
 			{
-				int item = stream.get();
-				while (item != -1)
-				{
-					if (item != ' ' && item != '\t')
-						return T();
-					item = stream.get();
-				}
+                if (!skip_space(stream))
+                    return T();
 			}
 			return result;
 		}
@@ -214,13 +218,8 @@ namespace MyGUI
 				return T1();
 			else
 			{
-				int item = stream.get();
-				while (item != -1)
-				{
-					if (item != ' ' && item != '\t')
-						return T1();
-					item = stream.get();
-				}
+                if (!skip_space(stream))
+                    return T1();
 			}
 			return T1(p1, p2);
 		}
@@ -235,13 +234,8 @@ namespace MyGUI
 				return T1();
 			else
 			{
-				int item = stream.get();
-				while (item != -1)
-				{
-					if (item != ' ' && item != '\t')
-						return T1();
-					item = stream.get();
-				}
+                if (!skip_space(stream))
+                    return T1();
 			}
 			return T1(p1, p2, p3);
 		}
@@ -256,13 +250,8 @@ namespace MyGUI
 				return T1();
 			else
 			{
-				int item = stream.get();
-				while (item != -1)
-				{
-					if (item != ' ' && item != '\t')
-						return T1();
-					item = stream.get();
-				}
+                if (!skip_space(stream))
+                    return T1();
 			}
 			return T1(p1, p2, p3, p4);
 		}
@@ -304,13 +293,8 @@ namespace MyGUI
 
 			if (stream.fail())
 				return false;
-			int item = stream.get();
-			while (item != -1)
-			{
-				if (item != ' ' && item != '\t')
-					return false;
-				item = stream.get();
-			}
+            if (!skip_space(stream))
+                return false;
 
 			return true;
 		}
@@ -324,13 +308,8 @@ namespace MyGUI
 
 			if (stream.fail())
 				return false;
-			int item = stream.get();
-			while (item != -1)
-			{
-				if (item != ' ' && item != '\t')
-					return false;
-				item = stream.get();
-			}
+            if (!skip_space(stream))
+                return false;
 
 			return true;
 		}
@@ -344,13 +323,8 @@ namespace MyGUI
 
 			if (stream.fail())
 				return false;
-			int item = stream.get();
-			while (item != -1)
-			{
-				if (item != ' ' && item != '\t')
-					return false;
-				item = stream.get();
-			}
+            if (!skip_space(stream))
+                return false;
 
 			return true;
 		}
@@ -364,13 +338,8 @@ namespace MyGUI
 
 			if (stream.fail())
 				return false;
-			int item = stream.get();
-			while (item != -1)
-			{
-				if (item != ' ' && item != '\t')
-					return false;
-				item = stream.get();
-			}
+            if (!skip_space(stream))
+                return false;
 
 			return true;
 		}

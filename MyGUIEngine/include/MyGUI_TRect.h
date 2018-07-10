@@ -172,13 +172,8 @@ namespace MyGUI
 				}
 				else
 				{
-					int item = stream.get();
-					while (item != -1)
-					{
-						if (item != ' ' && item != '\t')
-							return TRect<T>();
-						item = stream.get();
-					}
+                    if (!utility::skip_space(stream))
+                        return TRect<T>();
 				}
 				return result;
 			}

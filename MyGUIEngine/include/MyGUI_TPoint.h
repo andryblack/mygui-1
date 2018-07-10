@@ -8,6 +8,7 @@
 #define MYGUI_TPONT_H_
 
 #include "MyGUI_Prerequest.h"
+#include "MyGUI_StringUtility.h"
 
 namespace MyGUI
 {
@@ -129,13 +130,8 @@ namespace MyGUI
 				}
 				else
 				{
-					int item = stream.get();
-					while (item != -1)
-					{
-						if (item != ' ' && item != '\t')
-							return TPoint<T>();
-						item = stream.get();
-					}
+                    if (!utility::skip_space(stream))
+                        return TPoint<T>();
 				}
 				return result;
 			}
