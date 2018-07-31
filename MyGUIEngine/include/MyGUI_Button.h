@@ -57,6 +57,8 @@ namespace MyGUI
 
 		virtual void setPropertyOverride(const std::string& _key, const std::string& _value);
 
+        bool isMousePressed() const { return mIsMousePressed; }
+        bool isMouseFocus() const { return mIsMouseFocus; }
 	private:
 		void updateButtonState();
 
