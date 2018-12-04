@@ -39,7 +39,7 @@ namespace MyGUI
 	void FactoryManager::registerFactory(const std::string& _category, const std::string& _type, FactoryFunc* _delegate)
 	{
 		//FIXME
-        MYGUI_LOG(Info, getClassTypeName() << " register factory " << _category << ":" << _type << " -> " << _delegate);
+        MYGUI_LOG(Verbose, getClassTypeName() << " register factory " << _category << ":" << _type << " -> " << _delegate);
 		mRegisterFactoryItems[_category][_type] = _delegate;
 	}
 

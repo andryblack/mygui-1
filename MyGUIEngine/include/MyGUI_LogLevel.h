@@ -19,6 +19,7 @@ namespace MyGUI
 	{
 		enum Enum
 		{
+            Verbose,
 			Info, // Информационное сообщение.
 			Warning, // Несущественная проблема.
 			Error, // Устранимая ошибка.
@@ -108,7 +109,7 @@ namespace MyGUI
 	private:
 		const char* getValueName(int _index) const
 		{
-			static const char* values[MAX + 1] = { "Info", "Warning", "Error", "Critical", "" };
+			static const char* values[MAX + 1] = { "Verbose", "Info", "Warning", "Error", "Critical", "" };
 			return values[(_index < MAX && _index >= 0) ? _index : MAX];
 		}
 

@@ -107,7 +107,7 @@ namespace MyGUI
 		{
 			std::string source;
 			if (!node->findAttribute("file", source)) continue;
-			MYGUI_LOG(Info, "Load ini file '" << source << "'");
+			MYGUI_LOG(Verbose, "Load ini file '" << source << "'");
 			_loadImplement(source, false, "", getClassTypeName());
 		}
 	}
